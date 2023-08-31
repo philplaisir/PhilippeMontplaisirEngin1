@@ -58,15 +58,46 @@ public class CameraController : MonoBehaviour
 
 
         if (Input.mouseScrollDelta.y != 0)
-        {   
+        {
+            //float zoomAmount = Input.mouseScrollDelta.y;
+            //
+            //
+            //
+            //
+            //var i = 0.0f;
+            //
+            //if (zoomAmount > i) // zoomAmount positif, donc scroll forward
+            //{
+            //    while (i < zoomAmount)
+            //    {
+            //        i += Time.deltaTime * m_lerpingFactor;
+            //        transform.Translate(Vector3.forward * (Mathf.Lerp(0, zoomAmount, i)), Space.Self);
+            //
+            //    }
+            //
+            //}
+            //if (zoomAmount < i) // zoomAmount négatif, donc scroll backward
+            //{
+            //    while (i > zoomAmount)
+            //    {
+            //        i -= Time.deltaTime * m_lerpingFactor;
+            //        transform.Translate(Vector3.forward * (Mathf.Lerp(zoomAmount, 0, i)), Space.Self);
+            //
+            //    }
+            //
+            //}
 
+
+            //while (i < Input.mouseScrollDelta.y)            
+            //{ 
+            //    i += Time.deltaTime * m_lerpingFactor;
+            //    transform.Translate(Vector3.forward * (Mathf.Lerp(0, Input.mouseScrollDelta.y, i)), Space.Self);
+            //
+            //}
 
 
             m_distanceBetweenObjects = Vector3.Distance(m_objectToLookAt.position, transform.position);
             m_distanceBetweenObjects = ClampZoom(m_distanceBetweenObjects);
-
-             
-
 
             if (m_distanceBetweenObjects == m_zoomScrollLimits.x)
             {
@@ -96,7 +127,6 @@ public class CameraController : MonoBehaviour
                     
                 }
             }
-
             transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);
 
             //Vector3.Lerp();
