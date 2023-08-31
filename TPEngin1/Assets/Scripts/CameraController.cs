@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    // TODO finir le lerp du scroll
+    // suivre le personnage avec la caméra
+
+
     [SerializeField]
     private Transform m_objectToLookAt;
     [SerializeField]
@@ -59,6 +63,41 @@ public class CameraController : MonoBehaviour
 
         if (Input.mouseScrollDelta.y != 0)
         {
+            m_distanceBetweenObjects = Vector3.Distance(m_objectToLookAt.position, transform.position);
+            m_distanceBetweenObjects = ClampZoom(m_distanceBetweenObjects);
+
+            if (m_distanceBetweenObjects == m_zoomScrollLimits.x)
+            {
+                if (Input.mouseScrollDelta.y > 0)
+                {
+                    return;
+                }
+                else
+                {
+                    transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);
+                    return;
+
+                }
+            }
+
+            if (m_distanceBetweenObjects == m_zoomScrollLimits.y)
+            {
+                if (Input.mouseScrollDelta.y < 0)
+                {
+                    return;
+                }
+                else
+                {
+                    transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);
+                    return;
+
+
+                }
+            }
+            transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);
+
+
+
             //float zoomAmount = Input.mouseScrollDelta.y;
             //
             //
@@ -96,38 +135,7 @@ public class CameraController : MonoBehaviour
             //}
 
 
-            m_distanceBetweenObjects = Vector3.Distance(m_objectToLookAt.position, transform.position);
-            m_distanceBetweenObjects = ClampZoom(m_distanceBetweenObjects);
 
-            if (m_distanceBetweenObjects == m_zoomScrollLimits.x)
-            {
-                if (Input.mouseScrollDelta.y > 0)
-                {
-                    return;
-                }
-                else
-                {
-                    transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);
-                    return;
-                    
-                }
-            }
-            
-            if (m_distanceBetweenObjects == m_zoomScrollLimits.y)
-            {
-                if (Input.mouseScrollDelta.y < 0)
-                {
-                    return;
-                }
-                else
-                {
-                    transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);
-                    return;
-            
-                    
-                }
-            }
-            transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);
 
             //Vector3.Lerp();
             //Mathf.Lerp();
@@ -170,7 +178,7 @@ public class CameraController : MonoBehaviour
 
         }
 
-
+        // 
 
     }
 
