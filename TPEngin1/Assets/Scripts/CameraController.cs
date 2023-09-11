@@ -14,23 +14,8 @@ public class CameraController : MonoBehaviour
     private Vector2 m_clampingXRotationValues = Vector2.zero;
     [SerializeField]
     private Vector2 m_zoomScrollLimits = Vector2.zero; // x == minimum, y == maximum
-    
     [SerializeField]
-    private float m_originalDistanceBetweenCameraAndTarget;
-    private float m_startDistance;
-    private float m_originalScrollInput;
-    private float m_originalScrollInputCopy;
-    private float m_zoomSpeed = 5.0f;
-    private float m_endDistance;
-    private float m_zoomChangeAmount;
-    private float m_distanceTraveled;
-    private float m_originalDistanceBetweenStartAndEnd;
-
-
-   
-
-
-
+    private float m_distanceFromTarget = 5.0f;
 
     [SerializeField]
     private float m_distanceBetweenObjects;
@@ -47,6 +32,7 @@ public class CameraController : MonoBehaviour
     {
         UpdateHorizontalMovements();
         UpdateVerticalMovements();
+        UpdateCameraPosition();
         UpdateCameraScroll();
     }
 
@@ -73,63 +59,37 @@ public class CameraController : MonoBehaviour
         transform.RotateAround(m_objectToLookAt.position, transform.right, currentAngleY);
     }
 
+    private void UpdateCameraPosition()
+    {
+        transform.position = m_objectToLookAt.position - transform.forward * m_distanceFromTarget;
+
+    }
+
     private void UpdateCameraScroll()
     {
-        //if (Input.mouseScrollDelta.y != 0)
-        //{
-        //    m_originalDistanceBetweenCameraAndTarget = Vector3.Distance(m_objectToLookAt.position, transform.position);
-        //    m_originalScrollInput = Input.mouseScrollDelta.y;
-        //    m_endDistance = m_originalDistanceBetweenCameraAndTarget + m_originalScrollInput;
-        //}
-        //
-        //m_originalScrollInputCopy = m_originalScrollInput;
-        //m_originalScrollInput -= 0.01f;
-        //
-        ////float percentageComplete = m_originalScrollInput / m_originalScrollInputCopy;
-        //
-        //float percentageComplete = Vector3.Distance(m_objectToLookAt.position, transform.position) / m_endDistance;
-        //
-        //float lerpedFloat = Mathf.Lerp(1, 0, percentageComplete);
-        //
-        //transform.Translate(Vector3.forward * lerpedFloat, Space.Self);
-
-
-        //Vector3.Distance(m_objectToLookAt.position, transform.position)
-
-
+        
 
         if (Input.mouseScrollDelta.y != 0)
-        {
-            m_distanceBetweenObjects = Vector3.Distance(m_objectToLookAt.position, transform.position);
-            m_distanceBetweenObjects = ClampZoom(m_distanceBetweenObjects);
-        
-            if (m_distanceBetweenObjects == m_zoomScrollLimits.x)
-            {
-                if (Input.mouseScrollDelta.y > 0)
-                {
-                    return;
-                }
-                else
-                {
-                    transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);
-                    return;        
-                }
-            }
-        
-            if (m_distanceBetweenObjects == m_zoomScrollLimits.y)
-            {
-                if (Input.mouseScrollDelta.y < 0)
-                {
-                    return;
-                }
-                else
-                {
-                    transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);
-                    return;
-                }
-            }
-            transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);        
+        {            
+            m_distanceFromTarget -= Input.mouseScrollDelta.y;
+            
+            m_distanceFromTarget = ClampZoom(m_distanceFromTarget);            
         }
+
+        // Pour le lerp changer la variable, ensuite la lerpedDistance dans un variable qui va tranquillement incrémenter m_distanceFromTarget
+
+        float lerpSpeed = 0.1f; // Adjust this value to control the speed of the lerp
+        float currentDistance = Vector3.Distance(transform.position, m_objectToLookAt.position);
+
+        float lerpedDistance = Mathf.Lerp(currentDistance, m_distanceFromTarget, lerpSpeed);
+        Vector3 direction = (transform.position - m_objectToLookAt.position).normalized;
+        Vector3 lerpedPosition = m_objectToLookAt.position + direction * lerpedDistance;
+
+        transform.position = lerpedPosition;
+
+        // Make sure the camera is still looking at the target
+        transform.LookAt(m_objectToLookAt);
+
 
 
 
@@ -147,7 +107,7 @@ public class CameraController : MonoBehaviour
 
     private void MoveCameraInFrontOfObstructionsFUpdate()
     {
-        // Raycast se fait dans le fixed Update car c'estb de la physique
+        // Raycast se fait dans le fixed Update car c'est de la physique
 
         // Bit shift the index of the layer  (8) to get a bit mask
         int layerMask = 1 << 8;
@@ -163,6 +123,7 @@ public class CameraController : MonoBehaviour
             Debug.DrawRay(m_objectToLookAt.position, vecteurDiff.normalized * hit.distance, Color.yellow);
             transform.SetPositionAndRotation(hit.point, transform.rotation);
 
+            // TODO changer la logique ici, sûrement enclancher un nouveau m_distanceFromTarget avec un bool ou de quoi
 
         }
         else
@@ -172,7 +133,7 @@ public class CameraController : MonoBehaviour
 
         }
 
-        // 
+        
 
     }
 
@@ -187,9 +148,9 @@ public class CameraController : MonoBehaviour
 
     private float ClampZoom(float distance)
     {
-        if (m_distanceBetweenObjects > m_zoomScrollLimits.y)
+        if (m_distanceFromTarget > m_zoomScrollLimits.y)
             distance = m_zoomScrollLimits.y;
-        if (m_distanceBetweenObjects < m_zoomScrollLimits.x)
+        if (m_distanceFromTarget < m_zoomScrollLimits.x)
             distance = m_zoomScrollLimits.x;
 
         return distance;
@@ -244,6 +205,112 @@ public class CameraController : MonoBehaviour
 
 
 
+
+
+// ARCHIVE
+
+
+
+
+
+// Première manière de scroll qui a marché pas pire
+//
+//if (Input.mouseScrollDelta.y != 0)
+//{
+//    m_distanceBetweenObjects = Vector3.Distance(m_objectToLookAt.position, transform.position);
+//    m_distanceBetweenObjects = ClampZoom(m_distanceBetweenObjects);
+//
+//    if (m_distanceBetweenObjects == m_zoomScrollLimits.x)
+//    {
+//        if (Input.mouseScrollDelta.y > 0)
+//        {
+//            return;
+//        }
+//        else
+//        {
+//            transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);
+//            return;        
+//        }
+//    }
+//
+//    if (m_distanceBetweenObjects == m_zoomScrollLimits.y)
+//    {
+//        if (Input.mouseScrollDelta.y < 0)
+//        {
+//            return;
+//        }
+//        else
+//        {
+//            transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);
+//            return;
+//        }
+//    }
+//    transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);        
+//}
+
+// Deuxième iétration du scroll avec les nouvelles variables
+//if(Input.mouseScrollDelta.y != 0)
+//{
+//    if (m_distanceFromTarget == m_zoomScrollLimits.x)
+//    {
+//        if (Input.mouseScrollDelta.y > 0)
+//        {
+//            return;
+//        }
+//        else
+//        {
+//            m_distanceFromTarget -= Input.mouseScrollDelta.y;
+//            return;        
+//        }
+//    }
+//    if (m_distanceFromTarget == m_zoomScrollLimits.y)
+//    {
+//        if (Input.mouseScrollDelta.y < 0)
+//        {
+//            return;
+//        }
+//        else
+//        {
+//            m_distanceFromTarget -= Input.mouseScrollDelta.y;
+//            return;
+//        }
+//    }            
+//    m_distanceFromTarget -= Input.mouseScrollDelta.y;
+//}
+
+// J'ai changé pour mon propre clamp
+//m_distanceFromTarget = Mathf.Clamp(m_distanceFromTarget, m_zoomScrollLimits.x, m_zoomScrollLimits.y);
+
+
+
+
+
+
+
+
+
+
+
+//if (Input.mouseScrollDelta.y != 0)
+//{
+//    m_originalDistanceBetweenCameraAndTarget = Vector3.Distance(m_objectToLookAt.position, transform.position);
+//    m_originalScrollInput = Input.mouseScrollDelta.y;
+//    m_endDistance = m_originalDistanceBetweenCameraAndTarget + m_originalScrollInput;
+//}
+//
+//m_originalScrollInputCopy = m_originalScrollInput;
+//m_originalScrollInput -= 0.01f;
+//
+////float percentageComplete = m_originalScrollInput / m_originalScrollInputCopy;
+//
+//float percentageComplete = Vector3.Distance(m_objectToLookAt.position, transform.position) / m_endDistance;
+//
+//float lerpedFloat = Mathf.Lerp(1, 0, percentageComplete);
+//
+//transform.Translate(Vector3.forward * lerpedFloat, Space.Self);
+
+
+//Vector3.Distance(m_objectToLookAt.position, transform.position)
 
 
 

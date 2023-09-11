@@ -4,28 +4,33 @@ public class CharacterController : MonoBehaviour
 { 
     private Camera m_camera;
     private Rigidbody m_rb;
-    
+
+    [Header("Forward Movement")]
     [SerializeField]
     private float m_forwardAccelerationValue = 10.0f;    
     [SerializeField]
     private float m_maxForwardVelocity = 10.0f;
+    [Header("Diagonal Movement")]
     [SerializeField]
     private float m_forwardDiagonalsAccelerationValue = 10.0f;
     [SerializeField]
     private float m_maxForwardDiagonalsVelocity = 10.0f;
+    [Header("Backward Movement")]
     [SerializeField]
     private float m_backwardAccelerationValue = 10.0f;
     [SerializeField]
     private float m_maxBackwardVelocity = 10.0f;
+    [Header("Strafe Movement")]
     [SerializeField]
     private float m_strafeAccelerationValue = 10.0f;
     [SerializeField]
     private float m_maxStrafeVelocity = 10.0f;
+    [Header("")]
     [SerializeField]
     private float m_decelerationValue = 10.0f;
 
-    
-
+    float m_turnSmoothTime = 0.5f;
+    float m_turnSmoothVelocity;
 
 
 
@@ -35,34 +40,18 @@ public class CharacterController : MonoBehaviour
     {
         // Sans le serializeField on peut garder la référence privée, et on va chercher directement la caméra
         m_camera = Camera.main;
-        m_rb = GetComponent<Rigidbody>();
-
-      
+        m_rb = GetComponent<Rigidbody>();     
 
     }
 
     // Update is called once per frame
     void Update()
-    {
-        //float cameraYRotation = m_camera.transform.rotation.eulerAngles.y;
-        //transform.rotation = Quaternion.Euler(0, cameraYRotation, 0);
-
-        //Vector3 camDir = m_camera.transform.forward;
-        //camDir = Vector3.ProjectOnPlane(camDir, Vector3.up);
-        //transform.forward = camDir;
-
+    {        
 
     }
 
     void FixedUpdate()
-    {        
-
-
-
-
-
-
-
+    {      
         
         // CHARACTER MOVEMENT RELATIVE TO CAMERA
         if (Input.anyKey)
@@ -77,14 +66,7 @@ public class CharacterController : MonoBehaviour
         else
         {
             CharacterControllerDeceleration();
-        }
-
-
-        
-
-        
-
-        
+        }      
 
         
 
@@ -99,30 +81,26 @@ public class CharacterController : MonoBehaviour
         
         Debug.Log(m_rb.velocity.magnitude);
 
-
-
     }
 
 
     
 
-    Vector3 GetNormalizedVectorProjectedOnFloorForward()
+    private Vector3 GetNormalizedVectorProjectedOnFloorForward()
     {
         Vector3 returnVector = Vector3.ProjectOnPlane(m_camera.transform.forward, Vector3.up);
         returnVector.Normalize();
         return returnVector;
     }
 
-    Vector3 GetNormalizedVectorProjectedOnFloorRight()
+    private Vector3 GetNormalizedVectorProjectedOnFloorRight()
     {
         Vector3 returnVector = Vector3.ProjectOnPlane(m_camera.transform.right, Vector3.up);
         returnVector.Normalize();
         return returnVector;
-    }
+    }    
 
-    
-
-    void CharacterControllerDeceleration()
+    private void CharacterControllerDeceleration()
     {
         if (m_rb.velocity.magnitude > 0.1f)
         {
@@ -134,77 +112,53 @@ public class CharacterController : MonoBehaviour
 
 
     // CHARACTER CONTROLLER RELATIVE TO CAMERA METHODS
-    void CharacterControllerRelativeToCameraFUpdate()
+    private void CharacterControllerRelativeToCameraFUpdate()
     {
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))
         {
             CharacterControllerRelativeToCameraMoveForwardLeft();
-            //Vector3 cameraForward = m_camera.transform.forward;
-            //cameraForward.y = 0.0f; // Ensure no rotation in the y-axis        
-            //
-            //// Rotate the character to face the same direction as the camera
-            //if (cameraForward != Vector3.zero)
-            //{
-            //    transform.rotation = Quaternion.LookRotation(cameraForward);
-            //}
+            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
+
             return;
         }
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D))
         {
             CharacterControllerRelativeToCameraMoveForwardRight();
-            //Vector3 cameraForward = m_camera.transform.forward;
-            //cameraForward.y = 0.0f; // Ensure no rotation in the y-axis        
-            //
-            //// Rotate the character to face the same direction as the camera
-            //if (cameraForward != Vector3.zero)
-            //{
-            //    transform.rotation = Quaternion.LookRotation(cameraForward);
-            //}
+            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
+
             return;
         }
         if (Input.GetKey(KeyCode.W))
         {
-            CharacterControllerRelativeToCameraMoveForward();            
+            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
+
+            CharacterControllerRelativeToCameraMoveForward();
+
         }
         if (Input.GetKey(KeyCode.S))
         {
+            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
+
             CharacterControllerRelativeToCameraMoveBackward();
-            //Vector3 cameraForward = m_camera.transform.forward;
-            //cameraForward.y = 0.0f; // Ensure no rotation in the y-axis        
-            //
-            //// Rotate the character to face the same direction as the camera
-            //if (cameraForward != Vector3.zero)
-            //{
-            //    transform.rotation = Quaternion.LookRotation(-cameraForward);
-            //}
+            
         }
         if (Input.GetKey(KeyCode.A))
         {
+            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
+
             CharacterControllerRelativeToCameraStrafeLeft();
-            //Vector3 cameraForward = m_camera.transform.forward;
-            //cameraForward.y = 0.0f; // Ensure no rotation in the y-axis        
-            //
-            //// Rotate the character to face the same direction as the camera
-            //if (cameraForward != Vector3.zero)
-            //{
-            //    transform.rotation = Quaternion.LookRotation(-cameraForward);
-            //}
+
         }
         if (Input.GetKey(KeyCode.D))
         {
+            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
+
             CharacterControllerRelativeToCameraStrafeRight();
-            //Vector3 cameraForward = m_camera.transform.forward;
-            //cameraForward.y = 0.0f; // Ensure no rotation in the y-axis        
-            //
-            //// Rotate the character to face the same direction as the camera
-            //if (cameraForward != Vector3.zero)
-            //{
-            //    transform.rotation = Quaternion.LookRotation(cameraForward);
-            //}
+
         }
     }
 
-    bool IsTwoOrMoreReverseInputsInputedSimultaneouslyOne()
+    private bool IsTwoOrMoreReverseInputsInputedSimultaneouslyOne()
     {
         // TODO à revérifier, ne fonctionne pas lrsqu'on fait WAS,WSD
         bool returnValue = false;
@@ -218,22 +172,12 @@ public class CharacterController : MonoBehaviour
         {
             returnValue = true;
         }
-        //if ((Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)) ||
-        //    (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D)))
-        //{
-        //    returnValue = true;
-        //}
-        //if ((Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S)) ||
-        //    (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)))
-        //{
-        //    returnValue = true;
-        //}
-
+        
         return returnValue;
     }
 
-    void CharacterControllerRelativeToCameraMoveForward()
-    {
+    private void CharacterControllerRelativeToCameraMoveForward()
+    {     
         Vector3 vectorProjectedOnFloorForward = GetNormalizedVectorProjectedOnFloorForward();
 
         m_rb.AddForce(vectorProjectedOnFloorForward * m_forwardAccelerationValue, ForceMode.Acceleration);
@@ -245,8 +189,8 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    void CharacterControllerRelativeToCameraMoveBackward()
-    {
+    private void CharacterControllerRelativeToCameraMoveBackward()
+    {       
         Vector3 vectorProjectedOnFloorForward = GetNormalizedVectorProjectedOnFloorForward();
 
         m_rb.AddForce((vectorProjectedOnFloorForward * -1) * m_backwardAccelerationValue, ForceMode.Acceleration);
@@ -258,7 +202,7 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    void CharacterControllerRelativeToCameraStrafeLeft()
+    private void CharacterControllerRelativeToCameraStrafeLeft()
     {
         Vector3 vectorProjectedOnFloorRight = GetNormalizedVectorProjectedOnFloorRight();
 
@@ -271,7 +215,7 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    void CharacterControllerRelativeToCameraStrafeRight()
+    private void CharacterControllerRelativeToCameraStrafeRight()
     {
         Vector3 vectorProjectedOnFloorRight = GetNormalizedVectorProjectedOnFloorRight();
 
@@ -284,7 +228,7 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    void CharacterControllerRelativeToCameraMoveForwardLeft()
+    private void CharacterControllerRelativeToCameraMoveForwardLeft()
     {
         Vector3 vectorProjectedOnFloorForward = GetNormalizedVectorProjectedOnFloorForward();
 
@@ -301,7 +245,7 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    void CharacterControllerRelativeToCameraMoveForwardRight()
+    private void CharacterControllerRelativeToCameraMoveForwardRight()
     {
         Vector3 vectorProjectedOnFloorForward = GetNormalizedVectorProjectedOnFloorForward();
 
@@ -324,3 +268,95 @@ public class CharacterController : MonoBehaviour
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ARCHIVE
+
+//float cameraYRotation = m_camera.transform.rotation.eulerAngles.y;
+//transform.rotation = Quaternion.Euler(0, cameraYRotation, 0);
+
+//Vector3 camDir = m_camera.transform.forward;
+//camDir = Vector3.ProjectOnPlane(camDir, Vector3.up);
+//transform.forward = camDir;
+
+//Vector3 cameraForward = m_camera.transform.forward;
+//cameraForward.y = 0.0f; // Ensure no rotation in the y-axis        
+//
+//// Rotate the character to face the same direction as the camera
+//if (cameraForward != Vector3.zero)
+//{
+//    transform.rotation = Quaternion.LookRotation(cameraForward);
+//}
+
+//if ((Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)) ||
+//    (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D)))
+//{
+//    returnValue = true;
+//}
+//if ((Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S)) ||
+//    (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)))
+//{
+//    returnValue = true;
+//}
+
+
+//void CharacterControllerRelativeToCameraMoveForward()
+//{
+    //float inputX = Input.GetAxis("Horizontal");
+    //float inputY = Input.GetAxis("Vertical");
+    //
+    //Vector2 input = new Vector2(inputX, inputY);
+    //Vector2 inputDirection = input.normalized;
+    //
+    //if(inputDirection != Vector2.zero)
+    //{
+    //    float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg;
+    //    transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref m_turnSmoothVelocity, m_turnSmoothTime);
+    //
+    //}
+
+    //float inputX = m_camera.GetAxis("Horizontal");
+    //float inputY = m_camera.GetAxis("Vertical");
+
+    //transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
+    //transform.eulerAngles = Vector3.up * m_camera.transform.eulerAngles.y;
+
+
+
+

@@ -230,7 +230,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 330585546}
   - {fileID: 610098081}
   - {fileID: 1541067588}
   m_Father: {fileID: 0}
@@ -255,7 +254,7 @@ MonoBehaviour:
   m_maxBackwardVelocity: 5
   m_strafeAccelerationValue: 15
   m_maxStrafeVelocity: 10
-  m_decelerationValue: 10
+  m_decelerationValue: 12
 --- !u!54 &279210200
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -371,11 +370,11 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12792486, y: -0, z: -0, w: 0.9917839}
-  m_LocalPosition: {x: -0.12, y: 1.29, z: -5.399994}
+  m_LocalPosition: {x: 184.88, y: 2.3, z: 185.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 279210198}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 14.699, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
@@ -437,7 +436,7 @@ MonoBehaviour:
   m_rotationSpeed: 5
   m_clampingXRotationValues: {x: -5, y: 70}
   m_zoomScrollLimits: {x: 3, y: 10}
-  m_originalDistanceBetweenCameraAndTarget: 0
+  m_distanceFromTarget: 5
   m_distanceBetweenObjects: 5
   m_lerpingFactor: 0.5
 --- !u!1 &410087039
@@ -796,7 +795,7 @@ Transform:
   m_GameObject: {fileID: 1537698592}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 186.83, y: -13.6, z: 202.6947}
+  m_LocalPosition: {x: 186.83, y: 2.14, z: 202.6947}
   m_LocalScale: {x: 100, y: 20, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -853,7 +852,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2
@@ -1005,6 +1004,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 279210198}
