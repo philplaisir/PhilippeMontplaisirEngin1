@@ -29,9 +29,9 @@ public class CharacterController : MonoBehaviour
     [SerializeField]
     private float m_decelerationValue = 10.0f;
 
-    float m_turnSmoothTime = 0.5f;
-    float m_turnSmoothVelocity;
-
+    [SerializeField]
+    private float m_turnSmoothTime = 0.5f; // Lower number means snappier turn
+    private float m_turnSmoothVelocity;
 
 
 
@@ -40,23 +40,20 @@ public class CharacterController : MonoBehaviour
     {
         // Sans le serializeField on peut garder la référence privée, et on va chercher directement la caméra
         m_camera = Camera.main;
-        m_rb = GetComponent<Rigidbody>();     
-
+        m_rb = GetComponent<Rigidbody>();  
     }
 
     // Update is called once per frame
     void Update()
-    {        
-
+    {   
     }
 
     void FixedUpdate()
-    {      
-        
+    {              
         // CHARACTER MOVEMENT RELATIVE TO CAMERA
         if (Input.anyKey)
         {
-            if (IsTwoOrMoreReverseInputsInputedSimultaneouslyOne())
+            if (IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera())
             {
                 CharacterControllerDeceleration();
                 return;
@@ -66,9 +63,7 @@ public class CharacterController : MonoBehaviour
         else
         {
             CharacterControllerDeceleration();
-        }      
-
-        
+        }         
 
         // TODO 230831
         // Apliquer les déplacements relatifs à la caméra dans les 3 autres directions
@@ -80,24 +75,28 @@ public class CharacterController : MonoBehaviour
         // Essayer d'ajouter contrôle avec manette
         
         Debug.Log(m_rb.velocity.magnitude);
-
     }
 
-
-    
-
-    private Vector3 GetNormalizedVectorProjectedOnFloorForward()
+    private Vector3 GetNormalizedVectorProjectedOnFloor(Vector3 direction)
     {
-        Vector3 returnVector = Vector3.ProjectOnPlane(m_camera.transform.forward, Vector3.up);
-        returnVector.Normalize();
-        return returnVector;
-    }
+        Vector3 projectedVector;
 
-    private Vector3 GetNormalizedVectorProjectedOnFloorRight()
-    {
-        Vector3 returnVector = Vector3.ProjectOnPlane(m_camera.transform.right, Vector3.up);
-        returnVector.Normalize();
-        return returnVector;
+        if (direction == Vector3.forward)
+        {
+            projectedVector = Vector3.ProjectOnPlane(m_camera.transform.forward, Vector3.up);
+        }
+        else if (direction == Vector3.right)
+        {
+            projectedVector = Vector3.ProjectOnPlane(m_camera.transform.right, Vector3.up);
+        }
+        else
+        {
+            Debug.LogWarning("Invalid direction! Must be Vector3.forward or Vector3.right.");
+            return Vector3.zero; // Return some default value or handle the error accordingly
+        }
+
+        projectedVector.Normalize();
+        return projectedVector;
     }    
 
     private void CharacterControllerDeceleration()
@@ -116,51 +115,41 @@ public class CharacterController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))
         {
-            CharacterControllerRelativeToCameraMoveForwardLeft();
-            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
-
+            ReorientCharacterTowardsChameraDirection();
+            CharacterControllerRelativeToCameraDiagonals(m_forwardDiagonalsAccelerationValue, m_maxForwardDiagonalsVelocity, -1);
             return;
         }
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D))
         {
-            CharacterControllerRelativeToCameraMoveForwardRight();
-            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
-
+            ReorientCharacterTowardsChameraDirection();
+            CharacterControllerRelativeToCameraDiagonals(m_forwardDiagonalsAccelerationValue, m_maxForwardDiagonalsVelocity, 1);
             return;
         }
         if (Input.GetKey(KeyCode.W))
         {
-            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
-
-            CharacterControllerRelativeToCameraMoveForward();
-
+            ReorientCharacterTowardsChameraDirection();
+            CharacterControllerRelativeToCamera(Vector3.forward, m_forwardAccelerationValue, m_maxForwardVelocity, 1);
         }
         if (Input.GetKey(KeyCode.S))
         {
-            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
-
-            CharacterControllerRelativeToCameraMoveBackward();
-            
+            ReorientCharacterTowardsChameraDirection();
+            CharacterControllerRelativeToCamera(Vector3.forward, m_backwardAccelerationValue, m_maxBackwardVelocity, -1);            
         }
         if (Input.GetKey(KeyCode.A))
         {
-            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
-
-            CharacterControllerRelativeToCameraStrafeLeft();
-
+            ReorientCharacterTowardsChameraDirection();
+            CharacterControllerRelativeToCamera(Vector3.right, m_strafeAccelerationValue, m_maxStrafeVelocity, -1);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
-
-            CharacterControllerRelativeToCameraStrafeRight();
-
+            ReorientCharacterTowardsChameraDirection();
+            CharacterControllerRelativeToCamera(Vector3.right, m_strafeAccelerationValue, m_maxStrafeVelocity, 1);
         }
     }
 
-    private bool IsTwoOrMoreReverseInputsInputedSimultaneouslyOne()
+    private bool IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera()
     {
-        // TODO à revérifier, ne fonctionne pas lrsqu'on fait WAS,WSD
+        // TODO à revérifier, ne fonctionne pas lorsqu'on fait WAS,WSD
         bool returnValue = false;
 
         if ((Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S)) ||
@@ -172,95 +161,44 @@ public class CharacterController : MonoBehaviour
         {
             returnValue = true;
         }
-        
+
         return returnValue;
     }
 
-    private void CharacterControllerRelativeToCameraMoveForward()
-    {     
-        Vector3 vectorProjectedOnFloorForward = GetNormalizedVectorProjectedOnFloorForward();
-
-        m_rb.AddForce(vectorProjectedOnFloorForward * m_forwardAccelerationValue, ForceMode.Acceleration);
-
-        if (m_rb.velocity.magnitude > m_maxForwardVelocity)
-        {
-            m_rb.velocity = m_rb.velocity.normalized;
-            m_rb.velocity *= m_maxForwardVelocity;
-        }
-    }
-
-    private void CharacterControllerRelativeToCameraMoveBackward()
-    {       
-        Vector3 vectorProjectedOnFloorForward = GetNormalizedVectorProjectedOnFloorForward();
-
-        m_rb.AddForce((vectorProjectedOnFloorForward * -1) * m_backwardAccelerationValue, ForceMode.Acceleration);
-
-        if (m_rb.velocity.magnitude > m_maxBackwardVelocity)
-        {
-            m_rb.velocity = m_rb.velocity.normalized;
-            m_rb.velocity *= m_maxBackwardVelocity;
-        }
-    }
-
-    private void CharacterControllerRelativeToCameraStrafeLeft()
+    private void ReorientCharacterTowardsChameraDirection()
     {
-        Vector3 vectorProjectedOnFloorRight = GetNormalizedVectorProjectedOnFloorRight();
+        transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
+    }
 
-        m_rb.AddForce((vectorProjectedOnFloorRight * -1) * m_strafeAccelerationValue, ForceMode.Acceleration);
+    private void CharacterControllerRelativeToCamera(Vector3 direction, float accelerationValue, float maxVelocity, int isVectorReversed)
+    {        
+        Vector3 vectorProjectedOnFloorForward = GetNormalizedVectorProjectedOnFloor(direction);
 
-        if (m_rb.velocity.magnitude > m_maxStrafeVelocity)
+        m_rb.AddForce((vectorProjectedOnFloorForward * isVectorReversed) * accelerationValue, ForceMode.Acceleration);
+
+        if (m_rb.velocity.magnitude > maxVelocity)
         {
             m_rb.velocity = m_rb.velocity.normalized;
-            m_rb.velocity *= m_maxStrafeVelocity;
+            m_rb.velocity *= maxVelocity;
         }
     }
 
-    private void CharacterControllerRelativeToCameraStrafeRight()
+    private void CharacterControllerRelativeToCameraDiagonals(float accelerationValue, float maxVelocity, int isVectorReversed)
     {
-        Vector3 vectorProjectedOnFloorRight = GetNormalizedVectorProjectedOnFloorRight();
+        Vector3 vectorProjectedOnFloorForward = GetNormalizedVectorProjectedOnFloor(Vector3.forward);
+        m_rb.AddForce(vectorProjectedOnFloorForward * accelerationValue, ForceMode.Acceleration);
 
-        m_rb.AddForce(vectorProjectedOnFloorRight * m_strafeAccelerationValue, ForceMode.Acceleration);
+        Vector3 vectorProjectedOnFloorRight = GetNormalizedVectorProjectedOnFloor(Vector3.right);
+        m_rb.AddForce((vectorProjectedOnFloorRight * isVectorReversed) * accelerationValue, ForceMode.Acceleration);
 
-        if (m_rb.velocity.magnitude > m_maxStrafeVelocity)
+        if (m_rb.velocity.magnitude > maxVelocity)
         {
             m_rb.velocity = m_rb.velocity.normalized;
-            m_rb.velocity *= m_maxStrafeVelocity;
+            m_rb.velocity *= maxVelocity;
         }
-    }
+    }   
 
-    private void CharacterControllerRelativeToCameraMoveForwardLeft()
-    {
-        Vector3 vectorProjectedOnFloorForward = GetNormalizedVectorProjectedOnFloorForward();
-
-        m_rb.AddForce(vectorProjectedOnFloorForward * m_forwardDiagonalsAccelerationValue, ForceMode.Acceleration);
-        
-        Vector3 vectorProjectedOnFloorRight = GetNormalizedVectorProjectedOnFloorRight();
-
-        m_rb.AddForce((vectorProjectedOnFloorRight * -1) * m_forwardDiagonalsAccelerationValue, ForceMode.Acceleration);
-
-        if (m_rb.velocity.magnitude > m_maxForwardDiagonalsVelocity)
-        {
-            m_rb.velocity = m_rb.velocity.normalized;
-            m_rb.velocity *= m_maxForwardDiagonalsVelocity;
-        }
-    }
-
-    private void CharacterControllerRelativeToCameraMoveForwardRight()
-    {
-        Vector3 vectorProjectedOnFloorForward = GetNormalizedVectorProjectedOnFloorForward();
-
-        m_rb.AddForce(vectorProjectedOnFloorForward * m_forwardDiagonalsAccelerationValue, ForceMode.Acceleration);
-
-        Vector3 vectorProjectedOnFloorRight = GetNormalizedVectorProjectedOnFloorRight();
-
-        m_rb.AddForce(vectorProjectedOnFloorRight * m_forwardDiagonalsAccelerationValue, ForceMode.Acceleration);
-
-        if (m_rb.velocity.magnitude > m_maxForwardDiagonalsVelocity)
-        {
-            m_rb.velocity = m_rb.velocity.normalized;
-            m_rb.velocity *= m_maxForwardDiagonalsVelocity;
-        }
-    }
+    
 
     // CHARACTER CONTROLLER RELATIVE TO CHARACTER METHODS
 

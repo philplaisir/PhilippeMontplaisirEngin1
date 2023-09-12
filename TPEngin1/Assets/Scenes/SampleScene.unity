@@ -246,8 +246,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a467c9f21d4a85429d01488027f9b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_forwardAccelerationValue: 20
-  m_maxForwardVelocity: 15
+  m_forwardAccelerationValue: 25
+  m_maxForwardVelocity: 18
   m_forwardDiagonalsAccelerationValue: 18
   m_maxForwardDiagonalsVelocity: 12
   m_backwardAccelerationValue: 10
@@ -255,6 +255,7 @@ MonoBehaviour:
   m_strafeAccelerationValue: 15
   m_maxStrafeVelocity: 10
   m_decelerationValue: 12
+  m_turnSmoothTime: 0.1
 --- !u!54 &279210200
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -435,10 +436,9 @@ MonoBehaviour:
   m_objectToLookAt: {fileID: 279210198}
   m_rotationSpeed: 5
   m_clampingXRotationValues: {x: -5, y: 70}
-  m_zoomScrollLimits: {x: 3, y: 10}
   m_distanceFromTarget: 5
-  m_distanceBetweenObjects: 5
-  m_lerpingFactor: 0.5
+  m_zoomScrollLimits: {x: 3, y: 10}
+  m_scrollSpeed: 0.001
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
