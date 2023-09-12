@@ -6,6 +6,8 @@ public class CameraController : MonoBehaviour
     // TODO finir le lerp du scroll
     // suivre le personnage avec la caméra
 
+    private Collider m_cameraCollider;
+
 
     [SerializeField]
     private Transform m_objectToLookAt;
@@ -14,7 +16,12 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private Vector2 m_clampingXRotationValues = Vector2.zero;
     [SerializeField]
-    private float m_distanceFromTarget = 5.0f;
+    private float m_desiredDistanceFromTarget = 5.0f;
+    [SerializeField]
+    private float m_distanceFromTargetIfTouchingWall = 0.0f;
+    private bool m_wallBetweenTargetAndDesiredCameraPosition = false;
+    [SerializeField]
+    private float m_cameraLerpSpeed = 1.0f;
 
     [Header("Camera Zoom")]
     [SerializeField]
@@ -28,19 +35,24 @@ public class CameraController : MonoBehaviour
     private bool m_lerping = false;
 
 
+    private float m_savedDistance = 0.0f;
+
 
 
     private void Awake()
     {
+        m_cameraCollider = GetComponent<Collider>();
+        m_savedDistance = m_desiredDistanceFromTarget;
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
+        UpdateCameraPosition();
         UpdateHorizontalMovements();
         UpdateVerticalMovements();        
         UpdateCameraScroll();
-        UpdateCameraPosition();
+        
     }
 
     private void UpdateHorizontalMovements()
@@ -68,8 +80,22 @@ public class CameraController : MonoBehaviour
 
     private void UpdateCameraPosition()
     {
-        transform.position = m_objectToLookAt.position - transform.forward * m_distanceFromTarget;
+        
+        //transform.position = m_objectToLookAt.position - transform.forward * m_distanceFromTargetIfTouchingWall;
 
+        //transform.position = m_objectToLookAt.position - transform.forward * m_desiredDistanceFromTarget;
+
+        //if(m_wallBetweenTargetAndDesiredCameraPosition)
+        //{
+        //    Vector3 targetPositionWall = m_objectToLookAt.position - transform.forward * m_distanceFromTargetIfTouchingWall;
+        //    transform.position = Vector3.Lerp(transform.position, targetPositionWall, m_cameraLerpSpeed * Time.deltaTime);
+        //    return;
+        //}
+
+
+        Vector3 targetPosition = m_objectToLookAt.position - transform.forward * m_desiredDistanceFromTarget;
+        transform.position = Vector3.Lerp(transform.position, targetPosition, m_cameraLerpSpeed * Time.deltaTime);
+        m_savedDistance = m_desiredDistanceFromTarget;
     }
 
     private void UpdateCameraScroll()
@@ -77,31 +103,30 @@ public class CameraController : MonoBehaviour
         if (Input.mouseScrollDelta.y != 0)
         {
             m_endScrollDistance -= Input.mouseScrollDelta.y;
-            if((m_distanceFromTarget == m_zoomScrollLimits.x && m_endScrollDistance < 0) ||
-                (m_distanceFromTarget == m_zoomScrollLimits.y && m_endScrollDistance > 0))
+            if((m_desiredDistanceFromTarget == m_zoomScrollLimits.x && m_endScrollDistance < 0) ||
+                (m_desiredDistanceFromTarget == m_zoomScrollLimits.y && m_endScrollDistance > 0))
             {
                 m_endScrollDistance = 0;
                 return;
             }            
             m_elapsedDistance = 0.0f;
-            m_projectedDistanceFromTarget = Mathf.RoundToInt(m_distanceFromTarget + m_endScrollDistance);
-            m_startDistanceFromTarget = m_distanceFromTarget;
+            m_projectedDistanceFromTarget = Mathf.RoundToInt(m_desiredDistanceFromTarget + m_endScrollDistance);
+            m_startDistanceFromTarget = m_desiredDistanceFromTarget;
             m_lerping = true;
         }
         
         if (m_lerping && m_endScrollDistance > 0)
         {
             m_elapsedDistance += m_scrollSpeed;
-            float percentageComplete = m_elapsedDistance / m_endScrollDistance;
-            percentageComplete = Mathf.Clamp01(percentageComplete);
+            float percentageComplete = m_elapsedDistance / m_endScrollDistance;            
 
-            float distanceToAdd = Mathf.Lerp(0, m_endScrollDistance, percentageComplete);           
+            float distanceToAdd = Mathf.Lerp(0, m_endScrollDistance, percentageComplete * Time.deltaTime);           
 
-            m_distanceFromTarget += distanceToAdd;
+            m_desiredDistanceFromTarget += distanceToAdd;
             
-            if (m_projectedDistanceFromTarget <= m_distanceFromTarget)
+            if (m_projectedDistanceFromTarget <= m_desiredDistanceFromTarget)
             {
-                m_distanceFromTarget = m_projectedDistanceFromTarget;
+                m_desiredDistanceFromTarget = m_projectedDistanceFromTarget;
                 m_lerping = false;
                 m_endScrollDistance = 0.0f;
                 m_startDistanceFromTarget = 0.0f;
@@ -112,16 +137,15 @@ public class CameraController : MonoBehaviour
         if (m_lerping && m_endScrollDistance < 0)
         {
             m_elapsedDistance += m_scrollSpeed;
-            float percentageComplete = m_elapsedDistance / -m_endScrollDistance;
-            percentageComplete = Mathf.Clamp01(percentageComplete);
+            float percentageComplete = m_elapsedDistance / -m_endScrollDistance;            
 
-            float distanceToAdd = Mathf.Lerp(0, -m_endScrollDistance, percentageComplete);
+            float distanceToAdd = Mathf.Lerp(0, -m_endScrollDistance, percentageComplete * Time.deltaTime);
 
-            m_distanceFromTarget -= distanceToAdd;
+            m_desiredDistanceFromTarget -= distanceToAdd;
 
-            if (m_projectedDistanceFromTarget <= m_distanceFromTarget)
+            if (m_projectedDistanceFromTarget >= m_desiredDistanceFromTarget)
             {
-                m_distanceFromTarget = m_projectedDistanceFromTarget;
+                m_desiredDistanceFromTarget = m_projectedDistanceFromTarget;
                 m_lerping = false;
                 m_endScrollDistance = 0.0f;
                 m_startDistanceFromTarget = 0.0f;
@@ -129,8 +153,8 @@ public class CameraController : MonoBehaviour
             }
         }
 
-        m_distanceFromTarget = ClampZoom(m_distanceFromTarget);
-
+        m_desiredDistanceFromTarget = ClampZoom(m_desiredDistanceFromTarget);
+        m_savedDistance = m_desiredDistanceFromTarget;
         // Ça marche en ce moment
         //if (Input.mouseScrollDelta.y != 0)
         //{
@@ -144,19 +168,7 @@ public class CameraController : MonoBehaviour
 
 
 
-        //// Pour le lerp changer la variable, ensuite la lerpedDistance dans un variable qui va tranquillement incrémenter m_distanceFromTarget
-        //
-        //float lerpSpeed = 0.1f; // Adjust this value to control the speed of the lerp
-        //float currentDistance = Vector3.Distance(transform.position, m_objectToLookAt.position);
-        //
-        //float lerpedDistance = Mathf.Lerp(currentDistance, m_distanceFromTarget, lerpSpeed);
-        //Vector3 direction = (transform.position - m_objectToLookAt.position).normalized;
-        //Vector3 lerpedPosition = m_objectToLookAt.position + direction * lerpedDistance;
-        //
-        //transform.position = lerpedPosition;
-        //
-        //// Make sure the camera is still looking at the target
-        //transform.LookAt(m_objectToLookAt);
+        
 
 
 
@@ -187,15 +199,30 @@ public class CameraController : MonoBehaviour
 
         if (Physics.Raycast(m_objectToLookAt.position, vecteurDiff, out hit, distance, layerMask))
         {
-            // J'ai un oobjet entre mon focus et sa caméra
+            
+            m_wallBetweenTargetAndDesiredCameraPosition = true;
+            // J'ai un objet entre mon focus et sa caméra
             Debug.DrawRay(m_objectToLookAt.position, vecteurDiff.normalized * hit.distance, Color.yellow);
             transform.SetPositionAndRotation(hit.point, transform.rotation);
+
+            var vecteurDiff2 = hit.point - m_objectToLookAt.position;
+
+            m_desiredDistanceFromTarget = vecteurDiff2.z;
+            m_distanceFromTargetIfTouchingWall = vecteurDiff2.z;
+
+
+            Debug.Log("Valeurs du vecteur" + vecteurDiff2);
+            
+            
+            
 
             // TODO changer la logique ici, sûrement enclancher un nouveau m_distanceFromTarget avec un bool ou de quoi
 
         }
         else
         {
+            m_wallBetweenTargetAndDesiredCameraPosition = false;
+            m_desiredDistanceFromTarget = m_savedDistance;
             //J'en ai pas
             Debug.DrawRay(m_objectToLookAt.position, vecteurDiff, Color.white);
 
@@ -216,9 +243,9 @@ public class CameraController : MonoBehaviour
 
     private float ClampZoom(float distance)
     {
-        if (m_distanceFromTarget > m_zoomScrollLimits.y)
+        if (m_desiredDistanceFromTarget > m_zoomScrollLimits.y)
             distance = m_zoomScrollLimits.y;
-        if (m_distanceFromTarget < m_zoomScrollLimits.x)
+        if (m_desiredDistanceFromTarget < m_zoomScrollLimits.x)
             distance = m_zoomScrollLimits.x;
 
         return distance;
@@ -278,6 +305,25 @@ public class CameraController : MonoBehaviour
 // ARCHIVE
 
 
+
+
+
+
+
+
+//// Pour le lerp changer la variable, ensuite la lerpedDistance dans un variable qui va tranquillement incrémenter m_distanceFromTarget
+//
+//float lerpSpeed = 0.1f; // Adjust this value to control the speed of the lerp
+//float currentDistance = Vector3.Distance(transform.position, m_objectToLookAt.position);
+//
+//float lerpedDistance = Mathf.Lerp(currentDistance, m_distanceFromTarget, lerpSpeed);
+//Vector3 direction = (transform.position - m_objectToLookAt.position).normalized;
+//Vector3 lerpedPosition = m_objectToLookAt.position + direction * lerpedDistance;
+//
+//transform.position = lerpedPosition;
+//
+//// Make sure the camera is still looking at the target
+//transform.LookAt(m_objectToLookAt);
 
 
 
