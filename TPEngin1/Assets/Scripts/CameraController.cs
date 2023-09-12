@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -13,14 +14,20 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private Vector2 m_clampingXRotationValues = Vector2.zero;
     [SerializeField]
-    private Vector2 m_zoomScrollLimits = Vector2.zero; // x == minimum, y == maximum
-    [SerializeField]
     private float m_distanceFromTarget = 5.0f;
 
+    [Header("Camera Zoom")]
     [SerializeField]
-    private float m_distanceBetweenObjects;
+    private Vector2 m_zoomScrollLimits = Vector2.zero; // x == minimum, y == maximum    
     [SerializeField]
-    private float m_lerpingFactor = 0.5f;
+    private float m_scrollSpeed = 0.001f;
+    private float m_endScrollDistance = 0.0f;
+    private float m_elapsedDistance = 0.0f;
+    private float m_projectedDistanceFromTarget = 0.0f;
+    private float m_startDistanceFromTarget = 0.0f;
+    private bool m_lerping = false;
+
+
 
 
     private void Awake()
@@ -31,9 +38,9 @@ public class CameraController : MonoBehaviour
     void LateUpdate()
     {
         UpdateHorizontalMovements();
-        UpdateVerticalMovements();
-        UpdateCameraPosition();
+        UpdateVerticalMovements();        
         UpdateCameraScroll();
+        UpdateCameraPosition();
     }
 
     private void UpdateHorizontalMovements()
@@ -67,28 +74,89 @@ public class CameraController : MonoBehaviour
 
     private void UpdateCameraScroll()
     {
-        
-
         if (Input.mouseScrollDelta.y != 0)
-        {            
-            m_distanceFromTarget -= Input.mouseScrollDelta.y;
+        {
+            m_endScrollDistance -= Input.mouseScrollDelta.y;
+            if((m_distanceFromTarget == m_zoomScrollLimits.x && m_endScrollDistance < 0) ||
+                (m_distanceFromTarget == m_zoomScrollLimits.y && m_endScrollDistance > 0))
+            {
+                m_endScrollDistance = 0;
+                return;
+            }            
+            m_elapsedDistance = 0.0f;
+            m_projectedDistanceFromTarget = Mathf.RoundToInt(m_distanceFromTarget + m_endScrollDistance);
+            m_startDistanceFromTarget = m_distanceFromTarget;
+            m_lerping = true;
+        }
+        
+        if (m_lerping && m_endScrollDistance > 0)
+        {
+            m_elapsedDistance += m_scrollSpeed;
+            float percentageComplete = m_elapsedDistance / m_endScrollDistance;
+            percentageComplete = Mathf.Clamp01(percentageComplete);
+
+            float distanceToAdd = Mathf.Lerp(0, m_endScrollDistance, percentageComplete);           
+
+            m_distanceFromTarget += distanceToAdd;
             
-            m_distanceFromTarget = ClampZoom(m_distanceFromTarget);            
+            if (m_projectedDistanceFromTarget <= m_distanceFromTarget)
+            {
+                m_distanceFromTarget = m_projectedDistanceFromTarget;
+                m_lerping = false;
+                m_endScrollDistance = 0.0f;
+                m_startDistanceFromTarget = 0.0f;
+                return;
+            }            
         }
 
-        // Pour le lerp changer la variable, ensuite la lerpedDistance dans un variable qui va tranquillement incrémenter m_distanceFromTarget
+        if (m_lerping && m_endScrollDistance < 0)
+        {
+            m_elapsedDistance += m_scrollSpeed;
+            float percentageComplete = m_elapsedDistance / -m_endScrollDistance;
+            percentageComplete = Mathf.Clamp01(percentageComplete);
 
-        float lerpSpeed = 0.1f; // Adjust this value to control the speed of the lerp
-        float currentDistance = Vector3.Distance(transform.position, m_objectToLookAt.position);
+            float distanceToAdd = Mathf.Lerp(0, -m_endScrollDistance, percentageComplete);
 
-        float lerpedDistance = Mathf.Lerp(currentDistance, m_distanceFromTarget, lerpSpeed);
-        Vector3 direction = (transform.position - m_objectToLookAt.position).normalized;
-        Vector3 lerpedPosition = m_objectToLookAt.position + direction * lerpedDistance;
+            m_distanceFromTarget -= distanceToAdd;
 
-        transform.position = lerpedPosition;
+            if (m_projectedDistanceFromTarget <= m_distanceFromTarget)
+            {
+                m_distanceFromTarget = m_projectedDistanceFromTarget;
+                m_lerping = false;
+                m_endScrollDistance = 0.0f;
+                m_startDistanceFromTarget = 0.0f;
+                return;
+            }
+        }
 
-        // Make sure the camera is still looking at the target
-        transform.LookAt(m_objectToLookAt);
+        m_distanceFromTarget = ClampZoom(m_distanceFromTarget);
+
+        // Ça marche en ce moment
+        //if (Input.mouseScrollDelta.y != 0)
+        //{
+        //    m_distanceFromTarget -= Input.mouseScrollDelta.y;
+        //
+        //    m_distanceFromTarget = ClampZoom(m_distanceFromTarget);
+        //}
+
+
+
+
+
+
+        //// Pour le lerp changer la variable, ensuite la lerpedDistance dans un variable qui va tranquillement incrémenter m_distanceFromTarget
+        //
+        //float lerpSpeed = 0.1f; // Adjust this value to control the speed of the lerp
+        //float currentDistance = Vector3.Distance(transform.position, m_objectToLookAt.position);
+        //
+        //float lerpedDistance = Mathf.Lerp(currentDistance, m_distanceFromTarget, lerpSpeed);
+        //Vector3 direction = (transform.position - m_objectToLookAt.position).normalized;
+        //Vector3 lerpedPosition = m_objectToLookAt.position + direction * lerpedDistance;
+        //
+        //transform.position = lerpedPosition;
+        //
+        //// Make sure the camera is still looking at the target
+        //transform.LookAt(m_objectToLookAt);
 
 
 
