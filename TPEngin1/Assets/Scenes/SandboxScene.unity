@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 279210196}
   - component: {fileID: 279210195}
   - component: {fileID: 279210200}
-  - component: {fileID: 279210199}
+  - component: {fileID: 279210201}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -234,28 +234,6 @@ Transform:
   - {fileID: 1541067588}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &279210199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 279210194}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a467c9f21d4a85429d01488027f9b01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_forwardAccelerationValue: 25
-  m_maxForwardVelocity: 18
-  m_forwardDiagonalsAccelerationValue: 18
-  m_maxForwardDiagonalsVelocity: 12
-  m_backwardAccelerationValue: 10
-  m_maxBackwardVelocity: 5
-  m_strafeAccelerationValue: 15
-  m_maxStrafeVelocity: 10
-  m_decelerationValue: 12
-  m_turnSmoothTime: 0.1
 --- !u!54 &279210200
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -283,6 +261,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &279210201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 279210194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a467c9f21d4a85429d01488027f9b01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ForwardAccelerationValue>k__BackingField: 25
+  <MaxForwardVelocity>k__BackingField: 18
+  <ForwardDiagonalsAccelerationValue>k__BackingField: 20
+  <MaxForwardDiagonalsVelocity>k__BackingField: 15
+  <BackwardAccelerationValue>k__BackingField: 10
+  <MaxBackwardVelocity>k__BackingField: 5
+  <StrafeAccelerationValue>k__BackingField: 10
+  <MaxStrafeVelocity>k__BackingField: 10
+  <DecelerationValue>k__BackingField: 2
+  <TurnSmoothTime>k__BackingField: 0.2
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0

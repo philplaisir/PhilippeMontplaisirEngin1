@@ -31,10 +31,10 @@ public class CharacterControllerStateMachine : MonoBehaviour
         Camera = Camera.main;
         RB = GetComponent<Rigidbody>();
 
-        foreach (CharacterState state in m_possibleStates)
-        {
-            state.OnStart(this);
-        }
+        //foreach (CharacterState state in m_possibleStates)
+        //{
+        //    state.OnStart(this);
+        //}
         m_currentState = m_possibleStates[0];
         m_currentState.OnEnter();
     }

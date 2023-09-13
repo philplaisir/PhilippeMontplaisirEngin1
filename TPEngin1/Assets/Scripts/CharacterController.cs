@@ -1,206 +1,104 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterController : MonoBehaviour
-{ 
-    private Camera m_camera;
-    private Rigidbody m_rb;
+{
+    //STATE MACHINE
+    private CharacterState m_currentState;
+    private List<CharacterState> m_possibleStates;
+    //STATE MACHINE
+    // Le character controller est maintenent notre state machine
+    // TODO changer le nom pour character controller state machine ou de quoi du genre
 
-    [Header("Forward Movement")]
-    [SerializeField]
-    private float m_forwardAccelerationValue = 10.0f;    
-    [SerializeField]
-    private float m_maxForwardVelocity = 10.0f;
-    [Header("Diagonal Movement")]
-    [SerializeField]
-    private float m_forwardDiagonalsAccelerationValue = 10.0f;
-    [SerializeField]
-    private float m_maxForwardDiagonalsVelocity = 10.0f;
-    [Header("Backward Movement")]
-    [SerializeField]
-    private float m_backwardAccelerationValue = 10.0f;
-    [SerializeField]
-    private float m_maxBackwardVelocity = 10.0f;
-    [Header("Strafe Movement")]
-    [SerializeField]
-    private float m_strafeAccelerationValue = 10.0f;
-    [SerializeField]
-    private float m_maxStrafeVelocity = 10.0f;
-    [Header("")]
-    [SerializeField]
-    private float m_decelerationValue = 10.0f;
+    // TODO important changer le nom pour STATE MACHINE CHARACTER CONTROLLER OR SOMETHING
 
-    [SerializeField]
-    private float m_turnSmoothTime = 0.5f; // Lower number means snappier turn
-    private float m_turnSmoothVelocity;
+    // Les variables deviennent des cSharp fields
+    // fields en cSharp sont des mtéhodes qui nous permettent d'aller chercher de l'info d'ou la majuscule
+    public Camera Camera { get; private set; }
+    public Rigidbody RB { get; private set; }
+
+    public Transform Transform { get; private set; }
+
+    //[Header("Forward Movement")]
+    [field: SerializeField]
+    public float ForwardAccelerationValue { get; private set; }
+    
+    [field: SerializeField]
+    public float MaxForwardVelocity { get; private set; }
+    //[Header("Diagonal Movement")]
+    
+    [field: SerializeField]
+    public float ForwardDiagonalsAccelerationValue { get; private set; }
+    
+    [field: SerializeField]
+    public float MaxForwardDiagonalsVelocity { get; private set; }
+    //[Header("Backward Movement")]
+    
+    [field: SerializeField]
+    public float BackwardAccelerationValue { get; private set; }
+    
+    [field: SerializeField]
+    public float MaxBackwardVelocity { get; private set; }
+    //[Header("Strafe Movement")]
+    
+    [field: SerializeField]
+    public float StrafeAccelerationValue { get; private set; }
+    
+    [field: SerializeField]
+    public float MaxStrafeVelocity { get; private set; }
+    //[Header("")]
+    
+    [field: SerializeField]
+    public float DecelerationValue { get; private set; }
+
+    [field: SerializeField]
+    public float TurnSmoothTime { get; private set; }
+    // Lower number means snappier turn
+    public float TurnSmoothVelocity { get; private set; }
+
+
+    private void Awake()
+    {
+        m_possibleStates = new List<CharacterState>();
+        m_possibleStates.Add(new FreeState());
+    }
 
 
 
-    // Start is called before the first frame update
     void Start()
     {
         // Sans le serializeField on peut garder la référence privée, et on va chercher directement la caméra
-        m_camera = Camera.main;
-        m_rb = GetComponent<Rigidbody>();  
+        Camera = Camera.main;
+        RB = GetComponent<Rigidbody>();
+        Transform = GetComponent<Transform>();
+
+        foreach(CharacterState state in m_possibleStates)
+        {
+            state.OnStart(this);
+        }
+
+        // STATE MACHINE
+        m_currentState = m_possibleStates[0];
+        m_currentState.OnEnter();
+        // STATE MACHINE
     }
-
-    // Update is called once per frame
-    void Update()
-    {   
-    }
-
-    void FixedUpdate()
-    {              
-        // CHARACTER MOVEMENT RELATIVE TO CAMERA
-        if (Input.anyKey)
-        {
-            if (IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera())
-            {
-                CharacterControllerDeceleration();
-                return;
-            }
-            CharacterControllerRelativeToCameraFUpdate();
-        }
-        else
-        {
-            CharacterControllerDeceleration();
-        }         
-
-        // TODO 230831
-        // Apliquer les déplacements relatifs à la caméra dans les 3 autres directions
-        // Avoir des vitesse de déplacement différentes maximales vers les côtés et vers l'arrière
-        // Lorsqu'aucun input est détecté décélérer le personnage rapidement
-
-        // TODO 230831
-        // Essayer d'implémenter d'autres types de déplacements (relatif au personnag, tank control)
-        // Essayer d'ajouter contrôle avec manette
-        
-        Debug.Log(m_rb.velocity.magnitude);
-    }
-
-    private Vector3 GetNormalizedVectorProjectedOnFloor(Vector3 direction)
-    {
-        Vector3 projectedVector;
-
-        if (direction == Vector3.forward)
-        {
-            projectedVector = Vector3.ProjectOnPlane(m_camera.transform.forward, Vector3.up);
-        }
-        else if (direction == Vector3.right)
-        {
-            projectedVector = Vector3.ProjectOnPlane(m_camera.transform.right, Vector3.up);
-        }
-        else
-        {
-            Debug.LogWarning("Invalid direction! Must be Vector3.forward or Vector3.right.");
-            return Vector3.zero; // Return some default value or handle the error accordingly
-        }
-
-        projectedVector.Normalize();
-        return projectedVector;
-    }    
-
-    private void CharacterControllerDeceleration()
-    {
-        if (m_rb.velocity.magnitude > 0.1f)
-        {
-            Vector3 vector3 = m_rb.velocity.normalized;
-            m_rb.AddForce(-vector3 * m_decelerationValue, ForceMode.Acceleration);
-        }
-    }
-
-
-
-    // CHARACTER CONTROLLER RELATIVE TO CAMERA METHODS
-    private void CharacterControllerRelativeToCameraFUpdate()
-    {
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))
-        {
-            ReorientCharacterTowardsChameraDirection();
-            CharacterControllerRelativeToCameraDiagonals(m_forwardDiagonalsAccelerationValue, m_maxForwardDiagonalsVelocity, -1);
-            return;
-        }
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D))
-        {
-            ReorientCharacterTowardsChameraDirection();
-            CharacterControllerRelativeToCameraDiagonals(m_forwardDiagonalsAccelerationValue, m_maxForwardDiagonalsVelocity, 1);
-            return;
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            ReorientCharacterTowardsChameraDirection();
-            CharacterControllerRelativeToCamera(Vector3.forward, m_forwardAccelerationValue, m_maxForwardVelocity, 1);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            ReorientCharacterTowardsChameraDirection();
-            CharacterControllerRelativeToCamera(Vector3.forward, m_backwardAccelerationValue, m_maxBackwardVelocity, -1);            
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            ReorientCharacterTowardsChameraDirection();
-            CharacterControllerRelativeToCamera(Vector3.right, m_strafeAccelerationValue, m_maxStrafeVelocity, -1);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            ReorientCharacterTowardsChameraDirection();
-            CharacterControllerRelativeToCamera(Vector3.right, m_strafeAccelerationValue, m_maxStrafeVelocity, 1);
-        }
-    }
-
-    private bool IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera()
-    {
-        // TODO à revérifier, ne fonctionne pas lorsqu'on fait WAS,WSD
-        bool returnValue = false;
-
-        if ((Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S)) ||
-            (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D)) ||
-            (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)) ||
-            (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D)) ||
-            (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S)) ||
-            (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)))
-        {
-            returnValue = true;
-        }
-
-        return returnValue;
-    }
-
-    private void ReorientCharacterTowardsChameraDirection()
-    {
-        transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
-    }
-
-    private void CharacterControllerRelativeToCamera(Vector3 direction, float accelerationValue, float maxVelocity, int isVectorReversed)
-    {        
-        Vector3 vectorProjectedOnFloorForward = GetNormalizedVectorProjectedOnFloor(direction);
-
-        m_rb.AddForce((vectorProjectedOnFloorForward * isVectorReversed) * accelerationValue, ForceMode.Acceleration);
-
-        if (m_rb.velocity.magnitude > maxVelocity)
-        {
-            m_rb.velocity = m_rb.velocity.normalized;
-            m_rb.velocity *= maxVelocity;
-        }
-    }
-
-    private void CharacterControllerRelativeToCameraDiagonals(float accelerationValue, float maxVelocity, int isVectorReversed)
-    {
-        Vector3 vectorProjectedOnFloorForward = GetNormalizedVectorProjectedOnFloor(Vector3.forward);
-        m_rb.AddForce(vectorProjectedOnFloorForward * accelerationValue, ForceMode.Acceleration);
-
-        Vector3 vectorProjectedOnFloorRight = GetNormalizedVectorProjectedOnFloor(Vector3.right);
-        m_rb.AddForce((vectorProjectedOnFloorRight * isVectorReversed) * accelerationValue, ForceMode.Acceleration);
-
-        if (m_rb.velocity.magnitude > maxVelocity)
-        {
-            m_rb.velocity = m_rb.velocity.normalized;
-            m_rb.velocity *= maxVelocity;
-        }
-    }   
-
     
+    private void Update()
+    {   
+        // STATE MACHINE
+        m_currentState.OnUpdate();
+        // STATE MACHINE    
+    }
 
-    // CHARACTER CONTROLLER RELATIVE TO CHARACTER METHODS
+    private void FixedUpdate()
+    {
+        // STATE MACHINE
+        m_currentState.OnFixedUpdate();
+        // STATE MACHINE
+
+
+        
+    }
 
 
 
