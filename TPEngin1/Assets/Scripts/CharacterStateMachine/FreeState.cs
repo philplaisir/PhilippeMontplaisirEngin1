@@ -14,11 +14,6 @@ public class FreeState : CharacterState
 
     public override void OnUpdate()
     {
-    }
-
-    public override void OnFixedUpdate()
-    {
-        // CHARACTER MOVEMENT RELATIVE TO CAMERA
         if (Input.anyKey)
         {
             if (IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera())
@@ -32,6 +27,12 @@ public class FreeState : CharacterState
         {
             CharacterControllerDeceleration();
         }
+    }
+
+    public override void OnFixedUpdate()
+    {
+        // CHARACTER MOVEMENT RELATIVE TO CAMERA
+        
 
         // TODO 230831
         // Apliquer les déplacements relatifs à la caméra dans les 3 autres directions
@@ -42,7 +43,10 @@ public class FreeState : CharacterState
         // Essayer d'implémenter d'autres types de déplacements (relatif au personnag, tank control)
         // Essayer d'ajouter contrôle avec manette
 
-        Debug.Log(m_stateMachine.RB.velocity.magnitude);
+
+
+        // À CONSERVER UTILE POUR CONNAÎTRE LA VELOCITÉ
+        //Debug.Log(m_stateMachine.RB.velocity.magnitude);
     }
 
     public override void OnExit()
@@ -50,11 +54,12 @@ public class FreeState : CharacterState
         Debug.Log("Exit state: FreeState\n");
     }
 
-    //public override bool CanEnter()
-    //{
-    //    //Je ne peux entrer dans le FreeState que si je touche le sol
-    //    //return m_stateMachine.IsInContactWithFloor();
-    //}
+    public override bool CanEnter()
+    {
+        //Je ne peux entrer dans le FreeState que si je touche le sol
+        return m_stateMachine.IsInContactWithFloor();
+        //return false; // à retirer
+    }
 
     public override bool CanExit()
     {

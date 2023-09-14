@@ -10,8 +10,8 @@ public class JumpState : CharacterState
         Debug.Log("Enter state: JumpState\n");
 
         //Effectuer le saut
-        //m_stateMachine.RB.AddForce(Vector3.up * m_stateMachine.JumpIntensity, ForceMode.Acceleration);
-        //m_currentStateTimer = STATE_EXIT_TIMER;
+        m_stateMachine.RB.AddForce(Vector3.up * m_stateMachine.JumpIntensity, ForceMode.Acceleration);
+        m_currentStateTimer = STATE_EXIT_TIMER;
     }
 
     public override void OnExit()
@@ -30,6 +30,7 @@ public class JumpState : CharacterState
 
     public override bool CanEnter()
     {
+        Debug.Log("Entered can enter jump sate");
         //This must be run in Update absolutely
         return Input.GetKeyDown(KeyCode.Space);
     }

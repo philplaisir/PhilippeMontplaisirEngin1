@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class CharacterControllerStateMachine : MonoBehaviour
 {
+
+    // TODO à retirer du projet
     public Camera Camera { get; private set; }
     public Rigidbody RB { get; private set; }
 

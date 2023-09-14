@@ -273,6 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a467c9f21d4a85429d01488027f9b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_floorTrigger: {fileID: 610098084}
   <ForwardAccelerationValue>k__BackingField: 25
   <MaxForwardVelocity>k__BackingField: 18
   <ForwardDiagonalsAccelerationValue>k__BackingField: 20
@@ -281,8 +282,9 @@ MonoBehaviour:
   <MaxBackwardVelocity>k__BackingField: 5
   <StrafeAccelerationValue>k__BackingField: 10
   <MaxStrafeVelocity>k__BackingField: 10
-  <DecelerationValue>k__BackingField: 2
+  <DecelerationValue>k__BackingField: 15
   <TurnSmoothTime>k__BackingField: 0.2
+  <JumpIntensity>k__BackingField: 1000
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,8 +616,9 @@ GameObject:
   - component: {fileID: 610098081}
   - component: {fileID: 610098083}
   - component: {fileID: 610098082}
+  - component: {fileID: 610098084}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: FloorTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -665,6 +668,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 610098080}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &610098084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610098080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 128da58bc57710041acebe0a5659ec23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0

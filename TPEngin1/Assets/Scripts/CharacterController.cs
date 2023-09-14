@@ -6,6 +6,10 @@ public class CharacterController : MonoBehaviour
     //STATE MACHINE
     private CharacterState m_currentState;
     private List<CharacterState> m_possibleStates;
+
+    [SerializeField]
+    private CharacterFloorTrigger m_floorTrigger;
+
     //STATE MACHINE
     // Le character controller est maintenent notre state machine
     // TODO changer le nom pour character controller state machine ou de quoi du genre
@@ -16,51 +20,46 @@ public class CharacterController : MonoBehaviour
     // fields en cSharp sont des mtéhodes qui nous permettent d'aller chercher de l'info d'ou la majuscule
     public Camera Camera { get; private set; }
     public Rigidbody RB { get; private set; }
-
     public Transform Transform { get; private set; }
 
     //[Header("Forward Movement")]
     [field: SerializeField]
-    public float ForwardAccelerationValue { get; private set; }
-    
+    public float ForwardAccelerationValue { get; private set; }    
     [field: SerializeField]
-    public float MaxForwardVelocity { get; private set; }
-    //[Header("Diagonal Movement")]
-    
+    public float MaxForwardVelocity { get; private set; }       
     [field: SerializeField]
-    public float ForwardDiagonalsAccelerationValue { get; private set; }
-    
+    public float ForwardDiagonalsAccelerationValue { get; private set; }    
     [field: SerializeField]
-    public float MaxForwardDiagonalsVelocity { get; private set; }
-    //[Header("Backward Movement")]
-    
+    public float MaxForwardDiagonalsVelocity { get; private set; }      
     [field: SerializeField]
-    public float BackwardAccelerationValue { get; private set; }
-    
+    public float BackwardAccelerationValue { get; private set; }    
     [field: SerializeField]
-    public float MaxBackwardVelocity { get; private set; }
-    //[Header("Strafe Movement")]
-    
+    public float MaxBackwardVelocity { get; private set; }       
     [field: SerializeField]
-    public float StrafeAccelerationValue { get; private set; }
-    
+    public float StrafeAccelerationValue { get; private set; }    
     [field: SerializeField]
-    public float MaxStrafeVelocity { get; private set; }
-    //[Header("")]
-    
+    public float MaxStrafeVelocity { get; private set; }     
     [field: SerializeField]
     public float DecelerationValue { get; private set; }
-
     [field: SerializeField]
-    public float TurnSmoothTime { get; private set; }
-    // Lower number means snappier turn
+    public float TurnSmoothTime { get; private set; } // Lower number means snappier turn
+    [field: SerializeField]
+    public float JumpIntensity { get; private set; }
+
+
+
     public float TurnSmoothVelocity { get; private set; }
+
+
+
+
 
 
     private void Awake()
     {
         m_possibleStates = new List<CharacterState>();
         m_possibleStates.Add(new FreeState());
+        m_possibleStates.Add(new JumpState());
     }
 
 
@@ -76,31 +75,60 @@ public class CharacterController : MonoBehaviour
         {
             state.OnStart(this);
         }
-
-        // STATE MACHINE
+        
         m_currentState = m_possibleStates[0];
         m_currentState.OnEnter();
-        // STATE MACHINE
+        
     }
     
     private void Update()
     {   
-        // STATE MACHINE
+        
         m_currentState.OnUpdate();
-        // STATE MACHINE    
+        TryStateTransition();
+
     }
 
     private void FixedUpdate()
-    {
-        // STATE MACHINE
+    {        
         m_currentState.OnFixedUpdate();
-        // STATE MACHINE
+        
 
 
         
     }
 
+    private void TryStateTransition()
+    {
+        if (!m_currentState.CanExit())
+        {
+            return;
+        }
 
+        //Je PEUX quitter le state actuel
+        foreach (var state in m_possibleStates)
+        {
+            if (m_currentState == state)
+            {
+                continue;
+            }
+
+            if (state.CanEnter())
+            {
+                //Quitter le state actuel
+                m_currentState.OnExit();
+                m_currentState = state;
+                //Rentrer dans le state state
+                m_currentState.OnEnter();
+                return;
+            }
+        }
+    }
+
+    public bool IsInContactWithFloor()
+    {
+        return m_floorTrigger.IsOnFloor;
+    }
 
 
 }
