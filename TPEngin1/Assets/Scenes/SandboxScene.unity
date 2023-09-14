@@ -284,7 +284,7 @@ MonoBehaviour:
   <MaxStrafeVelocity>k__BackingField: 10
   <DecelerationValue>k__BackingField: 15
   <TurnSmoothTime>k__BackingField: 0.2
-  <JumpIntensity>k__BackingField: 1000
+  <JumpIntensity>k__BackingField: 400
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0

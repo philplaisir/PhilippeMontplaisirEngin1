@@ -48,12 +48,14 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        UpdateCameraPosition();
+        
         UpdateHorizontalMovements();
         UpdateVerticalMovements();        
         UpdateCameraScroll();
         
     }
+
+   
 
     private void UpdateHorizontalMovements()
     {
@@ -78,7 +80,7 @@ public class CameraController : MonoBehaviour
         transform.RotateAround(m_objectToLookAt.position, transform.right, currentAngleY);
     }
 
-    private void UpdateCameraPosition()
+    private void UpdateCameraPositionFUpdate()
     {
         
         //transform.position = m_objectToLookAt.position - transform.forward * m_distanceFromTargetIfTouchingWall;
@@ -182,6 +184,7 @@ public class CameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        UpdateCameraPositionFUpdate();
         MoveCameraInFrontOfObstructionsFUpdate();
     }
 

@@ -14,6 +14,23 @@ public class FreeState : CharacterState
 
     public override void OnUpdate()
     {
+        
+    }
+
+    public override void OnFixedUpdate()
+    {
+        // CHARACTER MOVEMENT RELATIVE TO CAMERA
+
+
+        // TODO 230831
+        // Apliquer les déplacements relatifs à la caméra dans les 3 autres directions
+        // Avoir des vitesse de déplacement différentes maximales vers les côtés et vers l'arrière
+        // Lorsqu'aucun input est détecté décélérer le personnage rapidement
+
+        // TODO 230831
+        // Essayer d'implémenter d'autres types de déplacements (relatif au personnag, tank control)
+        // Essayer d'ajouter contrôle avec manette
+
         if (Input.anyKey)
         {
             if (IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera())
@@ -27,21 +44,8 @@ public class FreeState : CharacterState
         {
             CharacterControllerDeceleration();
         }
-    }
 
-    public override void OnFixedUpdate()
-    {
-        // CHARACTER MOVEMENT RELATIVE TO CAMERA
-        
 
-        // TODO 230831
-        // Apliquer les déplacements relatifs à la caméra dans les 3 autres directions
-        // Avoir des vitesse de déplacement différentes maximales vers les côtés et vers l'arrière
-        // Lorsqu'aucun input est détecté décélérer le personnage rapidement
-
-        // TODO 230831
-        // Essayer d'implémenter d'autres types de déplacements (relatif au personnag, tank control)
-        // Essayer d'ajouter contrôle avec manette
 
 
 
