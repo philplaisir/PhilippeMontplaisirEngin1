@@ -45,7 +45,13 @@ public class FreeState : CharacterState
             CharacterControllerDeceleration();
         }
 
+        /*
+         Application de la vélocité sur 
+        float forwardComponent  = Vector3.Dot(m_stateMachine.RB.velocity, vectorOnFloor(forward truc truc))
 
+         m_stateMachine.UpdateAnimatorValues(new Vector2(0, forwardComponent));
+         
+         */
 
 
 
@@ -161,7 +167,7 @@ public class FreeState : CharacterState
 
     private void ReorientCharacterTowardsChameraDirection()
     {
-        m_stateMachine.Transform.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(m_stateMachine.Transform.transform.eulerAngles.y, m_stateMachine.Camera.transform.eulerAngles.y, ref TurnSmoothVelocity, m_stateMachine.TurnSmoothTime);
+        m_stateMachine.GameObject.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(m_stateMachine.Transform.transform.eulerAngles.y, m_stateMachine.Camera.transform.eulerAngles.y, ref TurnSmoothVelocity, m_stateMachine.TurnSmoothTime);
     }
 
     private void CharacterControllerRelativeToCamera(Vector3 direction, float accelerationValue, float maxVelocity, int isVectorReversed)

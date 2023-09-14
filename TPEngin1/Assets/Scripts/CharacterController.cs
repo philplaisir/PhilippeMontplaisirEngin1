@@ -19,8 +19,17 @@ public class CharacterController : MonoBehaviour
     // Les variables deviennent des cSharp fields
     // fields en cSharp sont des mtéhodes qui nous permettent d'aller chercher de l'info d'ou la majuscule
     public Camera Camera { get; private set; }
+
+    [field: SerializeField]
     public Rigidbody RB { get; private set; }
+
+    [field: SerializeField]
+    public GameObject GameObject { get; private set; }
+
+    [field: SerializeField]
+    private Animator Animator { get; set; }
     public Transform Transform { get; private set; }
+
 
     //[Header("Forward Movement")]
     [field: SerializeField]
@@ -68,7 +77,7 @@ public class CharacterController : MonoBehaviour
     {
         // Sans le serializeField on peut garder la référence privée, et on va chercher directement la caméra
         Camera = Camera.main;
-        RB = GetComponent<Rigidbody>();
+        //RB = GetComponent<Rigidbody>();
         Transform = GetComponent<Transform>();
 
         foreach(CharacterState state in m_possibleStates)
@@ -128,6 +137,25 @@ public class CharacterController : MonoBehaviour
     public bool IsInContactWithFloor()
     {
         return m_floorTrigger.IsOnFloor;
+    }
+
+    public void UpdateAnimatorValues(Vector2 movementVecValue)
+    {
+        // Aller chercher ma vitesse actuelle
+        // Communiquer directement avec mon animator
+
+        //movementVecValue.Normalize();
+
+        // movementVecValue = new Vector2(movementVecValue.x, movementVecValue.y / MaxVelocity)
+
+        Animator.SetFloat("MoveX", movementVecValue.x);
+        Animator.SetFloat("MoveY", movementVecValue.y);
+        
+
+
+
+
+
     }
 
 
