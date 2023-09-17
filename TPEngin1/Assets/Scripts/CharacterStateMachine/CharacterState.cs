@@ -1,8 +1,8 @@
 public abstract class CharacterState : IState
 {
-    protected CharacterController m_stateMachine;
+    protected CharacterControllerSM m_stateMachine;
 
-    public void OnStart(CharacterController stateMachine)
+    public void OnStart(CharacterControllerSM stateMachine)
     {
         m_stateMachine = stateMachine;
     }

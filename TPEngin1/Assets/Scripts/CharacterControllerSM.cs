@@ -1,24 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+public class CharacterControllerSM : MonoBehaviour
 {
-    //STATE MACHINE
+    
     private CharacterState m_currentState;
     private List<CharacterState> m_possibleStates;
 
     [SerializeField]
     private CharacterFloorTrigger m_floorTrigger;
-
-    //STATE MACHINE
-    // Le character controller est maintenent notre state machine
-    // TODO changer le nom pour character controller state machine ou de quoi du genre
-
-    // TODO important changer le nom pour STATE MACHINE CHARACTER CONTROLLER OR SOMETHING
-
+        
     // Les variables deviennent des cSharp fields
     // fields en cSharp sont des mtéhodes qui nous permettent d'aller chercher de l'info d'ou la majuscule
     public Camera Camera { get; private set; }
+    public Transform Transform { get; private set; }
 
     [field: SerializeField]
     public Rigidbody RB { get; private set; }
@@ -28,39 +23,37 @@ public class CharacterController : MonoBehaviour
 
     [field: SerializeField]
     private Animator Animator { get; set; }
-    public Transform Transform { get; private set; }
-
-
-    //[Header("Forward Movement")]
-    [field: SerializeField]
+    
+    
+    
+    [field: SerializeField]    
     public float ForwardAccelerationValue { get; private set; }    
     [field: SerializeField]
-    public float MaxForwardVelocity { get; private set; }       
+    public float MaxForwardVelocity { get; private set; }
+    
     [field: SerializeField]
     public float ForwardDiagonalsAccelerationValue { get; private set; }    
     [field: SerializeField]
-    public float MaxForwardDiagonalsVelocity { get; private set; }      
+    public float MaxForwardDiagonalsVelocity { get; private set; }
+    
     [field: SerializeField]
     public float BackwardAccelerationValue { get; private set; }    
     [field: SerializeField]
-    public float MaxBackwardVelocity { get; private set; }       
+    public float MaxBackwardVelocity { get; private set; } 
+    
     [field: SerializeField]
     public float StrafeAccelerationValue { get; private set; }    
     [field: SerializeField]
-    public float MaxStrafeVelocity { get; private set; }     
+    public float MaxStrafeVelocity { get; private set; }
+    
     [field: SerializeField]
     public float DecelerationValue { get; private set; }
+
     [field: SerializeField]
     public float TurnSmoothTime { get; private set; } // Lower number means snappier turn
+
     [field: SerializeField]
     public float JumpIntensity { get; private set; }
-
-
-
-    public float TurnSmoothVelocity { get; private set; }
-
-
-
 
 
 
@@ -71,13 +64,10 @@ public class CharacterController : MonoBehaviour
         m_possibleStates.Add(new JumpState());
     }
 
-
-
     void Start()
     {
         // Sans le serializeField on peut garder la référence privée, et on va chercher directement la caméra
-        Camera = Camera.main;
-        //RB = GetComponent<Rigidbody>();
+        Camera = Camera.main;       
         Transform = GetComponent<Transform>();
 
         foreach(CharacterState state in m_possibleStates)
@@ -86,25 +76,18 @@ public class CharacterController : MonoBehaviour
         }
         
         m_currentState = m_possibleStates[0];
-        m_currentState.OnEnter();
-        
+        m_currentState.OnEnter();        
     }
     
     private void Update()
-    {   
-        
+    {           
         m_currentState.OnUpdate();
         TryStateTransition();
-
     }
 
     private void FixedUpdate()
     {        
-        m_currentState.OnFixedUpdate();
-        
-
-
-        
+        m_currentState.OnFixedUpdate();        
     }
 
     private void TryStateTransition()
@@ -161,6 +144,9 @@ public class CharacterController : MonoBehaviour
 
 }
 
+
+
+//[Header("Forward Movement")]
 
 
 
@@ -230,24 +216,24 @@ public class CharacterController : MonoBehaviour
 
 //void CharacterControllerRelativeToCameraMoveForward()
 //{
-    //float inputX = Input.GetAxis("Horizontal");
-    //float inputY = Input.GetAxis("Vertical");
-    //
-    //Vector2 input = new Vector2(inputX, inputY);
-    //Vector2 inputDirection = input.normalized;
-    //
-    //if(inputDirection != Vector2.zero)
-    //{
-    //    float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg;
-    //    transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref m_turnSmoothVelocity, m_turnSmoothTime);
-    //
-    //}
+//float inputX = Input.GetAxis("Horizontal");
+//float inputY = Input.GetAxis("Vertical");
+//
+//Vector2 input = new Vector2(inputX, inputY);
+//Vector2 inputDirection = input.normalized;
+//
+//if(inputDirection != Vector2.zero)
+//{
+//    float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg;
+//    transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref m_turnSmoothVelocity, m_turnSmoothTime);
+//
+//}
 
-    //float inputX = m_camera.GetAxis("Horizontal");
-    //float inputY = m_camera.GetAxis("Vertical");
+//float inputX = m_camera.GetAxis("Horizontal");
+//float inputY = m_camera.GetAxis("Vertical");
 
-    //transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
-    //transform.eulerAngles = Vector3.up * m_camera.transform.eulerAngles.y;
+//transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, m_camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_turnSmoothTime);
+//transform.eulerAngles = Vector3.up * m_camera.transform.eulerAngles.y;
 
 
 

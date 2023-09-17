@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FreeState : CharacterState
 {
-    public float TurnSmoothVelocity;
+    private float m_turnSmoothVelocity;
 
 
 
@@ -75,6 +75,11 @@ public class FreeState : CharacterState
     {
         return true;
     }
+    
+
+
+    //88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
+
 
 
     private Vector3 GetNormalizedVectorProjectedOnFloor(Vector3 direction)
@@ -167,7 +172,7 @@ public class FreeState : CharacterState
 
     private void ReorientCharacterTowardsChameraDirection()
     {
-        m_stateMachine.GameObject.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(m_stateMachine.Transform.transform.eulerAngles.y, m_stateMachine.Camera.transform.eulerAngles.y, ref TurnSmoothVelocity, m_stateMachine.TurnSmoothTime);
+        m_stateMachine.GameObject.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(m_stateMachine.Transform.transform.eulerAngles.y, m_stateMachine.Camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_stateMachine.TurnSmoothTime);
     }
 
     private void CharacterControllerRelativeToCamera(Vector3 direction, float accelerationValue, float maxVelocity, int isVectorReversed)

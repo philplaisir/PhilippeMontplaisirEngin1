@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
 
     private Collider m_cameraCollider;
 
-
+    //[Header("Header")] 
     [SerializeField]
     private Transform m_objectToLookAt;
     [SerializeField]
