@@ -2,6 +2,7 @@ using UnityEngine;
 
 // TODO
 // Checker pour quand 3 touches en même temps
+// Checker pour faire fonctionner la limite solidement, actuellement la velocité est limité mais dépasse toujours un peu la limite que je lui donne
 // Facultatif Essayer d'implémenter d'autres types de déplacements (relatif au personnag, tank control)
 // Facultatif Essayer d'ajouter contrôle avec manette
 
