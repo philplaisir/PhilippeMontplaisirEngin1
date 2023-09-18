@@ -23,9 +23,10 @@ public class CharacterControllerSM : MonoBehaviour
 
     [field: SerializeField]
     private Animator Animator { get; set; }
-    
-    
-    
+
+
+    [field: SerializeField]
+    public float GeneralAccelerationValue { get; private set; }
     [field: SerializeField]    
     public float ForwardAccelerationValue { get; private set; }    
     [field: SerializeField]
@@ -34,7 +35,7 @@ public class CharacterControllerSM : MonoBehaviour
     [field: SerializeField]
     public float ForwardDiagonalsAccelerationValue { get; private set; }    
     [field: SerializeField]
-    public float MaxForwardDiagonalsVelocity { get; private set; }
+    public float MaxForwardDiagonalsVelocity { get; set; }
     
     [field: SerializeField]
     public float BackwardAccelerationValue { get; private set; }    

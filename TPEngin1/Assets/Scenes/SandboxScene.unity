@@ -601,6 +601,7 @@ MonoBehaviour:
   <RB>k__BackingField: {fileID: 746245243}
   <GameObject>k__BackingField: {fileID: 746245241}
   <Animator>k__BackingField: {fileID: 746245244}
+  <GeneralAccelerationValue>k__BackingField: 50
   <ForwardAccelerationValue>k__BackingField: 50
   <MaxForwardVelocity>k__BackingField: 18
   <ForwardDiagonalsAccelerationValue>k__BackingField: 20
@@ -609,7 +610,7 @@ MonoBehaviour:
   <MaxBackwardVelocity>k__BackingField: 5
   <StrafeAccelerationValue>k__BackingField: 10
   <MaxStrafeVelocity>k__BackingField: 10
-  <DecelerationValue>k__BackingField: 15
+  <DecelerationValue>k__BackingField: 25
   <TurnSmoothTime>k__BackingField: 0.2
   <JumpIntensity>k__BackingField: 400
 --- !u!1 &746245241 stripped

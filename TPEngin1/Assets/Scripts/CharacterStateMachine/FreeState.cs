@@ -1,9 +1,13 @@
 using UnityEngine;
 
+// TODO
+// Checker pour quand 3 touches en même temps
+// Facultatif Essayer d'implémenter d'autres types de déplacements (relatif au personnag, tank control)
+// Facultatif Essayer d'ajouter contrôle avec manette
+
 public class FreeState : CharacterState
 {
     private float m_turnSmoothVelocity;
-
 
 
 
@@ -20,116 +24,11 @@ public class FreeState : CharacterState
     public override void OnFixedUpdate()
     {
         Debug.Log("Velocity before" + m_stateMachine.RB.velocity.magnitude);
+        
         // CHARACTER MOVEMENT RELATIVE TO CAMERA
-        Vector3 movementVector = Vector3.zero;
-        //Vector3 projectedVector = Vector3.zero;
-        //projectedVector = Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.forward, Vector3.up);
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            movementVector += Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.forward, Vector3.up);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            movementVector += Vector3.ProjectOnPlane(-(m_stateMachine.Camera.transform.forward), Vector3.up);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            movementVector += Vector3.ProjectOnPlane(-(m_stateMachine.Camera.transform.right), Vector3.up);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            movementVector += Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.right, Vector3.up);
-        }
-
-        if (Input.anyKey)
-        {
-            m_stateMachine.GameObject.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(m_stateMachine.Transform.transform.eulerAngles.y, m_stateMachine.Camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_stateMachine.TurnSmoothTime);
-        }
-        //if (!Input.anyKey)
-        //{
-        //    Vector3 vector3 = m_stateMachine.RB.velocity.normalized;
-        //    m_stateMachine.RB.AddForce(-vector3 * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
-        //    Debug.Log("Velocity after max" + m_stateMachine.RB.velocity.magnitude);
-        //    return;
-        //}
-
-        movementVector.Normalize();
-
-        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.ForwardAccelerationValue, ForceMode.Acceleration);
-
-        //Debug.Log("Velocity before max" + m_stateMachine.RB.velocity.magnitude);
-
-        //if (movementVector.z < 0)
-        //{
-        //    if (m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxBackwardVelocity)
-        //    {
-        //        m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
-        //        m_stateMachine.RB.velocity *= m_stateMachine.MaxBackwardVelocity;
-        //    }
-        //}
-        if (m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxForwardVelocity)
-        {
-            m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
-            m_stateMachine.RB.velocity *= m_stateMachine.MaxForwardVelocity;
-
-            if (m_stateMachine.RB.velocity.magnitude == m_stateMachine.MaxForwardVelocity)
-            {
-                m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized * m_stateMachine.MaxForwardVelocity;
-            }
-
-            Debug.Log("Velocity in thing" + m_stateMachine.RB.velocity.magnitude);
-            return;
-            //Debug.Log("Velocity in thing" + m_stateMachine.RB.velocity.magnitude);
-        }
-
-        //if (m_stateMachine.RB.velocity.magnitude > 0.1f)
-        //{
-        //    Vector3 vector3 = m_stateMachine.RB.velocity.normalized;
-        //    m_stateMachine.RB.AddForce(-vector3 * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
-        //}
-
-        //Par exemple, si vous allez à un angle nord-nord-ouest (3/4 du déplacement 	vers l'avant, 1/4 vers la gauche),
-        //et que votre vitesse maximale de 	déplacement avant est 20 et vers les côtés 5, votre vitesse maximale calculée 	
-        //à ce moment devrait être de ((3/4) * 20 + (1/4) * 5) == 15 + 1.25 == 16.25
-
-
-
-        // TODO 230831
-        // Apliquer les déplacements relatifs à la caméra dans les 3 autres directions
-        // Avoir des vitesse de déplacement différentes maximales vers les côtés et vers l'arrière
-        // Lorsqu'aucun input est détecté décélérer le personnage rapidement
-
-        // TODO 230831
-        // Essayer d'implémenter d'autres types de déplacements (relatif au personnag, tank control)
-        // Essayer d'ajouter contrôle avec manette
-
-        //if (Input.anyKey)
-        //{
-        //    if (IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera())
-        //    {
-        //        CharacterControllerDeceleration();
-        //        return;
-        //    }
-        //    CharacterControllerRelativeToCameraFUpdate();
-        //}
-        //else
-        //{
-        //    CharacterControllerDeceleration();
-        //}
-
-        /*
-         Application de la vélocité sur 
-        float forwardComponent  = Vector3.Dot(m_stateMachine.RB.velocity, vectorOnFloor(forward truc truc))
-
-         m_stateMachine.UpdateAnimatorValues(new Vector2(0, forwardComponent));
-
-         */
-
-
-
-        // À CONSERVER UTILE POUR CONNAÎTRE LA VELOCITÉ
-        //Debug.Log("Velocity after max" + m_stateMachine.RB.velocity.magnitude);
+        CharacterControllerFU();
+        
+        //Debug.Log("Velocity " + m_stateMachine.RB.velocity.magnitude);
     }
 
     public override void OnExit()
@@ -147,7 +46,7 @@ public class FreeState : CharacterState
     public override bool CanExit()
     {
         return true;
-    }
+    } 
     
 
 
@@ -155,14 +54,160 @@ public class FreeState : CharacterState
 
 
 
+    private void CharacterControllerFU()
+    {
+        if (!Input.GetKey(KeyCode.W) && 
+            !Input.GetKey(KeyCode.A) && 
+            !Input.GetKey(KeyCode.S) && 
+            !Input.GetKey(KeyCode.D))
+        {
+            MovementDeceleration();            
+            return;
+        }
+        if (Input.anyKey)
+        {
+            ReorientCharacterTowardsChameraDirection();
+        }
+        if(IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera())
+        {
+            MovementDeceleration();
+            return;
+        }
 
+        Vector3 movementVector = Vector3.zero;
+        Vector3 projectedVectorForward = Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.forward, Vector3.up);
+        Vector3 projectedVectorRight = Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.right, Vector3.up);
+        
+        if (Input.GetKey(KeyCode.W))
+        {
+            movementVector += projectedVectorForward;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            movementVector += -projectedVectorForward;
+        }
+        if (Input.GetKey(KeyCode.A))
+        {            
+            movementVector += -projectedVectorRight;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            movementVector += projectedVectorRight;
+        }       
 
+        movementVector.Normalize();       
 
+        DiagonalVelocityLimitsCalculator(movementVector, projectedVectorForward, projectedVectorRight);
 
+        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.GeneralAccelerationValue, ForceMode.Acceleration);
 
+        if (movementVector.magnitude > 0)
+        {
+            VelocityRegulatorBasedOnLimitsAndInputs();
+            //VelocityRegulatorBasedOnLimitsTwo(projectedVectorForward, projectedVectorRight);
+        }
+    }
 
+    private void MovementDeceleration()
+    {
+        Vector3 vector3 = m_stateMachine.RB.velocity.normalized;
+        m_stateMachine.RB.AddForce(-vector3 * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
+    }
 
-    
+    private void ReorientCharacterTowardsChameraDirection()
+    {
+        m_stateMachine.GameObject.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(m_stateMachine.Transform.transform.eulerAngles.y, m_stateMachine.Camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_stateMachine.TurnSmoothTime);
+    }
+
+    private void VelocityRegulatorBasedOnLimitsAndInputs()
+    {
+        if (m_stateMachine.RB.velocity.magnitude < m_stateMachine.MaxForwardVelocity &&
+            m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxStrafeVelocity &&
+            ((Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D)) || (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))))
+        {
+            m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
+            m_stateMachine.RB.velocity *= m_stateMachine.MaxForwardDiagonalsVelocity;
+            return;
+        }        
+        if (m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxBackwardVelocity &&
+            Input.GetKey(KeyCode.S) || 
+            (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)) ||
+            (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D)))
+        {
+            m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
+            m_stateMachine.RB.velocity *= m_stateMachine.MaxBackwardVelocity;
+            return;
+        }
+        if(m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxStrafeVelocity &&
+            (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)))
+        {
+            m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
+            m_stateMachine.RB.velocity *= m_stateMachine.MaxStrafeVelocity;
+            return;
+        }
+        
+        if (m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxForwardVelocity &&
+            Input.GetKey(KeyCode.W))
+        {
+            m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
+            m_stateMachine.RB.velocity *= m_stateMachine.MaxForwardVelocity;
+            return;
+        }
+    }
+
+    private void DiagonalVelocityLimitsCalculator(Vector3 movementVector, Vector3 projectedVectorForward, Vector3 projectedVectorRight)
+    {
+        float forwardComponent = Vector3.Dot(movementVector, projectedVectorForward);
+        float sideComponent = Mathf.Abs(Vector3.Dot(movementVector, projectedVectorRight));        
+
+        float forwardRatio = forwardComponent / (forwardComponent + sideComponent);
+        float sideRatio = sideComponent / (forwardComponent + sideComponent);
+
+        m_stateMachine.MaxForwardDiagonalsVelocity = forwardRatio * m_stateMachine.MaxForwardVelocity + sideRatio * m_stateMachine.MaxStrafeVelocity;
+    }
+
+    private bool IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera()
+    {        
+        bool returnValue = false;
+
+        //if ((Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S)) ||
+        //    (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D)))            
+        //{
+        //    returnValue = true;
+        //}
+
+        if ((Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S)) ||
+            (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D)) ||
+            (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)) ||
+            (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D)) ||
+            (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S)) ||
+            (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)))
+        {
+            returnValue = true;
+        }
+
+        return returnValue;
+    }
+
+    private void VelocityRegulatorBasedOnLimitsTwo(Vector3 projectedVectorForward, Vector3 projectedVectorRight)
+    {
+        float forwardDot = Vector3.Dot(m_stateMachine.RB.velocity.normalized, projectedVectorForward);
+        float rightDot = Vector3.Dot(m_stateMachine.RB.velocity.normalized, projectedVectorRight);
+        // Peut-être avec un abs serait mieux
+
+        if (forwardDot > 0.9f)
+        {
+            m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
+            m_stateMachine.RB.velocity *= m_stateMachine.MaxForwardVelocity;
+            return;
+        }
+        else if (rightDot > 0.85f || rightDot < -0.85f)
+        {
+            m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
+            m_stateMachine.RB.velocity *= m_stateMachine.MaxStrafeVelocity;
+        }
+    }
+
 
 
 }
@@ -196,20 +241,57 @@ public class FreeState : CharacterState
 
 
 
+//if (m_stateMachine.RB.velocity.magnitude > 0.1f)
+        //{
+        //    Vector3 vector3 = m_stateMachine.RB.velocity.normalized;
+        //    m_stateMachine.RB.AddForce(-vector3 * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
+        //}
+
+        //if (!Input.anyKey)
+        //{
+        //    Vector3 vector3 = m_stateMachine.RB.velocity.normalized;
+        //    m_stateMachine.RB.AddForce(-vector3 * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
+        //    Debug.Log("Velocity after max" + m_stateMachine.RB.velocity.magnitude);
+        //    return;
+        //}
+
+        //if (m_stateMachine.RB.velocity.magnitude == m_stateMachine.MaxForwardVelocity)
+        //{
+        //    m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized * m_stateMachine.MaxForwardVelocity;
+        //}
 
 
 
 
 
 
+//if (Input.anyKey)
+        //{
+        //    if (IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera())
+        //    {
+        //        CharacterControllerDeceleration();
+        //        return;
+        //    }
+        //    CharacterControllerRelativeToCameraFUpdate();
+        //}
+        //else
+        //{
+        //    CharacterControllerDeceleration();
+        //}
+
+        
+      //   Application de la vélocité sur 
+      //  float forwardComponent  = Vector3.Dot(m_stateMachine.RB.velocity, vectorOnFloor(forward truc truc))
+      //
+      //   m_stateMachine.UpdateAnimatorValues(new Vector2(0, forwardComponent));
+
+         
 
 
 
 
 
- 
- 
- private Vector3 GetNormalizedVectorProjectedOnFloor(Vector3 direction)
+private Vector3 GetNormalizedVectorProjectedOnFloor(Vector3 direction)
     {
         Vector3 projectedVector;
 
@@ -456,6 +538,79 @@ public class FreeState : CharacterState
 
 
 ARCHIVE
+
+
+            //m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized * Mathf.Min(m_stateMachine.RB.velocity.magnitude, m_stateMachine.MaxForwardVelocity);
+
+
+//movementVector += -Vector3.Cross(Vector3.up, projectedVector);
+//float sideComponent = Vector3.Dot(movementVector, Vector3.Cross(Vector3.up, projectedVectorForward));
+
+
+        //float ratio = movementVector.x / movementVector.z;
+        //
+        //if (movementVector.y != 0)
+        //{
+        //    float velocityLimit = Mathf.Lerp(m_stateMachine.MaxStrafeVelocity, m_stateMachine.MaxForwardVelocity, Mathf.Abs(ratio));
+        //    m_stateMachine.MaxForwardDiagonalsVelocity = velocityLimit;            
+        //}
+        //Debug.Log("Velocity max diagonal" + m_stateMachine.MaxForwardDiagonalsVelocity);
+
+        //float value = Vector3.Dot(movementVector, projectedVector);
+        //
+        //if (value == 1) 
+        //{
+        //    m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
+        //    m_stateMachine.RB.velocity *= m_stateMachine.MaxForwardVelocity;
+        //    return;
+        //}
+        //else if (value == -1) 
+        //{
+        //    m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
+        //    m_stateMachine.RB.velocity *= m_stateMachine.MaxForwardVelocity;
+        //    return;
+        //}
+
+
+        //if (movementVector == projectedVector) 
+        //{
+        //    m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
+        //    m_stateMachine.RB.velocity *= m_stateMachine.MaxForwardVelocity;
+        //    return;
+        //}
+
+
+
+//if (movementVector.z < 0)
+        //{
+        //    if (m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxBackwardVelocity)
+        //    {
+        //        m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
+        //        m_stateMachine.RB.velocity *= m_stateMachine.MaxBackwardVelocity;
+        //    }
+        //}   
+
+
+//Vector3 projectedVector = Vector3.zero;
+        //projectedVector = Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.forward, Vector3.up);
+
+        //if (Input.GetKey(KeyCode.W))
+        //{
+        //    movementVector += Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.forward, Vector3.up);
+        //}
+        //if (Input.GetKey(KeyCode.S))
+        //{
+        //    movementVector += Vector3.ProjectOnPlane(-(m_stateMachine.Camera.transform.forward), Vector3.up);
+        //}
+        //if (Input.GetKey(KeyCode.A))
+        //{
+        //    movementVector += Vector3.ProjectOnPlane(-(m_stateMachine.Camera.transform.right), Vector3.up);
+        //}
+        //if (Input.GetKey(KeyCode.D))
+        //{
+        //    movementVector += Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.right, Vector3.up);
+        //}
+
 
 //var vectorOnFloor = Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.forward, Vector3.up);
             //vectorOnFloor.Normalize();
