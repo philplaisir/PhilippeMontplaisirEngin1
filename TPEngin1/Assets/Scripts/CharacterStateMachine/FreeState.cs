@@ -19,7 +19,7 @@ public class FreeState : CharacterState
 
     public override void OnFixedUpdate()
     {
-        //Debug.Log("Velocity before" + m_stateMachine.RB.velocity.magnitude);
+        Debug.Log("Velocity before" + m_stateMachine.RB.velocity.magnitude);
         // CHARACTER MOVEMENT RELATIVE TO CAMERA
         Vector3 movementVector = Vector3.zero;
         //Vector3 projectedVector = Vector3.zero;

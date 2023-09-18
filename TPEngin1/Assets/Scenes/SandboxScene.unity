@@ -601,7 +601,7 @@ MonoBehaviour:
   <RB>k__BackingField: {fileID: 746245243}
   <GameObject>k__BackingField: {fileID: 746245241}
   <Animator>k__BackingField: {fileID: 746245244}
-  <ForwardAccelerationValue>k__BackingField: 25
+  <ForwardAccelerationValue>k__BackingField: 50
   <MaxForwardVelocity>k__BackingField: 18
   <ForwardDiagonalsAccelerationValue>k__BackingField: 20
   <MaxForwardDiagonalsVelocity>k__BackingField: 15
