@@ -34,6 +34,7 @@ public class FreeState : CharacterState
         KeepCharacterOnGroundFU();
 
         // Mettre l'update de l'animation
+        
 
         //Debug.Log("Velocity " + m_stateMachine.RB.velocity.magnitude);
     }
@@ -104,7 +105,7 @@ public class FreeState : CharacterState
             !Input.GetKey(KeyCode.D))
         {
             MovementDeceleration();            
-            return;
+            
         }
         if (Input.anyKey)
         {
@@ -112,8 +113,7 @@ public class FreeState : CharacterState
         }
         if(IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera())
         {
-            MovementDeceleration();
-            return;
+            MovementDeceleration();            
         }
 
         // hit.normal
@@ -145,7 +145,16 @@ public class FreeState : CharacterState
 
         m_stateMachine.RB.AddForce(movementVector * m_stateMachine.GroundAccelerationValue, ForceMode.Acceleration);
 
-        //m_stateMachine.UpdateAnimatorValues(new Vector2(0, forwardComponent));
+        m_stateMachine.MovementDirectionVector = movementVector;
+
+        //float forwardComponent = Vector3.Dot(m_stateMachine.RB.velocity, movementVector);
+
+        float forwardComponent = Vector3.Dot(m_stateMachine.RB.velocity, projectedVectorForward);
+        float rightComponent = Vector3.Dot(m_stateMachine.RB.velocity, projectedVectorRight);
+
+        Vector2 animationComponent = new Vector2(rightComponent, forwardComponent);
+
+        m_stateMachine.UpdateAnimatorValues(animationComponent);
 
         if (movementVector.magnitude > 0)
         {
@@ -156,7 +165,7 @@ public class FreeState : CharacterState
 
     private void MovementDeceleration()
     {
-        if (m_stateMachine.RB.velocity.magnitude < 0.1f)
+        if (m_stateMachine.RB.velocity.magnitude < 0.3f)
         {
             m_stateMachine.RB.velocity = Vector3.zero;
             return;

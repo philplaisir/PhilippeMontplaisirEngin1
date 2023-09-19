@@ -26,6 +26,11 @@ public class CharacterControllerSM : MonoBehaviour
     [field: SerializeField]
     private Animator Animator { get; set; }
 
+    
+    [field: SerializeField]
+    public float CharacterVelocity { get; private set; }
+    [field: SerializeField]
+    public Vector3 MovementDirectionVector { get; set; }
     [field: SerializeField]
     public float DistanceBetweenCharacterAndFloor { get; private set; }
     [field: SerializeField]
@@ -104,6 +109,7 @@ public class CharacterControllerSM : MonoBehaviour
 
     private void FixedUpdate()
     {        
+        CharacterVelocity = RB.velocity.magnitude;
         m_currentState.OnFixedUpdate();        
     }
 
@@ -144,9 +150,9 @@ public class CharacterControllerSM : MonoBehaviour
         // Communiquer directement avec mon animator
         // Animation commence par ici
 
-        //movementVecValue.Normalize();
+        movementVecValue.Normalize();
 
-        // movementVecValue = new Vector2(movementVecValue.x, movementVecValue.y / MaxVelocity)
+        movementVecValue = new Vector2(movementVecValue.x, movementVecValue.y);
 
         //Référence à l'animator
 

@@ -1225,7 +1225,7 @@ MonoBehaviour:
   <Animator>k__BackingField: {fileID: 746245244}
   <DistanceBetweenCharacterAndFloor>k__BackingField: 0
   <FloorAngleUnderCharacter>k__BackingField: 0
-  <GroundAccelerationValue>k__BackingField: 50
+  <GroundAccelerationValue>k__BackingField: 40
   <JumpAccelerationValue>k__BackingField: 10
   <MaxJumpAccelerationValue>k__BackingField: 0
   <MaxForwardVelocity>k__BackingField: 18

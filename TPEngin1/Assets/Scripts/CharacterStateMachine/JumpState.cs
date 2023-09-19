@@ -39,6 +39,12 @@ public class JumpState : CharacterState
 
     public override bool CanEnter(/*CharacterState currentState*/)
     {
+        // Si on veut essayer var jumpState = TryCast<JumpState>(currentEnter)
+        //if (currentSate is FreeState) à privilégier
+        //{
+        //    return Input.GetKeyDown(KeyCode.Space);
+        //}
+        //return false;
         //Debug.Log("Entered can enter jump state");
         //This must be run in Update absolutely
         return Input.GetKeyDown(KeyCode.Space);
