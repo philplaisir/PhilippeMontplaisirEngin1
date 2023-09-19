@@ -37,7 +37,7 @@ public class JumpState : CharacterState
         m_currentStateTimer -= Time.deltaTime;
     }
 
-    public override bool CanEnter()
+    public override bool CanEnter(/*CharacterState currentState*/)
     {
         //Debug.Log("Entered can enter jump state");
         //This must be run in Update absolutely

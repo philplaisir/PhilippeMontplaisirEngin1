@@ -121,7 +121,7 @@ public class CharacterControllerSM : MonoBehaviour
             {
                 continue;
             }
-            if (state.CanEnter())
+            if (state.CanEnter(/*state*/))
             {
                 //Quitter le state actuel
                 m_currentState.OnExit();
@@ -142,10 +142,13 @@ public class CharacterControllerSM : MonoBehaviour
     {
         // Aller chercher ma vitesse actuelle
         // Communiquer directement avec mon animator
+        // Animation commence par ici
 
         //movementVecValue.Normalize();
 
         // movementVecValue = new Vector2(movementVecValue.x, movementVecValue.y / MaxVelocity)
+
+        //Référence à l'animator
 
         Animator.SetFloat("MoveX", movementVecValue.x);
         Animator.SetFloat("MoveY", movementVecValue.y);

@@ -23,7 +23,7 @@ public class FallingState : CharacterState
     {
     }
 
-    public override bool CanEnter()
+    public override bool CanEnter(/*CharacterState currentState*/)
     {
         //Debug.Log("FALLING STATE CANENTER ENTERED " + m_stateMachine.IsInContactWithFloor());
 

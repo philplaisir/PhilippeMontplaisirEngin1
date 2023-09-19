@@ -33,6 +33,8 @@ public class FreeState : CharacterState
         CharacterControllerFU();
         KeepCharacterOnGroundFU();
 
+        // Mettre l'update de l'animation
+
         //Debug.Log("Velocity " + m_stateMachine.RB.velocity.magnitude);
     }
 
@@ -41,11 +43,25 @@ public class FreeState : CharacterState
         Debug.Log("Exit state: FreeState\n");
     }
 
-    public override bool CanEnter()
+    public override bool CanEnter(/*CharacterState currentState*/)
     {
-        //Je ne peux entrer dans le FreeState que si je touche le sol
-        return m_stateMachine.IsInContactWithFloor();
+        // Fak dans le fond le can enter c'est pour entrer dans la current State
+        // On met tous les states qui peuvent entrer dans le currentSate ici pour essayer de rentrer 
+        // Si le currentState est jumpState on entre
+        //var jumpState = (JumpState)currentState;
+        //if (jumpState != null) 
+        //{
+        //    //Si je suis ici c'est que je suis présentement dans le jump state et teste si je peux entrer dans FreeState
+        //
+        //    //Je ne peux entrer dans le FreeState que si je touche le sol
+        //    return m_stateMachine.IsInContactWithFloor();
+        //
+        //}
         
+        return m_stateMachine.IsInContactWithFloor();
+
+
+        //return false;
     }
 
     public override bool CanExit()
@@ -128,6 +144,8 @@ public class FreeState : CharacterState
         DiagonalVelocityLimitsCalculator(movementVector, projectedVectorForward, projectedVectorRight);
 
         m_stateMachine.RB.AddForce(movementVector * m_stateMachine.GroundAccelerationValue, ForceMode.Acceleration);
+
+        //m_stateMachine.UpdateAnimatorValues(new Vector2(0, forwardComponent));
 
         if (movementVector.magnitude > 0)
         {
