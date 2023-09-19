@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class FreeState : CharacterState
 {
-    private float m_turnSmoothVelocity;    
+    private float m_turnSmoothVelocity;
     //private float m_accelerationValue;
 
 
@@ -21,20 +21,20 @@ public class FreeState : CharacterState
     public override void OnUpdate()
     {
         CalculateAngleUnderCharacter();
-        
-        
+
+
     }
 
     public override void OnFixedUpdate()
     {
         //Debug.Log("Velocity before" + m_stateMachine.RB.velocity.magnitude);
-        
+
         // CHARACTER MOVEMENT RELATIVE TO CAMERA
         CharacterControllerFU();
         KeepCharacterOnGroundFU();
 
         // Mettre l'update de l'animation
-        
+
 
         //Debug.Log("Velocity " + m_stateMachine.RB.velocity.magnitude);
     }
@@ -58,7 +58,7 @@ public class FreeState : CharacterState
         //    return m_stateMachine.IsInContactWithFloor();
         //
         //}
-        
+
         return m_stateMachine.IsInContactWithFloor();
 
 
@@ -99,21 +99,21 @@ public class FreeState : CharacterState
 
     private void CharacterControllerFU()
     {
-        if (!Input.GetKey(KeyCode.W) && 
-            !Input.GetKey(KeyCode.A) && 
-            !Input.GetKey(KeyCode.S) && 
+        if (!Input.GetKey(KeyCode.W) &&
+            !Input.GetKey(KeyCode.A) &&
+            !Input.GetKey(KeyCode.S) &&
             !Input.GetKey(KeyCode.D))
         {
-            MovementDeceleration();            
-            
+            MovementDeceleration();
+
         }
         if (Input.anyKey)
         {
             ReorientCharacterTowardsChameraDirection();
         }
-        if(IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera())
+        if (IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera())
         {
-            MovementDeceleration();            
+            MovementDeceleration();
         }
 
         // hit.normal
@@ -121,7 +121,7 @@ public class FreeState : CharacterState
         Vector3 movementVector = Vector3.zero;
         Vector3 projectedVectorForward = Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.forward, Vector3.up);
         Vector3 projectedVectorRight = Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.right, Vector3.up);
-        
+
         if (Input.GetKey(KeyCode.W))
         {
             movementVector += projectedVectorForward;
@@ -131,36 +131,42 @@ public class FreeState : CharacterState
             movementVector += -projectedVectorForward;
         }
         if (Input.GetKey(KeyCode.A))
-        {            
+        {
             movementVector += -projectedVectorRight;
         }
         if (Input.GetKey(KeyCode.D))
         {
             movementVector += projectedVectorRight;
-        }       
-
-        movementVector.Normalize();       
+        }
+        movementVector.Normalize();
 
         DiagonalVelocityLimitsCalculator(movementVector, projectedVectorForward, projectedVectorRight);
-
-        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.GroundAccelerationValue, ForceMode.Acceleration);
-
-        m_stateMachine.MovementDirectionVector = movementVector;
-
-        //float forwardComponent = Vector3.Dot(m_stateMachine.RB.velocity, movementVector);
-
-        float forwardComponent = Vector3.Dot(m_stateMachine.RB.velocity, projectedVectorForward);
-        float rightComponent = Vector3.Dot(m_stateMachine.RB.velocity, projectedVectorRight);
-
-        Vector2 animationComponent = new Vector2(rightComponent, forwardComponent);
-
-        m_stateMachine.UpdateAnimatorValues(animationComponent);
+        AddForceToMovementVector(movementVector);
+        CalculationsForAnimation(projectedVectorForward, projectedVectorRight);        
 
         if (movementVector.magnitude > 0)
         {
             VelocityRegulatorBasedOnLimitsAndInputs();
             //VelocityRegulatorBasedOnLimitsTwo(projectedVectorForward, projectedVectorRight);
         }
+
+        // For display in editor
+        m_stateMachine.MovementDirectionVector = movementVector;
+
+    }
+
+    private void AddForceToMovementVector(Vector3 movementVector)
+    {
+        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.GroundAccelerationValue, ForceMode.Acceleration);
+    }
+
+    private void CalculationsForAnimation(Vector3 projectedVec3Forward, Vector3 projectedVec3Right)
+    {
+        float forwardComponent = Vector3.Dot(m_stateMachine.RB.velocity, projectedVec3Forward);
+        float rightComponent = Vector3.Dot(m_stateMachine.RB.velocity, projectedVec3Right);
+
+        Vector2 animationComponent = new Vector2(rightComponent, forwardComponent);
+        m_stateMachine.UpdateAnimatorValues(animationComponent);
     }
 
     private void MovementDeceleration()
@@ -188,9 +194,9 @@ public class FreeState : CharacterState
             m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
             m_stateMachine.RB.velocity *= m_stateMachine.MaxForwardDiagonalsVelocity;
             return;
-        }        
+        }
         if (m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxBackwardVelocity &&
-            Input.GetKey(KeyCode.S) || 
+            Input.GetKey(KeyCode.S) ||
             (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)) ||
             (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D)))
         {
@@ -198,14 +204,14 @@ public class FreeState : CharacterState
             m_stateMachine.RB.velocity *= m_stateMachine.MaxBackwardVelocity;
             return;
         }
-        if(m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxStrafeVelocity &&
+        if (m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxStrafeVelocity &&
             (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)))
         {
             m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
             m_stateMachine.RB.velocity *= m_stateMachine.MaxStrafeVelocity;
             return;
         }
-        
+
         if (m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxForwardVelocity &&
             Input.GetKey(KeyCode.W))
         {
@@ -233,7 +239,7 @@ public class FreeState : CharacterState
     }
 
     private bool IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera()
-    {        
+    {
         bool returnValue = false;
 
         //if ((Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S)) ||
