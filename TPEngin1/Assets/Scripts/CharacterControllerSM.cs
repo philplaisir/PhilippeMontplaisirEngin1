@@ -24,26 +24,31 @@ public class CharacterControllerSM : MonoBehaviour
     [field: SerializeField]
     private Animator Animator { get; set; }
 
-
     [field: SerializeField]
-    public float GeneralAccelerationValue { get; private set; }
-    [field: SerializeField]    
-    public float ForwardAccelerationValue { get; private set; }    
+    public float DistanceBetweenCharacterAndFloor { get; private set; }
+    [field: SerializeField]
+    public float GroundAccelerationValue { get; private set; }
+    [field: SerializeField]
+    public float JumpAccelerationValue { get; private set; }
+    [field: SerializeField]
+    public float MaxJumpAccelerationValue { get; private set; }
+    //[field: SerializeField]    
+    //public float ForwardAccelerationValue { get; private set; }    
     [field: SerializeField]
     public float MaxForwardVelocity { get; private set; }
     
-    [field: SerializeField]
-    public float ForwardDiagonalsAccelerationValue { get; private set; }    
+    //[field: SerializeField]
+    //public float ForwardDiagonalsAccelerationValue { get; private set; }    
     [field: SerializeField]
     public float MaxForwardDiagonalsVelocity { get; set; }
     
-    [field: SerializeField]
-    public float BackwardAccelerationValue { get; private set; }    
+    //[field: SerializeField]
+    //public float BackwardAccelerationValue { get; private set; }    
     [field: SerializeField]
     public float MaxBackwardVelocity { get; private set; } 
     
-    [field: SerializeField]
-    public float StrafeAccelerationValue { get; private set; }    
+    //[field: SerializeField]
+    //public float StrafeAccelerationValue { get; private set; }    
     [field: SerializeField]
     public float MaxStrafeVelocity { get; private set; }
     
@@ -81,7 +86,8 @@ public class CharacterControllerSM : MonoBehaviour
     }
     
     private void Update()
-    {           
+    {
+        CalculateDistanceBetweenCharacterAndFloor();
         m_currentState.OnUpdate();
         TryStateTransition();
     }
@@ -105,7 +111,6 @@ public class CharacterControllerSM : MonoBehaviour
             {
                 continue;
             }
-
             if (state.CanEnter())
             {
                 //Quitter le state actuel
@@ -140,6 +145,17 @@ public class CharacterControllerSM : MonoBehaviour
 
 
 
+    }
+
+    private void CalculateDistanceBetweenCharacterAndFloor()
+    {
+        RaycastHit hit;        
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
+        {
+            float distanceToGround = hit.distance;
+            DistanceBetweenCharacterAndFloor = distanceToGround;                        
+            //Debug.Log("Distance to ground: " + distanceToGround);
+        }
     }
 
 

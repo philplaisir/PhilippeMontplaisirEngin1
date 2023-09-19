@@ -9,26 +9,31 @@ using UnityEngine;
 public class FreeState : CharacterState
 {
     private float m_turnSmoothVelocity;
-
+    private float m_slopeAngleUnderCharacter;
+    //private float m_accelerationValue;
 
 
     public override void OnEnter()
     {
         Debug.Log("Enter state: FreeState\n");
+        //m_accelerationValue = m_stateMachine.GroundAccelerationValue;
     }
 
     public override void OnUpdate()
     {
+        CalculateAngleUnderCharacter();
+        
         
     }
 
     public override void OnFixedUpdate()
     {
-        Debug.Log("Velocity before" + m_stateMachine.RB.velocity.magnitude);
+        //Debug.Log("Velocity before" + m_stateMachine.RB.velocity.magnitude);
         
         // CHARACTER MOVEMENT RELATIVE TO CAMERA
         CharacterControllerFU();
-        
+        KeepCharacterOnGroundFU();
+
         //Debug.Log("Velocity " + m_stateMachine.RB.velocity.magnitude);
     }
 
@@ -41,19 +46,38 @@ public class FreeState : CharacterState
     {
         //Je ne peux entrer dans le FreeState que si je touche le sol
         return m_stateMachine.IsInContactWithFloor();
-        //return false; // à retirer
+        
     }
 
     public override bool CanExit()
     {
         return true;
-    } 
-    
+    }
+
 
 
     //88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 
+    private void CalculateAngleUnderCharacter()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(m_stateMachine.transform.position, -m_stateMachine.transform.up, out hit, 1.0f))
+        {
+            float m_slopeAngleUnderCharacter = Vector3.Angle(hit.normal, Vector3.up);
+            Debug.Log("Slope Angle: " + m_slopeAngleUnderCharacter);
+        }
+    }
 
+    private void KeepCharacterOnGroundFU()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(m_stateMachine.transform.position, -Vector3.up, out hit))
+        {
+            Vector3 slopeNormal = hit.normal;
+            Vector3 newVelocity = Vector3.ProjectOnPlane(m_stateMachine.RB.velocity, slopeNormal);
+            m_stateMachine.RB.velocity = newVelocity;
+        }
+    }
 
     private void CharacterControllerFU()
     {
@@ -74,6 +98,8 @@ public class FreeState : CharacterState
             MovementDeceleration();
             return;
         }
+
+        // hit.normal
 
         Vector3 movementVector = Vector3.zero;
         Vector3 projectedVectorForward = Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.forward, Vector3.up);
@@ -100,7 +126,7 @@ public class FreeState : CharacterState
 
         DiagonalVelocityLimitsCalculator(movementVector, projectedVectorForward, projectedVectorRight);
 
-        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.GeneralAccelerationValue, ForceMode.Acceleration);
+        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.GroundAccelerationValue, ForceMode.Acceleration);
 
         if (movementVector.magnitude > 0)
         {
@@ -111,6 +137,11 @@ public class FreeState : CharacterState
 
     private void MovementDeceleration()
     {
+        if (m_stateMachine.RB.velocity.magnitude < 0.1f)
+        {
+            m_stateMachine.RB.velocity = Vector3.zero;
+            return;
+        }
         Vector3 vector3 = m_stateMachine.RB.velocity.normalized;
         m_stateMachine.RB.AddForce(-vector3 * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
     }
@@ -159,10 +190,11 @@ public class FreeState : CharacterState
     private void DiagonalVelocityLimitsCalculator(Vector3 movementVector, Vector3 projectedVectorForward, Vector3 projectedVectorRight)
     {
         float forwardComponent = Vector3.Dot(movementVector, projectedVectorForward);
-        float sideComponent = Mathf.Abs(Vector3.Dot(movementVector, projectedVectorRight));        
+        float sideComponent = Mathf.Abs(Vector3.Dot(movementVector, projectedVectorRight));
+        float componentsTotal = forwardComponent + sideComponent;
 
-        float forwardRatio = forwardComponent / (forwardComponent + sideComponent);
-        float sideRatio = sideComponent / (forwardComponent + sideComponent);
+        float forwardRatio = forwardComponent / componentsTotal;
+        float sideRatio = sideComponent / componentsTotal;
 
         m_stateMachine.MaxForwardDiagonalsVelocity = forwardRatio * m_stateMachine.MaxForwardVelocity + sideRatio * m_stateMachine.MaxStrafeVelocity;
     }
