@@ -9,7 +9,9 @@ public class CharacterControllerSM : MonoBehaviour
 
     [SerializeField]
     private CharacterFloorTrigger m_floorTrigger;
-        
+
+    public bool m_isJumping { get; set; }
+
     // Les variables deviennent des cSharp fields
     // fields en cSharp sont des mtéhodes qui nous permettent d'aller chercher de l'info d'ou la majuscule
     public Camera Camera { get; private set; }
@@ -26,6 +28,8 @@ public class CharacterControllerSM : MonoBehaviour
 
     [field: SerializeField]
     public float DistanceBetweenCharacterAndFloor { get; private set; }
+    [field: SerializeField]
+    public float FloorAngleUnderCharacter { get; set; }
     [field: SerializeField]
     public float GroundAccelerationValue { get; private set; }
     [field: SerializeField]
@@ -62,12 +66,17 @@ public class CharacterControllerSM : MonoBehaviour
     public float JumpIntensity { get; private set; }
 
 
+    // TESTING
+    [field: SerializeField]
+    public GameObject m_testingBullet { get; private set; }
+
 
     private void Awake()
     {
         m_possibleStates = new List<CharacterState>();
         m_possibleStates.Add(new FreeState());
         m_possibleStates.Add(new JumpState());
+        m_possibleStates.Add(new FallingState());
     }
 
     void Start()
@@ -87,6 +96,7 @@ public class CharacterControllerSM : MonoBehaviour
     
     private void Update()
     {
+        DetectTestingInputs();
         CalculateDistanceBetweenCharacterAndFloor();
         m_currentState.OnUpdate();
         TryStateTransition();
@@ -156,6 +166,23 @@ public class CharacterControllerSM : MonoBehaviour
             DistanceBetweenCharacterAndFloor = distanceToGround;                        
             //Debug.Log("Distance to ground: " + distanceToGround);
         }
+    }
+
+    private void DetectTestingInputs()
+    {
+        // TODO à ajuster les détails
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Vector3 spawnPosition = new Vector3(145, 1, 170);
+            GameObject sphere = Instantiate(m_testingBullet, spawnPosition, Quaternion.identity);
+                        
+            TestBullet sphereMovement = sphere.GetComponent<TestBullet>();
+            if (sphereMovement == null)
+            {
+                sphere.AddComponent<TestBullet>();
+            }
+        }
+
     }
 
 

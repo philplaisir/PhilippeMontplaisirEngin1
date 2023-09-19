@@ -25,11 +25,14 @@ public class FallingState : CharacterState
 
     public override bool CanEnter()
     {
-        throw new System.NotImplementedException();
+        //Debug.Log("FALLING STATE CANENTER ENTERED " + m_stateMachine.IsInContactWithFloor());
+
+        return !m_stateMachine.IsInContactWithFloor();
     }
 
     public override bool CanExit()
     {
-        throw new System.NotImplementedException();
+        return m_stateMachine.IsInContactWithFloor();
+        
     }
 }

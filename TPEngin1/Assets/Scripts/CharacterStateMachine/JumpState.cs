@@ -7,6 +7,8 @@ public class JumpState : CharacterState
     private const float STATE_EXIT_TIMER = 0.2f;
     private float m_currentStateTimer = 0.0f;
     private float m_turnSmoothVelocity;
+    private float m_jumpBaseHeight;
+    private float m_jumpedHeight;
 
     public override void OnEnter()
     {
@@ -15,6 +17,8 @@ public class JumpState : CharacterState
         //Effectuer le saut
         m_stateMachine.RB.AddForce(Vector3.up * m_stateMachine.JumpIntensity, ForceMode.Acceleration);
         m_currentStateTimer = STATE_EXIT_TIMER;
+        //m_stateMachine.m_isJumping = true;
+        //m_jumpBaseHeight = m_stateMachine.DistanceBetweenCharacterAndFloor;
     }
 
     public override void OnExit()
@@ -35,13 +39,21 @@ public class JumpState : CharacterState
 
     public override bool CanEnter()
     {
-        Debug.Log("Entered can enter jump sate");
+        //Debug.Log("Entered can enter jump state");
         //This must be run in Update absolutely
         return Input.GetKeyDown(KeyCode.Space);
     }
 
     public override bool CanExit()
     {
+        //float maxJumpInteractionAllowance = m_jumpBaseHeight + 3;
+        //float currentMaxHeightAfterJump = maxJumpInteractionAllowance + m_stateMachine.DistanceBetweenCharacterAndFloor;
+        //
+        //
+        //if (m_currentStateTimer <= 0 && m_stateMachine.DistanceBetweenCharacterAndFloor < maxJumpInteractionAllowance + m_stateMachine.DistanceBetweenCharacterAndFloor)
+        //{
+        //
+        //}
         return m_currentStateTimer <= 0;
     }
 

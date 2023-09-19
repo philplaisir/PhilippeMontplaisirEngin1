@@ -8,8 +8,7 @@ using UnityEngine;
 
 public class FreeState : CharacterState
 {
-    private float m_turnSmoothVelocity;
-    private float m_slopeAngleUnderCharacter;
+    private float m_turnSmoothVelocity;    
     //private float m_accelerationValue;
 
 
@@ -63,13 +62,15 @@ public class FreeState : CharacterState
         RaycastHit hit;
         if (Physics.Raycast(m_stateMachine.transform.position, -m_stateMachine.transform.up, out hit, 1.0f))
         {
-            float m_slopeAngleUnderCharacter = Vector3.Angle(hit.normal, Vector3.up);
-            Debug.Log("Slope Angle: " + m_slopeAngleUnderCharacter);
+            float slopeAngleUnderCharacter = Vector3.Angle(hit.normal, Vector3.up);
+            m_stateMachine.FloorAngleUnderCharacter = slopeAngleUnderCharacter;
+            //Debug.Log("Slope Angle: " + m_slopeAngleUnderCharacter);
         }
     }
 
     private void KeepCharacterOnGroundFU()
     {
+        // To keep character always on terrain when terrain is angled
         RaycastHit hit;
         if (Physics.Raycast(m_stateMachine.transform.position, -Vector3.up, out hit))
         {
@@ -197,6 +198,11 @@ public class FreeState : CharacterState
         float sideRatio = sideComponent / componentsTotal;
 
         m_stateMachine.MaxForwardDiagonalsVelocity = forwardRatio * m_stateMachine.MaxForwardVelocity + sideRatio * m_stateMachine.MaxStrafeVelocity;
+    }
+
+    private void GroundVelocityLimitsCalculator()
+    {
+
     }
 
     private bool IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera()
