@@ -27,16 +27,10 @@ public class FreeState : CharacterState
 
     public override void OnFixedUpdate()
     {
-        //Debug.Log("Velocity before" + m_stateMachine.RB.velocity.magnitude);
-
         // CHARACTER MOVEMENT RELATIVE TO CAMERA
         CharacterControllerFU();
         KeepCharacterOnGroundFU();
 
-        // Mettre l'update de l'animation
-
-
-        //Debug.Log("Velocity " + m_stateMachine.RB.velocity.magnitude);
     }
 
     public override void OnExit()
@@ -99,25 +93,13 @@ public class FreeState : CharacterState
 
     private void CharacterControllerFU()
     {
-        if (!Input.GetKey(KeyCode.W) &&
-            !Input.GetKey(KeyCode.A) &&
-            !Input.GetKey(KeyCode.S) &&
-            !Input.GetKey(KeyCode.D))
-        {
-            MovementDeceleration();
-
-        }
+        MovementDeceleration();
+                
         if (Input.anyKey)
         {
             ReorientCharacterTowardsChameraDirection();
         }
-        if (IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera())
-        {
-            MovementDeceleration();
-        }
-
-        // hit.normal
-
+        
         Vector3 movementVector = Vector3.zero;
         Vector3 projectedVectorForward = Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.forward, Vector3.up);
         Vector3 projectedVectorRight = Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.right, Vector3.up);
@@ -165,19 +147,27 @@ public class FreeState : CharacterState
         float forwardComponent = Vector3.Dot(m_stateMachine.RB.velocity, projectedVec3Forward);
         float rightComponent = Vector3.Dot(m_stateMachine.RB.velocity, projectedVec3Right);
 
-        Vector2 animationComponent = new Vector2(rightComponent, forwardComponent);
-        m_stateMachine.UpdateAnimatorValues(animationComponent);
+        Vector2 animationComponents = new Vector2(rightComponent, forwardComponent);
+        m_stateMachine.UpdateAnimatorValues(animationComponents);
     }
 
     private void MovementDeceleration()
     {
-        if (m_stateMachine.RB.velocity.magnitude < 0.3f)
+        if ((!Input.GetKey(KeyCode.W) &&
+            !Input.GetKey(KeyCode.A) &&
+            !Input.GetKey(KeyCode.S) &&
+            !Input.GetKey(KeyCode.D)) ||
+            IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera())
         {
-            m_stateMachine.RB.velocity = Vector3.zero;
-            return;
-        }
-        Vector3 vector3 = m_stateMachine.RB.velocity.normalized;
-        m_stateMachine.RB.AddForce(-vector3 * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
+            if (m_stateMachine.RB.velocity.magnitude < 0.3f)
+            {
+                m_stateMachine.RB.velocity = Vector3.zero;
+                return;
+            }
+            Vector3 vector3 = m_stateMachine.RB.velocity.normalized;
+            m_stateMachine.RB.AddForce(-vector3 * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
+
+        }            
     }
 
     private void ReorientCharacterTowardsChameraDirection()

@@ -81,7 +81,7 @@ public class CharacterControllerSM : MonoBehaviour
         m_possibleStates = new List<CharacterState>();
         m_possibleStates.Add(new FreeState());
         m_possibleStates.Add(new JumpState());
-        m_possibleStates.Add(new FallingState());
+        //m_possibleStates.Add(new FallingState());
     }
 
     void Start()
@@ -101,6 +101,15 @@ public class CharacterControllerSM : MonoBehaviour
     
     private void Update()
     {
+        if (IsInContactWithFloor())
+        {
+
+            Animator.SetBool("TouchGround", true);
+        }
+        
+        
+        
+        
         DetectTestingInputs();
         CalculateDistanceBetweenCharacterAndFloor();
         m_currentState.OnUpdate();

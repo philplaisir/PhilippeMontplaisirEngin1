@@ -1,14 +1,20 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 //TODO Checker pour plus de précision jump
 
 public class JumpState : CharacterState
 {
+    private Animator m_animator;
+    private bool m_jumpTriggerValue;
+
     private const float STATE_EXIT_TIMER = 0.2f;
     private float m_currentStateTimer = 0.0f;
     private float m_turnSmoothVelocity;
     private float m_jumpBaseHeight;
     private float m_jumpedHeight;
+
+
 
     public override void OnEnter()
     {
@@ -17,6 +23,10 @@ public class JumpState : CharacterState
         //Effectuer le saut
         m_stateMachine.RB.AddForce(Vector3.up * m_stateMachine.JumpIntensity, ForceMode.Acceleration);
         m_currentStateTimer = STATE_EXIT_TIMER;
+        m_stateMachine.UpdateAnimatorValues(new Vector2(0,0));
+        m_animator = m_stateMachine.GetComponentInParent<Animator>();
+        m_animator.SetTrigger("Jump");
+        
         //m_stateMachine.m_isJumping = true;
         //m_jumpBaseHeight = m_stateMachine.DistanceBetweenCharacterAndFloor;
     }
@@ -29,11 +39,12 @@ public class JumpState : CharacterState
     public override void OnFixedUpdate()
     {
         CharacterControllerJumpFU();
-
     }
 
     public override void OnUpdate()
     {
+        
+
         m_currentStateTimer -= Time.deltaTime;
     }
 
@@ -60,6 +71,8 @@ public class JumpState : CharacterState
         //{
         //
         //}
+
+
         return m_currentStateTimer <= 0;
     }
 
