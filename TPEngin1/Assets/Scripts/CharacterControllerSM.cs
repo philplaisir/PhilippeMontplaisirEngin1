@@ -25,6 +25,8 @@ public class CharacterControllerSM : MonoBehaviour
 
     [field: SerializeField]
     private Animator Animator { get; set; }
+    
+    
 
     
     [field: SerializeField]
@@ -100,10 +102,9 @@ public class CharacterControllerSM : MonoBehaviour
     }
     
     private void Update()
-    {
+    {        
         if (IsInContactWithFloor())
-        {
-
+        {            
             Animator.SetBool("TouchGround", true);
         }
         
@@ -153,7 +154,7 @@ public class CharacterControllerSM : MonoBehaviour
         return m_floorTrigger.IsOnFloor;
     }
 
-    public void UpdateAnimatorValues(Vector2 movementVecValue)
+    public void UpdateFreeStateAnimatorValues(Vector2 movementVecValue)
     {
         // Aller chercher ma vitesse actuelle
         // Communiquer directement avec mon animator

@@ -23,9 +23,10 @@ public class JumpState : CharacterState
         //Effectuer le saut
         m_stateMachine.RB.AddForce(Vector3.up * m_stateMachine.JumpIntensity, ForceMode.Acceleration);
         m_currentStateTimer = STATE_EXIT_TIMER;
-        m_stateMachine.UpdateAnimatorValues(new Vector2(0,0));
+        m_stateMachine.UpdateFreeStateAnimatorValues(new Vector2(0,0));
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         m_animator.SetTrigger("Jump");
+        m_animator.SetBool("TouchGround", false);
         
         //m_stateMachine.m_isJumping = true;
         //m_jumpBaseHeight = m_stateMachine.DistanceBetweenCharacterAndFloor;
@@ -43,7 +44,7 @@ public class JumpState : CharacterState
 
     public override void OnUpdate()
     {
-        
+        m_animator.SetBool("TouchGround", false);
 
         m_currentStateTimer -= Time.deltaTime;
     }

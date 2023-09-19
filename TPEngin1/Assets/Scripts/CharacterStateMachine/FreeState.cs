@@ -148,7 +148,7 @@ public class FreeState : CharacterState
         float rightComponent = Vector3.Dot(m_stateMachine.RB.velocity, projectedVec3Right);
 
         Vector2 animationComponents = new Vector2(rightComponent, forwardComponent);
-        m_stateMachine.UpdateAnimatorValues(animationComponents);
+        m_stateMachine.UpdateFreeStateAnimatorValues(animationComponents);
     }
 
     private void MovementDeceleration()
