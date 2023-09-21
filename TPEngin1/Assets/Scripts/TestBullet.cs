@@ -14,7 +14,9 @@ public class TestBullet : MonoBehaviour
     }
 
     private void Update()
-    {        
+    {
+        //Rigidbody rb = GetComponent<Rigidbody>();
+        //rb.AddForce(-Vector3.right, ForceMode.Impulse);
         transform.Translate(-Vector3.right * m_moveSpeed * Time.deltaTime, Space.World);
         m_lifetime -= Time.deltaTime;
         if (m_lifetime < 0)
@@ -26,5 +28,6 @@ public class TestBullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("HIT");
+        Destroy(gameObject);
     }
 }

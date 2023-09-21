@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 //TODO Checker pour plus de précision jump
@@ -14,7 +13,7 @@ public class JumpState : CharacterState
     private float m_jumpBaseHeight;
     private float m_jumpedHeight;
 
-
+    private Vector3 m_defaultGravity;
 
     public override void OnEnter()
     {
@@ -26,7 +25,10 @@ public class JumpState : CharacterState
         m_stateMachine.UpdateFreeStateAnimatorValues(new Vector2(0,0));
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         m_animator.SetTrigger("Jump");
-        m_animator.SetBool("TouchGround", false);
+        m_defaultGravity = Physics.gravity;
+        //m_stateMachine.RB.useGravity = false;
+        Physics.gravity = new Vector3(0, -30.0f, 0); // Increase the Y component as needed
+        //m_animator.SetBool("TouchGround", false);
         
         //m_stateMachine.m_isJumping = true;
         //m_jumpBaseHeight = m_stateMachine.DistanceBetweenCharacterAndFloor;
@@ -34,6 +36,11 @@ public class JumpState : CharacterState
 
     public override void OnExit()
     {
+        //m_stateMachine.RB.useGravity = true; // Re-enable normal gravity
+        Physics.gravity = m_defaultGravity;
+
+        //Physics.gravity = new Vector3(0, -9.81f, 0); // Reset to default gravity (if it's different)
+
         Debug.Log("Exit state: JumpState\n");
     }
 
@@ -59,6 +66,7 @@ public class JumpState : CharacterState
         //return false;
         //Debug.Log("Entered can enter jump state");
         //This must be run in Update absolutely
+        //return m_stateMachine.IsTouchingFloor && Input.GetKeyDown(KeyCode.Space);
         return Input.GetKeyDown(KeyCode.Space);
     }
 
@@ -108,6 +116,7 @@ public class JumpState : CharacterState
         movementVector.Normalize();
 
         m_stateMachine.RB.AddForce(movementVector * m_stateMachine.JumpAccelerationValue, ForceMode.Acceleration);
+
 
         if (movementVector.magnitude > 0)
         {

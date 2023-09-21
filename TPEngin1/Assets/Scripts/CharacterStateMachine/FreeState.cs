@@ -5,12 +5,14 @@ using UnityEngine;
 // Checker pour faire fonctionner la limite solidement, actuellement la velocité est limité mais dépasse toujours un peu la limite que je lui donne
 // Facultatif Essayer d'implémenter d'autres types de déplacements (relatif au personnag, tank control)
 // Facultatif Essayer d'ajouter contrôle avec manette
+// Facultatif mettre un run avec le shift
 
 public class FreeState : CharacterState
 {
     private float m_turnSmoothVelocity;
     //private float m_accelerationValue;
 
+    private float m_gravity = 25.81f;
 
     public override void OnEnter()
     {
@@ -93,14 +95,14 @@ public class FreeState : CharacterState
 
     private void CharacterControllerFU()
     {
-        MovementDeceleration();
+        DecelerateMovement();
                 
         if (Input.anyKey)
         {
             ReorientCharacterTowardsChameraDirection();
         }
         
-        Vector3 movementVector = Vector3.zero;
+        Vector3 movementVector = new Vector3(0, m_stateMachine.RB.velocity.y, 0); // pourrait être un zero
         Vector3 projectedVectorForward = Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.forward, Vector3.up);
         Vector3 projectedVectorRight = Vector3.ProjectOnPlane(m_stateMachine.Camera.transform.right, Vector3.up);
 
@@ -121,8 +123,11 @@ public class FreeState : CharacterState
             movementVector += projectedVectorRight;
         }
         movementVector.Normalize();
+        //Vector3 normalizedVector = new Vector3(movementVector.x, 0, movementVector.z).normalized;
+        //movementVector.x = normalizedVector.x;
+        //movementVector.z = normalizedVector.z;
 
-        DiagonalVelocityLimitsCalculator(movementVector, projectedVectorForward, projectedVectorRight);
+        CalculateDiagonalMaxVelocity(movementVector, projectedVectorForward, projectedVectorRight);
         AddForceToMovementVector(movementVector);
         CalculationsForAnimation(projectedVectorForward, projectedVectorRight);        
 
@@ -132,6 +137,8 @@ public class FreeState : CharacterState
             //VelocityRegulatorBasedOnLimitsTwo(projectedVectorForward, projectedVectorRight);
         }
 
+        
+
         // For display in editor
         m_stateMachine.MovementDirectionVector = movementVector;
 
@@ -140,6 +147,7 @@ public class FreeState : CharacterState
     private void AddForceToMovementVector(Vector3 movementVector)
     {
         m_stateMachine.RB.AddForce(movementVector * m_stateMachine.GroundAccelerationValue, ForceMode.Acceleration);
+        //m_stateMachine.RB.AddForce(Vector3.down * m_gravity, ForceMode.Impulse);
     }
 
     private void CalculationsForAnimation(Vector3 projectedVec3Forward, Vector3 projectedVec3Right)
@@ -151,7 +159,7 @@ public class FreeState : CharacterState
         m_stateMachine.UpdateFreeStateAnimatorValues(animationComponents);
     }
 
-    private void MovementDeceleration()
+    private void DecelerateMovement()
     {
         if ((!Input.GetKey(KeyCode.W) &&
             !Input.GetKey(KeyCode.A) &&
@@ -159,13 +167,17 @@ public class FreeState : CharacterState
             !Input.GetKey(KeyCode.D)) ||
             IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera())
         {
-            if (m_stateMachine.RB.velocity.magnitude < 0.3f)
+            if (m_stateMachine.RB.velocity.magnitude < 0.4f)
             {
-                m_stateMachine.RB.velocity = Vector3.zero;
+                m_stateMachine.RB.velocity = new Vector3(0, m_stateMachine.RB.velocity.y, 0);
                 return;
             }
             Vector3 vector3 = m_stateMachine.RB.velocity.normalized;
             m_stateMachine.RB.AddForce(-vector3 * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
+
+            //Vector3 decelerationVector = new Vector3(m_stateMachine.RB.velocity.x, 0, m_stateMachine.RB.velocity.z);
+            //decelerationVector.Normalize();
+            //m_stateMachine.RB.AddForce(-decelerationVector * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
 
         }            
     }
@@ -211,7 +223,7 @@ public class FreeState : CharacterState
         }
     }
 
-    private void DiagonalVelocityLimitsCalculator(Vector3 movementVector, Vector3 projectedVectorForward, Vector3 projectedVectorRight)
+    private void CalculateDiagonalMaxVelocity(Vector3 movementVector, Vector3 projectedVectorForward, Vector3 projectedVectorRight)
     {
         float forwardComponent = Vector3.Dot(movementVector, projectedVectorForward);
         float sideComponent = Mathf.Abs(Vector3.Dot(movementVector, projectedVectorRight));

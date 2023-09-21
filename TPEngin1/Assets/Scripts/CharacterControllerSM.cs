@@ -25,10 +25,11 @@ public class CharacterControllerSM : MonoBehaviour
 
     [field: SerializeField]
     private Animator Animator { get; set; }
-    
-    
 
-    
+
+
+    [field: SerializeField]
+    public bool IsTouchingFloor { get; private set; }
     [field: SerializeField]
     public float CharacterVelocity { get; private set; }
     [field: SerializeField]
@@ -102,7 +103,8 @@ public class CharacterControllerSM : MonoBehaviour
     }
     
     private void Update()
-    {        
+    {
+        IsTouchingFloor = IsInContactWithFloor();
         if (IsInContactWithFloor())
         {            
             Animator.SetBool("TouchGround", true);
