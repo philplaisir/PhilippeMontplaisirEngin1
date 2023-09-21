@@ -99,7 +99,7 @@ public class FreeState : CharacterState
                 
         if (Input.anyKey)
         {
-            ReorientCharacterTowardsChameraDirection();
+            ReorientCharacterWhenMoving();
         }
         
         Vector3 movementVector = new Vector3(0, m_stateMachine.RB.velocity.y, 0); // pourrait être un zero
@@ -182,7 +182,7 @@ public class FreeState : CharacterState
         }            
     }
 
-    private void ReorientCharacterTowardsChameraDirection()
+    private void ReorientCharacterWhenMoving()
     {
         m_stateMachine.GameObject.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(m_stateMachine.Transform.transform.eulerAngles.y, m_stateMachine.Camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_stateMachine.TurnSmoothTime);
     }
@@ -221,6 +221,31 @@ public class FreeState : CharacterState
             m_stateMachine.RB.velocity *= m_stateMachine.MaxForwardVelocity;
             return;
         }
+
+        /*
+         
+             float maxVelocity = 0;
+
+    if (Input.GetKey(KeyCode.W))
+    {
+        maxVelocity = m_stateMachine.MaxForwardVelocity;
+    }
+    else if (Input.GetKey(KeyCode.S))
+    {
+        maxVelocity = m_stateMachine.MaxBackwardVelocity;
+    }
+    else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+    {
+        maxVelocity = m_stateMachine.MaxStrafeVelocity;
+    }
+
+    if (maxVelocity > 0 && m_stateMachine.RB.velocity.magnitude > maxVelocity)
+    {
+        m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized * maxVelocity;
+    }
+         
+         */
+
     }
 
     private void CalculateDiagonalMaxVelocity(Vector3 movementVector, Vector3 projectedVectorForward, Vector3 projectedVectorRight)
