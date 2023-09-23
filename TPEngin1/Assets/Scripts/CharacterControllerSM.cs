@@ -72,6 +72,8 @@ public class CharacterControllerSM : MonoBehaviour
 
     [field: SerializeField]
     public float JumpIntensity { get; private set; }
+    [field: SerializeField]
+    public float JumpGravity { get; private set; }
 
 
     // TESTING

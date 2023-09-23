@@ -1238,6 +1238,7 @@ MonoBehaviour:
   <DecelerationValue>k__BackingField: 40
   <TurnSmoothTime>k__BackingField: 0.2
   <JumpIntensity>k__BackingField: 800
+  <JumpGravity>k__BackingField: 30
   <m_testingBullet>k__BackingField: {fileID: 6995891691891069014, guid: 1b29a26dfb8226f49a444ddbcbd33d18,
     type: 3}
 --- !u!1 &595232059
