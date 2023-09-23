@@ -70,10 +70,14 @@ public class CharacterControllerSM : MonoBehaviour
     [field: SerializeField]
     public float TurnSmoothTime { get; private set; } // Lower number means snappier turn
 
+    // JUMPING
     [field: SerializeField]
     public float JumpIntensity { get; private set; }
     [field: SerializeField]
     public float JumpGravity { get; private set; }
+
+    
+
 
 
     // TESTING
@@ -83,10 +87,12 @@ public class CharacterControllerSM : MonoBehaviour
 
     private void Awake()
     {
+        
+
         m_possibleStates = new List<CharacterState>();
         m_possibleStates.Add(new FreeState());
         m_possibleStates.Add(new JumpState());
-        //m_possibleStates.Add(new FallingState());
+        m_possibleStates.Add(new FallingState());
     }
 
     void Start()
