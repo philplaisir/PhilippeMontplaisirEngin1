@@ -1238,7 +1238,7 @@ MonoBehaviour:
   <DecelerationValue>k__BackingField: 40
   <TurnSmoothTime>k__BackingField: 0.2
   <JumpIntensity>k__BackingField: 800
-  <JumpGravity>k__BackingField: 30
+  <FallGravity>k__BackingField: 30
   <m_testingBullet>k__BackingField: {fileID: 6995891691891069014, guid: 1b29a26dfb8226f49a444ddbcbd33d18,
     type: 3}
 --- !u!1 &595232059
@@ -4260,6 +4260,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692233617106134855, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.335
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4825598651874195584, guid: d94e0d5f021e3d745a6b1adcbdee59c2, type: 3}

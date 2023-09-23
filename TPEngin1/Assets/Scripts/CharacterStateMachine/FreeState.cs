@@ -41,25 +41,22 @@ public class FreeState : CharacterState
         Debug.Log("Exit state: FreeState\n");
     }
 
-    public override bool CanEnter(/*CharacterState currentState*/)
+    public override bool CanEnter(CharacterState currentState)
     {
-        // Fak dans le fond le can enter c'est pour entrer dans la current State
-        // On met tous les states qui peuvent entrer dans le currentSate ici pour essayer de rentrer 
-        // Si le currentState est jumpState on entre
-        //var jumpState = (JumpState)currentState;
-        //if (jumpState != null) 
-        //{
-        //    //Si je suis ici c'est que je suis présentement dans le jump state et teste si je peux entrer dans FreeState
-        //
-        //    //Je ne peux entrer dans le FreeState que si je touche le sol
-        //    return m_stateMachine.IsInContactWithFloor();
-        //
-        //}
+        
+        if (currentState is JumpState || currentState is FallingState) 
+        {
+            
+            return m_stateMachine.IsInContactWithFloor();
+        
+        }
+        if (currentState is AttackingState)
+        {
+            return !m_stateMachine.Attacking;
+        }
 
-        return m_stateMachine.IsInContactWithFloor();
-
-
-        //return false;
+        return false;
+                
     }
 
     public override bool CanExit()
@@ -124,13 +121,13 @@ public class FreeState : CharacterState
             movementVector += projectedVectorRight;
         }
         movementVector.Normalize();
-        //Vector3 normalizedVector = new Vector3(movementVector.x, 0, movementVector.z).normalized;
-        //movementVector.x = normalizedVector.x;
-        //movementVector.z = normalizedVector.z;
+        
 
         CalculateDiagonalMaxVelocity(movementVector, projectedVectorForward, projectedVectorRight);
         AddForceToMovementVector(movementVector);
-        CalculationsForAnimation(projectedVectorForward, projectedVectorRight);        
+        CalculationsForAnimation(projectedVectorForward, projectedVectorRight);
+
+        Debug.Log("Character controller ENTERED WHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
 
         if (movementVector.magnitude > 0)
         {
@@ -147,8 +144,7 @@ public class FreeState : CharacterState
 
     private void AddForceToMovementVector(Vector3 movementVector)
     {
-        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.GroundAccelerationValue, ForceMode.Acceleration);
-        //m_stateMachine.RB.AddForce(Vector3.down * m_gravity, ForceMode.Impulse);
+        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.GroundAccelerationValue, ForceMode.Acceleration);        
     }
 
     private void CalculationsForAnimation(Vector3 projectedVec3Forward, Vector3 projectedVec3Right)

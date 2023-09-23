@@ -37,7 +37,7 @@ public class JumpState : CharacterState
 
     public override void OnFixedUpdate()
     {
-        m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.JumpGravity, ForceMode.Acceleration);
+        m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
         CharacterControllerJumpFU();
     }
 
@@ -48,18 +48,16 @@ public class JumpState : CharacterState
         m_currentStateTimer -= Time.deltaTime;
     }
 
-    public override bool CanEnter(/*CharacterState currentState*/)
+    public override bool CanEnter(CharacterState currentState)
     {
-        // Si on veut essayer var jumpState = TryCast<JumpState>(currentEnter)
-        //if (currentSate is FreeState) à privilégier
-        //{
-        //    return Input.GetKeyDown(KeyCode.Space);
-        //}
-        //return false;
-        //Debug.Log("Entered can enter jump state");
-        //This must be run in Update absolutely
-        //return m_stateMachine.IsTouchingFloor && Input.GetKeyDown(KeyCode.Space);
-        return Input.GetKeyDown(KeyCode.Space);
+        
+
+        if (currentState is FreeState)
+        {
+            return Input.GetKeyDown(KeyCode.Space);
+        }
+        return false;
+
     }
 
     public override bool CanExit()

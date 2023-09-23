@@ -23,10 +23,11 @@ public abstract class CharacterState : IState
     {
     }
 
-    public virtual bool CanEnter(/*CharacterState currentState*/)
+    public virtual bool CanEnter(CharacterState currentState)
     {
 
         throw new System.NotImplementedException();
+        return false;
     }
 
     public virtual bool CanExit()

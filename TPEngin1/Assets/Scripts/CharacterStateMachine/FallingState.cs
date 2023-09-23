@@ -22,7 +22,7 @@ public class FallingState : CharacterState
 
     public override void OnFixedUpdate()
     {
-        m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.JumpGravity, ForceMode.Acceleration);
+        m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
     }
 
     public override void OnUpdate()
@@ -30,10 +30,18 @@ public class FallingState : CharacterState
         m_animator.SetBool("TouchGround", false);
     }
 
-    public override bool CanEnter(/*CharacterState currentState*/)
-    {
-        
-        return !m_stateMachine.IsInContactWithFloor();
+    public override bool CanEnter(CharacterState currentState)
+    {        
+
+        if (currentState is FreeState)
+        {
+            return !m_stateMachine.IsInContactWithFloor();
+        }
+
+
+        return false;
+
+        //return !m_stateMachine.IsInContactWithFloor();
     }
 
     public override bool CanExit()

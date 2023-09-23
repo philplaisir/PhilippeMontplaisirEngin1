@@ -74,9 +74,10 @@ public class CharacterControllerSM : MonoBehaviour
     [field: SerializeField]
     public float JumpIntensity { get; private set; }
     [field: SerializeField]
-    public float JumpGravity { get; private set; }
+    public float FallGravity { get; private set; }
 
-    
+    // ATTACKING
+    public bool Attacking { get; set; }
 
 
 
@@ -93,6 +94,8 @@ public class CharacterControllerSM : MonoBehaviour
         m_possibleStates.Add(new FreeState());
         m_possibleStates.Add(new JumpState());
         m_possibleStates.Add(new FallingState());
+        m_possibleStates.Add(new AttackingState());
+
     }
 
     void Start()
@@ -147,7 +150,7 @@ public class CharacterControllerSM : MonoBehaviour
             {
                 continue;
             }
-            if (state.CanEnter(/*state*/))
+            if (state.CanEnter(m_currentState))
             {
                 //Quitter le state actuel
                 m_currentState.OnExit();
@@ -200,7 +203,7 @@ public class CharacterControllerSM : MonoBehaviour
     private void DetectTestingInputs()
     {
         // TODO à ajuster les détails
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             Vector3 spawnPosition = new Vector3(145, 1, 170);
             GameObject sphere = Instantiate(m_testingBullet, spawnPosition, Quaternion.identity);
