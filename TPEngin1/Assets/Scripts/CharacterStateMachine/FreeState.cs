@@ -52,7 +52,12 @@ public class FreeState : CharacterState
         }
         if (currentState is AttackingState)
         {
-            return !m_stateMachine.Attacking;
+            if (m_stateMachine.Attacking == false)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         return false;
