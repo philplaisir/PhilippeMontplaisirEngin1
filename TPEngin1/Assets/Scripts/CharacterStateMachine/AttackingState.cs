@@ -39,6 +39,9 @@ public class AttackingState : CharacterState
 
     public override void OnFixedUpdate()
     {
+        Vector3 vector3 = m_stateMachine.RB.velocity.normalized;
+        m_stateMachine.RB.AddForce(-vector3 * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
+
     }
 
     public override void OnUpdate()
@@ -56,8 +59,9 @@ public class AttackingState : CharacterState
         //    // Additional code specific to when the animation is done
         //}
 
-
-
+        //Debug.Log(m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+        //
+        //
         m_delay -= Time.deltaTime;
         
         if (m_delay <= 0)
@@ -65,10 +69,9 @@ public class AttackingState : CharacterState
             m_stateMachine.Attacking = false;
         }
 
-        //if (m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+        //if (m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
         //{
-        //    m_stateMachine.Attacking = false;
-        //
+        //    m_stateMachine.Attacking = false;        
         //}
 
     }

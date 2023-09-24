@@ -132,7 +132,7 @@ public class FreeState : CharacterState
         AddForceToMovementVector(movementVector);
         CalculationsForAnimation(projectedVectorForward, projectedVectorRight);
 
-        Debug.Log("Character controller ENTERED WHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
+        
 
         if (movementVector.magnitude > 0)
         {

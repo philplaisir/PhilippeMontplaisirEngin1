@@ -205,7 +205,7 @@ public class CharacterControllerSM : MonoBehaviour
         // TODO à ajuster les détails
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Vector3 spawnPosition = new Vector3(145, 1, 170);
+            Vector3 spawnPosition = new Vector3(143, 1, 170);
             GameObject sphere = Instantiate(m_testingBullet, spawnPosition, Quaternion.identity);
                         
             TestBullet sphereMovement = sphere.GetComponent<TestBullet>();
