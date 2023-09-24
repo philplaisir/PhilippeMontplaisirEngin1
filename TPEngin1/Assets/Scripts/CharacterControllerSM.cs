@@ -13,7 +13,7 @@ public class CharacterControllerSM : MonoBehaviour
     private ElevatorController m_elevatorController;
 
     public bool IsJumpingForTooLong { get; set; }
-    private float m_previousElevation;        
+    private float m_previousElevation = 0.0f;        
     public bool IsLosingAltitude { get; private set; }
 
     // Les variables deviennent des cSharp fields

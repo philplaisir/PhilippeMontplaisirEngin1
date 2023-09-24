@@ -123,32 +123,23 @@ public class FreeState : CharacterState
         {
             movementVector += projectedVectorRight;
         }
+
         movementVector.Normalize();
-        
-
-        CalculateDiagonalMaxVelocity(movementVector, projectedVectorForward, projectedVectorRight);
-        AddForceToMovementVector(movementVector);
-        CalculationsForAnimation(projectedVectorForward, projectedVectorRight);
-
-        
+        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.GroundAcceleration, ForceMode.Acceleration);        
 
         if (movementVector.magnitude > 0)
         {
-            VelocityRegulatorBasedOnLimitsAndInputs();
+            CalculateDiagonalMaxVelocity(movementVector, projectedVectorForward, projectedVectorRight);
+            RegulateVelocity();
             //VelocityRegulatorBasedOnLimitsTwo(projectedVectorForward, projectedVectorRight);
         }
 
-        
+        CalculationsForAnimation(projectedVectorForward, projectedVectorRight);
 
         // For display in editor
         m_stateMachine.MovementDirectionVector = movementVector;
 
-    }
-
-    private void AddForceToMovementVector(Vector3 movementVector)
-    {
-        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.GroundAcceleration, ForceMode.Acceleration);        
-    }
+    }    
 
     private void CalculationsForAnimation(Vector3 projectedVec3Forward, Vector3 projectedVec3Right)
     {
@@ -187,65 +178,32 @@ public class FreeState : CharacterState
         m_stateMachine.GameObject.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(m_stateMachine.Transform.transform.eulerAngles.y, m_stateMachine.Camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_stateMachine.TurnSmoothTime);
     }
 
-    private void VelocityRegulatorBasedOnLimitsAndInputs()
-    {
-        if (m_stateMachine.RB.velocity.magnitude < m_stateMachine.MaxForwardVelocity &&
-            m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxStrafeVelocity &&
-            ((Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D)) || (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))))
+    private void RegulateVelocity()
+    {   
+        float maxVelocity = 0.0f;
+
+        if (((Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D)) || (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))))
         {
-            m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
-            m_stateMachine.RB.velocity *= m_stateMachine.MaxForwardDiagonalsVelocity;
-            return;
+            maxVelocity = m_stateMachine.MaxForwardDiagonalsVelocity;
         }
-        if (m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxBackwardVelocity &&
-            Input.GetKey(KeyCode.S) ||
-            (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A)) ||
-            (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D)))
+        else if (Input.GetKey(KeyCode.W))
         {
-            m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
-            m_stateMachine.RB.velocity *= m_stateMachine.MaxBackwardVelocity;
-            return;
+            maxVelocity = m_stateMachine.MaxForwardVelocity;
         }
-        if (m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxStrafeVelocity &&
-            (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)))
+        else if (Input.GetKey(KeyCode.S))
         {
-            m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
-            m_stateMachine.RB.velocity *= m_stateMachine.MaxStrafeVelocity;
-            return;
+            maxVelocity = m_stateMachine.MaxBackwardVelocity;
+        }
+        else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            maxVelocity = m_stateMachine.MaxStrafeVelocity;
         }
 
-        if (m_stateMachine.RB.velocity.magnitude > m_stateMachine.MaxForwardVelocity &&
-            Input.GetKey(KeyCode.W))
+        if (m_stateMachine.RB.velocity.magnitude > maxVelocity)
         {
             m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
-            m_stateMachine.RB.velocity *= m_stateMachine.MaxForwardVelocity;
-            return;
+            m_stateMachine.RB.velocity *= maxVelocity;
         }
-
-        /*
-         
-             float maxVelocity = 0;
-
-    if (Input.GetKey(KeyCode.W))
-    {
-        maxVelocity = m_stateMachine.MaxForwardVelocity;
-    }
-    else if (Input.GetKey(KeyCode.S))
-    {
-        maxVelocity = m_stateMachine.MaxBackwardVelocity;
-    }
-    else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
-    {
-        maxVelocity = m_stateMachine.MaxStrafeVelocity;
-    }
-
-    if (maxVelocity > 0 && m_stateMachine.RB.velocity.magnitude > maxVelocity)
-    {
-        m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized * maxVelocity;
-    }
-         
-         */
-
     }
 
     private void CalculateDiagonalMaxVelocity(Vector3 movementVector, Vector3 projectedVectorForward, Vector3 projectedVectorRight)
@@ -258,12 +216,7 @@ public class FreeState : CharacterState
         float sideRatio = sideComponent / componentsTotal;
 
         m_stateMachine.MaxForwardDiagonalsVelocity = forwardRatio * m_stateMachine.MaxForwardVelocity + sideRatio * m_stateMachine.MaxStrafeVelocity;
-    }
-
-    private void GroundVelocityLimitsCalculator()
-    {
-
-    }
+    }    
 
     private bool IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera()
     {
