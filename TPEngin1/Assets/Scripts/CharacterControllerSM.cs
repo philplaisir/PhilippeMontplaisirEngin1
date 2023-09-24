@@ -7,91 +7,55 @@ public class CharacterControllerSM : MonoBehaviour
     private CharacterState m_currentState;
     private List<CharacterState> m_possibleStates;
 
-    [SerializeField]
-    private CharacterFloorTrigger m_floorTrigger;
-    [SerializeField]
-    private ElevatorController m_elevatorController;
+    [SerializeField] private CharacterFloorTrigger m_floorTrigger;
+    [SerializeField] private ElevatorController m_elevatorController;
 
-    
     public bool IsJumpingForTooLong { get; set; }
-    private float m_previousElevation = 0.0f;        
     public bool IsLosingAltitude { get; private set; }
-
-    // Les variables deviennent des cSharp fields
-    // fields en cSharp sont des mtéhodes qui nous permettent d'aller chercher de l'info d'ou la majuscule
+    private float m_previousElevation = 0.0f;  
+        
     public Camera Camera { get; private set; }
     public Transform Transform { get; private set; }
 
-    [field: SerializeField]
-    public Rigidbody RB { get; private set; }
+    [field: SerializeField] public Rigidbody RB { get; private set; }
+    [field: SerializeField] public GameObject GameObject { get; private set; }
+    [field: SerializeField] private Animator Animator { get; set; }
 
-    [field: SerializeField]
-    public GameObject GameObject { get; private set; }
+    [field: SerializeField] public bool IsTouchingFloor { get; private set; }
+    [field: SerializeField] public Vector3 MovementDirectionVector { get; set; }
+    [field: SerializeField] public float CharacterVelocity { get; private set; }
+    [field: SerializeField] public float DistanceBetweenCharacterAndFloor { get; private set; }
+    [field: SerializeField] public float FloorAngleUnderCharacter { get; set; }
+    [field: SerializeField] public float GroundAcceleration { get; private set; }
+    [field: SerializeField] public float FallingAccelerationXZ { get; private set; }       
+    [field: SerializeField] public float MaxForwardVelocity { get; private set; }
+    [field: SerializeField] public float MaxForwardDiagonalsVelocity { get; set; }
+    [field: SerializeField] public float MaxBackwardVelocity { get; private set; }
+    [field: SerializeField] public float MaxStrafeVelocity { get; private set; }
+    [field: SerializeField] public float DecelerationValue { get; private set; }
+    [field: SerializeField] public float TurnSmoothTime { get; private set; }
 
-    [field: SerializeField]
-    private Animator Animator { get; set; }
+    // JUMPING
+    [field: SerializeField] public float JumpIntensity { get; private set; }
+    [field: SerializeField] public float FallGravity { get; private set; }
+
+    // ATTACKING
+    public bool Attacking { get; set; }   
+
+    // TESTING
+    [field: SerializeField] public GameObject TestingBullet { get; private set; }
 
 
-
-    [field: SerializeField]
-    public bool IsTouchingFloor { get; private set; }
-    [field: SerializeField]
-    public float CharacterVelocity { get; private set; }
-    [field: SerializeField]
-    public Vector3 MovementDirectionVector { get; set; }
-    [field: SerializeField]
-    public float DistanceBetweenCharacterAndFloor { get; private set; }
-    [field: SerializeField]
-    public float FloorAngleUnderCharacter { get; set; }
-    [field: SerializeField]
-    public float GroundAcceleration { get; private set; }
-    [field: SerializeField]
-    public float FallingAccelerationXZ { get; private set; }
     //[field: SerializeField]
     //public float MaxJumpAccelerationValue { get; private set; }
     //[field: SerializeField]    
-    //public float ForwardAccelerationValue { get; private set; }    
-    [field: SerializeField]
-    public float MaxForwardVelocity { get; private set; }
-    
+    //public float ForwardAccelerationValue { get; private set; } 
     //[field: SerializeField]
-    //public float ForwardDiagonalsAccelerationValue { get; private set; }    
-    [field: SerializeField]
-    public float MaxForwardDiagonalsVelocity { get; set; }
-    
+    //public float ForwardDiagonalsAccelerationValue { get; private set; }   
     //[field: SerializeField]
-    //public float BackwardAccelerationValue { get; private set; }    
-    [field: SerializeField]
-    public float MaxBackwardVelocity { get; private set; } 
-    
+    //public float BackwardAccelerationValue { get; private set; } 
     //[field: SerializeField]
-    //public float StrafeAccelerationValue { get; private set; }    
-    [field: SerializeField]
-    public float MaxStrafeVelocity { get; private set; }
-    
-    [field: SerializeField]
-    public float DecelerationValue { get; private set; }
-
-    [field: SerializeField]
-    public float TurnSmoothTime { get; private set; } // Lower number means snappier turn
-
-    // JUMPING
-    [field: SerializeField]
-    public float JumpIntensity { get; private set; }
-    [field: SerializeField]
-    public float FallGravity { get; private set; }
-
-    // ATTACKING
-    public bool Attacking { get; set; }
-
-    // FALLING
-    //[field: SerializeField]
-    //public float FallingTimer { get; set; }
-
-
-    // TESTING
-    [field: SerializeField]
-    public GameObject m_testingBullet { get; private set; }
+    //public float StrafeAccelerationValue { get; private set; }  
 
 
     private void Awake()
@@ -235,7 +199,7 @@ public class CharacterControllerSM : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Vector3 spawnPosition = new Vector3(143, 1, 170);
-            GameObject sphere = Instantiate(m_testingBullet, spawnPosition, Quaternion.identity);          
+            GameObject sphere = Instantiate(TestingBullet, spawnPosition, Quaternion.identity);          
         }
         if (Input.GetKey(KeyCode.X))
         {

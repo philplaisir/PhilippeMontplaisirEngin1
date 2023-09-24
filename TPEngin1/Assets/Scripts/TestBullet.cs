@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TestBullet : MonoBehaviour
 {
-    private Rigidbody rb;
+    private Rigidbody m_rb;
     private bool m_hitPlayer = false;
 
     [SerializeField] 
@@ -14,7 +14,7 @@ public class TestBullet : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        m_rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -35,9 +35,9 @@ public class TestBullet : MonoBehaviour
     {
         Debug.Log("HIT");
         m_hitPlayer = true;
-        rb.useGravity = true;
+        m_rb.useGravity = true;
         
-        rb.AddForce(Vector3.down * 5.0f, ForceMode.Impulse);
+        m_rb.AddForce(Vector3.down * 5.0f, ForceMode.Impulse);
     }
 }
 

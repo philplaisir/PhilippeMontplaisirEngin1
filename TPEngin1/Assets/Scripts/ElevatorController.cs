@@ -29,8 +29,8 @@ public class ElevatorController : MonoBehaviour
     {
         if (transform.position.y < m_maxHeight)
         {
-            float step = m_moveSpeed * Time.deltaTime;
-            transform.Translate(Vector3.up * step);
+            float movement = m_moveSpeed * Time.deltaTime;
+            transform.Translate(Vector3.up * movement);
         }
     }
 
@@ -38,8 +38,8 @@ public class ElevatorController : MonoBehaviour
     {
         if (transform.position.y > m_minHeight)
         {
-            float step = m_moveSpeed * Time.deltaTime;
-            transform.Translate(Vector3.down * step);
+            float movement = m_moveSpeed * Time.deltaTime;
+            transform.Translate(Vector3.down * movement);
         }
     }
 

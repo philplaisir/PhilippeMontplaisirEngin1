@@ -1346,8 +1346,8 @@ MonoBehaviour:
   <GameObject>k__BackingField: {fileID: 746245241}
   <Animator>k__BackingField: {fileID: 746245244}
   <IsTouchingFloor>k__BackingField: 0
-  <CharacterVelocity>k__BackingField: 0
   <MovementDirectionVector>k__BackingField: {x: 0, y: 0, z: 0}
+  <CharacterVelocity>k__BackingField: 0
   <DistanceBetweenCharacterAndFloor>k__BackingField: 0
   <FloorAngleUnderCharacter>k__BackingField: 0
   <GroundAcceleration>k__BackingField: 40
@@ -1360,7 +1360,7 @@ MonoBehaviour:
   <TurnSmoothTime>k__BackingField: 0.2
   <JumpIntensity>k__BackingField: 800
   <FallGravity>k__BackingField: 30
-  <m_testingBullet>k__BackingField: {fileID: 6995891691891069014, guid: 1b29a26dfb8226f49a444ddbcbd33d18,
+  <TestingBullet>k__BackingField: {fileID: 6995891691891069014, guid: 1b29a26dfb8226f49a444ddbcbd33d18,
     type: 3}
 --- !u!1 &595232059
 GameObject:
