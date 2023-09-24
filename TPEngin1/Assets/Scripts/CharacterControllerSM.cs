@@ -12,6 +12,7 @@ public class CharacterControllerSM : MonoBehaviour
     [SerializeField]
     private ElevatorController m_elevatorController;
 
+    
     public bool IsJumpingForTooLong { get; set; }
     private float m_previousElevation = 0.0f;        
     public bool IsLosingAltitude { get; private set; }
@@ -101,6 +102,7 @@ public class CharacterControllerSM : MonoBehaviour
         m_possibleStates.Add(new FreeState());
         m_possibleStates.Add(new JumpState());
         m_possibleStates.Add(new FallingState());
+        m_possibleStates.Add(new LeavingGroundState());
         m_possibleStates.Add(new AttackingState());
 
     }

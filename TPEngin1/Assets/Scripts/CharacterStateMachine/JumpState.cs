@@ -6,9 +6,9 @@ public class JumpState : CharacterState
 {
     private Animator m_animator;
     private const float STATE_EXIT_TIMER = 0.2f;
-    private float m_currentStateTimer = 0.0f;
-    private float m_turnSmoothVelocity;
-    private float m_jumpingTimer = 0.0f;
+    private float m_currentStateTimer = 0.0f;       
+    private float m_losingAltitudeTimer = 0.3f;
+    
 
     [SerializeField]
     private float m_gravityValue = 30.0f;
@@ -23,8 +23,10 @@ public class JumpState : CharacterState
         m_currentStateTimer = STATE_EXIT_TIMER;
         m_stateMachine.UpdateFreeStateAnimatorValues(new Vector2(0, 0));
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
-        m_animator.SetTrigger("Jump");
-        m_jumpingTimer = 0.0f;
+        m_animator.SetTrigger("Jump");        
+        m_losingAltitudeTimer = 0.3f;        
+        m_stateMachine.IsJumpingForTooLong = false;
+
     }
 
     public override void OnExit()
@@ -42,14 +44,18 @@ public class JumpState : CharacterState
     public override void OnUpdate()
     {
         m_animator.SetBool("TouchGround", false);
-
         m_currentStateTimer -= Time.deltaTime;
-        m_jumpingTimer += Time.deltaTime;
+        
+        if (m_stateMachine.IsLosingAltitude)
+        {
+            m_losingAltitudeTimer -= Time.deltaTime;
 
-        if (m_jumpingTimer > 1.5f)
+        }       
+
+        if (m_losingAltitudeTimer < 0)
         {
             m_stateMachine.IsJumpingForTooLong = true;
-        }
+        }        
 
     }
 
@@ -110,10 +116,7 @@ public class JumpState : CharacterState
         }
     }
 
-    private void ReorientCharacterTowardsChameraDirection()
-    {
-        m_stateMachine.GameObject.transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(m_stateMachine.Transform.transform.eulerAngles.y, m_stateMachine.Camera.transform.eulerAngles.y, ref m_turnSmoothVelocity, m_stateMachine.TurnSmoothTime);
-    }
+   
 
     private void VelocityRegulatorBasedOnLimits()
     {

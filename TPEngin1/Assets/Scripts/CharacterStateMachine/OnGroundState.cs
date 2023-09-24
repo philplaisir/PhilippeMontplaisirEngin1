@@ -22,10 +22,10 @@ public class OnGroundState : CharacterState
 
     public override bool CanEnter(CharacterState currentState)
     {
-        //if (currentState is )
-        //{
-        //    return !m_stateMachine.IsInContactWithFloor();
-        //}
+        if (currentState is FallingState)
+        {
+            return m_stateMachine.IsInContactWithFloor();
+        }
 
         return false;
 
