@@ -10,15 +10,13 @@ using UnityEngine;
 public class FreeState : CharacterState
 {
     private float m_turnSmoothVelocity;
-    //private float m_accelerationValue;
-
-    private float m_gravity = 25.81f;
+    
+        
 
     public override void OnEnter()
     {
-        Debug.Log("Enter state: FreeState\n");
-        
-        //m_accelerationValue = m_stateMachine.GroundAccelerationValue;
+        Debug.Log("Enter state: FreeState\n");        
+       
     }
 
     public override void OnUpdate()
@@ -149,7 +147,7 @@ public class FreeState : CharacterState
 
     private void AddForceToMovementVector(Vector3 movementVector)
     {
-        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.GroundAccelerationValue, ForceMode.Acceleration);        
+        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.GroundAcceleration, ForceMode.Acceleration);        
     }
 
     private void CalculationsForAnimation(Vector3 projectedVec3Forward, Vector3 projectedVec3Right)

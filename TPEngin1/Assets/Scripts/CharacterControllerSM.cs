@@ -9,8 +9,12 @@ public class CharacterControllerSM : MonoBehaviour
 
     [SerializeField]
     private CharacterFloorTrigger m_floorTrigger;
+    [SerializeField]
+    private ElevatorController m_elevatorController;
 
-    public bool m_isJumping { get; set; }
+    public bool IsJumpingForTooLong { get; set; }
+    private float m_previousElevation;        
+    public bool IsLosingAltitude { get; private set; }
 
     // Les variables deviennent des cSharp fields
     // fields en cSharp sont des mtéhodes qui nous permettent d'aller chercher de l'info d'ou la majuscule
@@ -39,11 +43,11 @@ public class CharacterControllerSM : MonoBehaviour
     [field: SerializeField]
     public float FloorAngleUnderCharacter { get; set; }
     [field: SerializeField]
-    public float GroundAccelerationValue { get; private set; }
+    public float GroundAcceleration { get; private set; }
     [field: SerializeField]
-    public float JumpAccelerationValue { get; private set; }
-    [field: SerializeField]
-    public float MaxJumpAccelerationValue { get; private set; }
+    public float FallingAccelerationXZ { get; private set; }
+    //[field: SerializeField]
+    //public float MaxJumpAccelerationValue { get; private set; }
     //[field: SerializeField]    
     //public float ForwardAccelerationValue { get; private set; }    
     [field: SerializeField]
@@ -79,6 +83,9 @@ public class CharacterControllerSM : MonoBehaviour
     // ATTACKING
     public bool Attacking { get; set; }
 
+    // FALLING
+    //[field: SerializeField]
+    //public float FallingTimer { get; set; }
 
 
     // TESTING
@@ -110,7 +117,9 @@ public class CharacterControllerSM : MonoBehaviour
         }
         
         m_currentState = m_possibleStates[0];
-        m_currentState.OnEnter();        
+        m_currentState.OnEnter();
+
+        m_previousElevation = DistanceBetweenCharacterAndFloor;
     }
     
     private void Update()
@@ -126,6 +135,7 @@ public class CharacterControllerSM : MonoBehaviour
         
         DetectTestingInputs();
         CalculateDistanceBetweenCharacterAndFloor();
+        EvaluateIfLosingAltitude();
         m_currentState.OnUpdate();
         TryStateTransition();
     }
@@ -192,11 +202,28 @@ public class CharacterControllerSM : MonoBehaviour
     private void CalculateDistanceBetweenCharacterAndFloor()
     {
         RaycastHit hit;        
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
+        if (Physics.Raycast(m_floorTrigger.transform.position, -Vector3.up, out hit))
         {
+            Debug.DrawRay(m_floorTrigger.transform.position, -Vector3.up * hit.distance, Color.yellow);
             float distanceToGround = hit.distance;
             DistanceBetweenCharacterAndFloor = distanceToGround;                        
             //Debug.Log("Distance to ground: " + distanceToGround);
+        }
+    }
+
+    private void EvaluateIfLosingAltitude()
+    {
+        float elevationDiff = DistanceBetweenCharacterAndFloor - m_previousElevation;
+
+        m_previousElevation = DistanceBetweenCharacterAndFloor;
+
+        if (elevationDiff >= 0) 
+        {
+            IsLosingAltitude = false;
+        }
+        if (elevationDiff < 0)
+        {
+            IsLosingAltitude = true;
         }
     }
 
@@ -206,12 +233,20 @@ public class CharacterControllerSM : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Vector3 spawnPosition = new Vector3(143, 1, 170);
-            GameObject sphere = Instantiate(m_testingBullet, spawnPosition, Quaternion.identity);
-                        
-            TestBullet sphereMovement = sphere.GetComponent<TestBullet>();
-            if (sphereMovement == null)
-            {
-                sphere.AddComponent<TestBullet>();
+            GameObject sphere = Instantiate(m_testingBullet, spawnPosition, Quaternion.identity);          
+        }
+        if (Input.GetKey(KeyCode.X))
+        {
+            if ( m_elevatorController != null)
+            {                
+                m_elevatorController.StartMovingUp();
+            }
+        }
+        if (Input.GetKey(KeyCode.Z))
+        {
+            if (m_elevatorController != null)
+            {                
+                m_elevatorController.StartMovingDown();
             }
         }
 

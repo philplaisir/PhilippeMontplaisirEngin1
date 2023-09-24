@@ -5,19 +5,15 @@ using UnityEngine;
 public class JumpState : CharacterState
 {
     private Animator m_animator;
-    private Vector3 m_defaultGravity;
-    [SerializeField]
-    private float m_gravityValue = 30.0f;
-
     private const float STATE_EXIT_TIMER = 0.2f;
     private float m_currentStateTimer = 0.0f;
     private float m_turnSmoothVelocity;
-    private float m_jumpBaseHeight;
-    private float m_jumpedHeight;
+    private float m_jumpingTimer = 0.0f;
 
-    private bool m_jumpTriggerValue;
-
+    [SerializeField]
+    private float m_gravityValue = 30.0f;
     
+        
 
     public override void OnEnter()
     {
@@ -28,10 +24,12 @@ public class JumpState : CharacterState
         m_stateMachine.UpdateFreeStateAnimatorValues(new Vector2(0, 0));
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         m_animator.SetTrigger("Jump");
+        m_jumpingTimer = 0.0f;
     }
 
     public override void OnExit()
     {
+        m_stateMachine.IsJumpingForTooLong = false;
         Debug.Log("Exit state: JumpState\n");
     }
 
@@ -46,6 +44,13 @@ public class JumpState : CharacterState
         m_animator.SetBool("TouchGround", false);
 
         m_currentStateTimer -= Time.deltaTime;
+        m_jumpingTimer += Time.deltaTime;
+
+        if (m_jumpingTimer > 1.5f)
+        {
+            m_stateMachine.IsJumpingForTooLong = true;
+        }
+
     }
 
     public override bool CanEnter(CharacterState currentState)
@@ -62,16 +67,6 @@ public class JumpState : CharacterState
 
     public override bool CanExit()
     {
-        //float maxJumpInteractionAllowance = m_jumpBaseHeight + 3;
-        //float currentMaxHeightAfterJump = maxJumpInteractionAllowance + m_stateMachine.DistanceBetweenCharacterAndFloor;
-        //
-        //
-        //if (m_currentStateTimer <= 0 && m_stateMachine.DistanceBetweenCharacterAndFloor < maxJumpInteractionAllowance + m_stateMachine.DistanceBetweenCharacterAndFloor)
-        //{
-        //
-        //}
-
-
         return m_currentStateTimer <= 0;
     }
 
@@ -105,7 +100,7 @@ public class JumpState : CharacterState
 
         movementVector.Normalize();
 
-        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.JumpAccelerationValue, ForceMode.Acceleration);
+        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.FallingAccelerationXZ, ForceMode.Acceleration);
 
 
         if (movementVector.magnitude > 0)

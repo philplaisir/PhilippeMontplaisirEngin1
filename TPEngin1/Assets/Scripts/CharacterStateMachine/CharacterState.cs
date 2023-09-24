@@ -27,7 +27,7 @@ public abstract class CharacterState : IState
     {
 
         throw new System.NotImplementedException();
-        return false;
+        
     }
 
     public virtual bool CanExit()

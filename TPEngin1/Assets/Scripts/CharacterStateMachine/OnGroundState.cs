@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class HitState : CharacterState
+public class OnGroundState : CharacterState
 {
+
     public override void OnEnter()
     {
 
@@ -21,13 +22,19 @@ public class HitState : CharacterState
 
     public override bool CanEnter(CharacterState currentState)
     {
+        //if (currentState is )
+        //{
+        //    return !m_stateMachine.IsInContactWithFloor();
+        //}
 
-        throw new System.NotImplementedException();
-        
+        return false;
+
+
     }
 
     public override bool CanExit()
     {
         throw new System.NotImplementedException();
     }
+
 }
