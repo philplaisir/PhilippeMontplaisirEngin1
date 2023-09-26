@@ -1447,6 +1447,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_floorTrigger: {fileID: 1490143357}
   m_elevatorController: {fileID: 378896628}
+  <IsHit>k__BackingField: 0
   <RB>k__BackingField: {fileID: 746245243}
   <GameObject>k__BackingField: {fileID: 746245241}
   <Animator>k__BackingField: {fileID: 746245244}
@@ -5636,17 +5637,17 @@ PrefabInstance:
     - target: {fileID: 6865012690772328536, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 157.49
+      value: 88.45
       objectReference: {fileID: 0}
     - target: {fileID: 6865012690772328536, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.98
+      value: 0.056
       objectReference: {fileID: 0}
     - target: {fileID: 6865012690772328536, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 131.55
+      value: 170.03
       objectReference: {fileID: 0}
     - target: {fileID: 6865012690772328536, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
         type: 3}

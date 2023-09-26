@@ -11,16 +11,16 @@ public class AttackingState : CharacterState
     {
         Debug.Log("Enter state: AttackingState");
         m_animator = m_stateMachine.GetComponentInParent<Animator>();        
-        m_animator.SetBool("Attacking", true);
+        
+        m_animator.SetTrigger("Attacking");
         m_stateMachine.Attacking = true;
         m_delay = 0.3f;
-
-        //m_stateMachine.IsStunned = false;
+        
     }
 
     public override void OnExit()
     {
-        m_animator.SetBool("Attacking", false);
+        
 
         Debug.Log("Exit state: AttackingState");
     }
@@ -61,6 +61,10 @@ public class AttackingState : CharacterState
     public override bool CanExit()
     {
         if (!m_stateMachine.Attacking)
+        {
+            return true;
+        }
+        if (m_stateMachine.IsHit)
         {
             return true;
         }

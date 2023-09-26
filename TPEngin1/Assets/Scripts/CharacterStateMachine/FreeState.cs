@@ -31,7 +31,7 @@ public class FreeState : CharacterState
     {
         // CHARACTER MOVEMENT RELATIVE TO CAMERA
         CharacterControllerFU();
-        KeepCharacterOnGroundFU();
+        KeepCharacterOnGroundWhenAngledFU();
 
     }
 
@@ -43,7 +43,7 @@ public class FreeState : CharacterState
     public override bool CanEnter(CharacterState currentState)
     {
         
-        if (currentState is JumpState || currentState is LeavingGroundState || currentState is GettingUpState) 
+        if (currentState is JumpState || currentState is LeavingGroundState || currentState is GettingUpState || currentState is HitState) 
         {
             
             return m_stateMachine.IsInContactWithFloor();
@@ -83,10 +83,10 @@ public class FreeState : CharacterState
         }
     }
 
-    private void KeepCharacterOnGroundFU()
-    {
-        // To keep character always on terrain when terrain is angled
+    private void KeepCharacterOnGroundWhenAngledFU()
+    {        
         RaycastHit hit;
+
         if (Physics.Raycast(m_stateMachine.transform.position, -Vector3.up, out hit))
         {
             Vector3 slopeNormal = hit.normal;

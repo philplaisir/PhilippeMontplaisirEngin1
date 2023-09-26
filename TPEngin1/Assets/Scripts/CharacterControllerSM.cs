@@ -1,15 +1,19 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterControllerSM : MonoBehaviour
 {
-    
+   
+
     private CharacterState m_currentState;
     private List<CharacterState> m_possibleStates;
 
     [SerializeField] private CharacterFloorTrigger m_floorTrigger;
     [SerializeField] private ElevatorController m_elevatorController;
 
+    [field: SerializeField]
+    public bool IsHit { get; set; }
     public bool IsJumpingForTooLong { get; set; }
     public bool IsLosingAltitude { get; private set; }
     private float m_previousElevation = 0.0f;  
@@ -61,8 +65,6 @@ public class CharacterControllerSM : MonoBehaviour
 
     private void Awake()
     {
-        
-
         m_possibleStates = new List<CharacterState>();
         m_possibleStates.Add(new FreeState());
         m_possibleStates.Add(new JumpState());
@@ -72,8 +74,8 @@ public class CharacterControllerSM : MonoBehaviour
         m_possibleStates.Add(new OnGroundState());
         m_possibleStates.Add(new GettingUpState());
         m_possibleStates.Add(new StunInAirState());
-
-        IsStunned = false;
+        m_possibleStates.Add(new HitState());
+                
     }
 
     void Start()
@@ -93,6 +95,7 @@ public class CharacterControllerSM : MonoBehaviour
         m_previousElevation = DistanceBetweenCharacterAndFloor;
 
         IsStunned = false;
+        IsHit = false;
     }
     
     private void Update()
@@ -101,10 +104,7 @@ public class CharacterControllerSM : MonoBehaviour
         if (IsInContactWithFloor())
         {            
             Animator.SetBool("TouchGround", true);
-        }
-        
-        
-        
+        }        
         
         DetectTestingInputs();
         CalculateDistanceBetweenCharacterAndFloor();
@@ -152,24 +152,12 @@ public class CharacterControllerSM : MonoBehaviour
 
     public void UpdateFreeStateAnimatorValues(Vector2 movementVecValue)
     {
-        // Aller chercher ma vitesse actuelle
-        // Communiquer directement avec mon animator
-        // Animation commence par ici
-
         movementVecValue.Normalize();
 
         movementVecValue = new Vector2(movementVecValue.x, movementVecValue.y);
 
-        //Référence à l'animator
-
         Animator.SetFloat("MoveX", movementVecValue.x);
-        Animator.SetFloat("MoveY", movementVecValue.y);
-        
-
-
-
-
-
+        Animator.SetFloat("MoveY", movementVecValue.y);      
     }
 
     private void CalculateDistanceBetweenCharacterAndFloor()
@@ -206,7 +194,8 @@ public class CharacterControllerSM : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Vector3 spawnPosition = new Vector3(143, 1, 170);
-            GameObject sphere = Instantiate(TestingBullet, spawnPosition, Quaternion.identity);          
+            GameObject sphere = Instantiate(TestingBullet, spawnPosition, Quaternion.identity);
+            sphere.GetComponent<TestBullet>().m_player = this.GameObject;           
         }
         if (Input.GetKey(KeyCode.X))
         {
@@ -226,10 +215,7 @@ public class CharacterControllerSM : MonoBehaviour
         {
             IsStunned = true;
         }
-
     }
-
-
 }
 
 
