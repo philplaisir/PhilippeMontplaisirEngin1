@@ -13,7 +13,9 @@ public class LeavingGroundState : CharacterState
         
         m_animator.SetBool("TouchGround", false);
 
-        m_timerBeforeFalling = 0.6f;
+        m_timerBeforeFalling = 2.0f; //c'était 0.6
+
+        //m_stateMachine.IsStunned = false;
     }
 
     public override void OnExit()
@@ -50,6 +52,12 @@ public class LeavingGroundState : CharacterState
 
     public override bool CanExit()
     {
+
+        if (m_stateMachine.IsStunned)
+        {
+            Debug.Log("ON EST RENTRÉ ISSTUNNED");
+            return true;
+        }
         if (m_timerBeforeFalling < 0)
         {
             //Debug.Log("ON EST RENTRÉ DANS TIMER BEFORE FALLING");

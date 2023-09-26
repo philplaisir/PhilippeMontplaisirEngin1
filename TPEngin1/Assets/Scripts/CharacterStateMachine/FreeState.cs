@@ -15,8 +15,9 @@ public class FreeState : CharacterState
 
     public override void OnEnter()
     {
-        Debug.Log("Enter state: FreeState\n");        
-       
+        Debug.Log("Enter state: FreeState\n");
+
+        //m_stateMachine.IsStunned = false;
     }
 
     public override void OnUpdate()

@@ -27,6 +27,8 @@ public class JumpState : CharacterState
         m_losingAltitudeTimer = 0.25f;        
         m_stateMachine.IsJumpingForTooLong = false;
 
+        //m_stateMachine.IsStunned = false;
+
     }
 
     public override void OnExit()

@@ -1,31 +1,30 @@
-
-
 using UnityEngine;
 
-public class GettingUpState : CharacterState
+public class StunInAirState : CharacterState
 {
     private Animator m_animator;
-    private float m_delayTimer;
 
     public override void OnEnter()
     {
-        Debug.Log("Enter state: GettingUpState\n");
+        Debug.Log("Enter state: StunInAirState\n");
 
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
-        m_animator.SetTrigger("BackUp");
-        m_delayTimer = 0.3f;
-
+        
         //m_stateMachine.IsStunned = false;
+        m_animator.SetTrigger("Stunned");
+
     }
 
     public override void OnExit()
     {
-        Debug.Log("Exit state: GettingUpState\n");
+        Debug.Log("Exit state: StunInAirState\n");
+
     }
 
     public override void OnFixedUpdate()
     {
-        m_delayTimer -= Time.deltaTime;
+        m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
+
     }
 
     public override void OnUpdate()
@@ -34,17 +33,19 @@ public class GettingUpState : CharacterState
 
     public override bool CanEnter(CharacterState currentState)
     {
-        if (currentState is OnGroundState)
+        if (currentState is JumpState || currentState is LeavingGroundState || currentState is FallingState)
         {
-            return true;
+            return m_stateMachine.IsStunned;
         }
-
         return false;
+
+
+        
 
     }
 
     public override bool CanExit()
     {
-        return m_delayTimer <= 0;
+        return m_stateMachine.IsInContactWithFloor();        
     }
 }

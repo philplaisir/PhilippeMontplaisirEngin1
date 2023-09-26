@@ -44,6 +44,7 @@ public class CharacterControllerSM : MonoBehaviour
 
     // TESTING
     [field: SerializeField] public GameObject TestingBullet { get; private set; }
+    public bool IsStunned { get; set; }
 
 
     //[field: SerializeField]
@@ -70,6 +71,7 @@ public class CharacterControllerSM : MonoBehaviour
         m_possibleStates.Add(new AttackingState());
         m_possibleStates.Add(new OnGroundState());
         m_possibleStates.Add(new GettingUpState());
+        m_possibleStates.Add(new StunInAirState());
 
 
     }
@@ -89,6 +91,8 @@ public class CharacterControllerSM : MonoBehaviour
         m_currentState.OnEnter();
 
         m_previousElevation = DistanceBetweenCharacterAndFloor;
+
+        IsStunned = false;
     }
     
     private void Update()
@@ -217,6 +221,10 @@ public class CharacterControllerSM : MonoBehaviour
             {                
                 m_elevatorController.StartMovingDown();
             }
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            IsStunned = true;
         }
 
     }

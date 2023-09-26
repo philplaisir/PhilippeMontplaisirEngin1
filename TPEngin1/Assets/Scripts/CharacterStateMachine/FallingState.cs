@@ -13,7 +13,7 @@ public class FallingState : CharacterState
         
         m_animator.SetTrigger("Falling");
 
-
+        //m_stateMachine.IsStunned = false;
 
 
     }
@@ -44,7 +44,7 @@ public class FallingState : CharacterState
         }
         if (currentState is LeavingGroundState)
         {
-            return !m_stateMachine.IsInContactWithFloor();
+            return !m_stateMachine.IsInContactWithFloor() && !m_stateMachine.IsStunned;
         }        
 
         return false;        
@@ -52,6 +52,11 @@ public class FallingState : CharacterState
     
     public override bool CanExit()
     {
+        if (m_stateMachine.IsStunned)
+        {
+            return true;
+        }
+        
         return m_stateMachine.IsInContactWithFloor();        
     }
 

@@ -13,8 +13,9 @@ public class AttackingState : CharacterState
         m_animator = m_stateMachine.GetComponentInParent<Animator>();        
         m_animator.SetBool("Attacking", true);
         m_stateMachine.Attacking = true;
-        m_delay = 0.3f; 
-        
+        m_delay = 0.3f;
+
+        //m_stateMachine.IsStunned = false;
     }
 
     public override void OnExit()

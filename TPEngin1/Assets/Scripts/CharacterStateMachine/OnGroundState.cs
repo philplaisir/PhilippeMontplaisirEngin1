@@ -13,13 +13,15 @@ public class OnGroundState : CharacterState
         //m_animator.SetBool("OnGround", true);
         //m_animator.SetTrigger("OnGroundAfterFalling");
         m_onGroundDelay = 1.0f;
+        m_stateMachine.IsStunned = false;
+        m_animator.SetTrigger("Stunned");
     }
 
     public override void OnExit()
     {
         Debug.Log("Exit state: OnGroundState\n");
         //m_animator.SetBool("OnGround", false);
-        m_animator.SetTrigger("BackUp");
+        
     }
 
     public override void OnFixedUpdate()
@@ -35,10 +37,20 @@ public class OnGroundState : CharacterState
 
     public override bool CanEnter(CharacterState currentState)
     {
-        if (currentState is FallingState)
+        if(currentState is StunInAirState)
+        {
+            return m_stateMachine.IsInContactWithFloor();
+
+        }
+        if (currentState is FallingState )
         {
             return m_stateMachine.IsInContactWithFloor();
         }
+        if (currentState is FreeState || currentState is AttackingState)
+        {
+            return m_stateMachine.IsStunned;
+        }
+        
 
         return false;
 
