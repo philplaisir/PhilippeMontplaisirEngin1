@@ -1,12 +1,7 @@
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
-{
-    // TODO finir le lerp du scroll
-    // suivre le personnage avec la caméra
-
-    private Collider m_cameraCollider;
-
+{   
     //[Header("Header")] 
     [SerializeField]
     private Transform m_objectToLookAt;
@@ -15,10 +10,8 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private Vector2 m_clampingXRotationValues = Vector2.zero;
     [SerializeField]
-    private float m_desiredDistanceFromTarget = 5.0f;
-    [SerializeField]
-    private float m_distanceFromTargetIfTouchingWall = 0.0f;
-    private bool m_wallBetweenTargetAndDesiredCameraPosition = false;
+    private float m_desiredDistanceFromTarget = 5.0f;    
+    
     [SerializeField]
     private float m_cameraLerpSpeed = 1.0f;
 
@@ -34,15 +27,28 @@ public class CameraController : MonoBehaviour
     private bool m_lerping = false;
 
     private float m_savedDistance = 0.0f;
+    private bool m_touchingWall;
 
-
-
-    private void Awake()
-    {
-        m_cameraCollider = GetComponent<Collider>();
-        m_savedDistance = m_desiredDistanceFromTarget;
-    }
     
+
+    private void Update()
+    {
+        if (!m_touchingWall)
+        {
+            m_savedDistance = m_desiredDistanceFromTarget;
+        }
+        if (m_touchingWall)
+        {
+            m_desiredDistanceFromTarget = m_savedDistance;
+        } 
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateCameraPositionFUpdate();
+        MoveCameraInFrontOfObstructionsFUpdate();
+    }
+
     private void LateUpdate()
     {        
         UpdateHorizontalMovements();
@@ -75,22 +81,8 @@ public class CameraController : MonoBehaviour
 
     private void UpdateCameraPositionFUpdate()
     {
-        
-        //transform.position = m_objectToLookAt.position - transform.forward * m_distanceFromTargetIfTouchingWall;
-
-        //transform.position = m_objectToLookAt.position - transform.forward * m_desiredDistanceFromTarget;
-
-        //if(m_wallBetweenTargetAndDesiredCameraPosition)
-        //{
-        //    Vector3 targetPositionWall = m_objectToLookAt.position - transform.forward * m_distanceFromTargetIfTouchingWall;
-        //    transform.position = Vector3.Lerp(transform.position, targetPositionWall, m_cameraLerpSpeed * Time.deltaTime);
-        //    return;
-        //}
-
-
         Vector3 targetPosition = m_objectToLookAt.position - transform.forward * m_desiredDistanceFromTarget;
-        transform.position = Vector3.Lerp(transform.position, targetPosition, m_cameraLerpSpeed * Time.deltaTime);
-        m_savedDistance = m_desiredDistanceFromTarget;
+        transform.position = Vector3.Lerp(transform.position, targetPosition, m_cameraLerpSpeed * Time.deltaTime);        
     }
 
     private void UpdateCameraScroll()
@@ -149,16 +141,10 @@ public class CameraController : MonoBehaviour
         }
 
         m_desiredDistanceFromTarget = ClampZoom(m_desiredDistanceFromTarget);
-        m_savedDistance = m_desiredDistanceFromTarget;
+        
         
     }
-
-    private void FixedUpdate()
-    {
-        UpdateCameraPositionFUpdate();
-        MoveCameraInFrontOfObstructionsFUpdate();
-    }
-
+    
     private void MoveCameraInFrontOfObstructionsFUpdate()
     {
         // Raycast se fait dans le fixed Update car c'est de la physique
@@ -173,33 +159,17 @@ public class CameraController : MonoBehaviour
 
         if (Physics.Raycast(m_objectToLookAt.position, vecteurDiff, out hit, distance, layerMask))
         {
-            
-            m_wallBetweenTargetAndDesiredCameraPosition = true;
+            m_touchingWall = true;
+
             // J'ai un objet entre mon focus et sa caméra
             Debug.DrawRay(m_objectToLookAt.position, vecteurDiff.normalized * hit.distance, Color.yellow);
-            transform.SetPositionAndRotation(hit.point, transform.rotation);
-
-            var vecteurDiff2 = hit.point - m_objectToLookAt.position;
-
-            m_desiredDistanceFromTarget = vecteurDiff2.z;
-            m_distanceFromTargetIfTouchingWall = vecteurDiff2.z;
-
-
-            Debug.Log("Valeurs du vecteur" + vecteurDiff2);
-            
-            
-            
-
-            // TODO changer la logique ici, sûrement enclancher un nouveau m_distanceFromTarget avec un bool ou de quoi
-
+            transform.SetPositionAndRotation(hit.point, transform.rotation);                    
         }
         else
         {
-            m_wallBetweenTargetAndDesiredCameraPosition = false;
-            m_desiredDistanceFromTarget = m_savedDistance;
-            //J'en ai pas
-            Debug.DrawRay(m_objectToLookAt.position, vecteurDiff, Color.white);
+            m_touchingWall = false;
 
+            Debug.DrawRay(m_objectToLookAt.position, vecteurDiff, Color.white);
         }
     }
 
@@ -224,22 +194,6 @@ public class CameraController : MonoBehaviour
 
 
 }
-
-
-
-// Ça marche au pire
-//if (Input.mouseScrollDelta.y != 0)
-//{
-//    m_distanceFromTarget -= Input.mouseScrollDelta.y;
-//
-//    m_distanceFromTarget = ClampZoom(m_distanceFromTarget);
-//}
-
-//Vector3.Lerp();
-//Mathf.Lerp();
-// Pour le lerp faire en sorte que la distance peut être lerp à travers le updating
-
-//TODO: Lerp plutôt que d'effectuer immédiatement la translation
 
 
 

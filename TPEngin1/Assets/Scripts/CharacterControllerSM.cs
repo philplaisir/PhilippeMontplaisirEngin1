@@ -194,7 +194,7 @@ public class CharacterControllerSM : MonoBehaviour
                 m_elevatorController.StartMovingDown();
             }
         }
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && !IsStunned)
         {
             IsStunned = true;
         }

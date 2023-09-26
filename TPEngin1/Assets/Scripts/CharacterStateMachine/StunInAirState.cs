@@ -27,6 +27,8 @@ public class StunInAirState : CharacterState
 
     public override void OnUpdate()
     {
+       
+
     }
 
     public override bool CanEnter(CharacterState currentState)

@@ -12,12 +12,14 @@ public class OnGroundState : CharacterState
         Debug.Log("Enter state: OnGroundState\n");
         m_animator = m_stateMachine.GetComponentInParent<Animator>();       
         m_onGroundDelay = 1.0f;
-        m_stateMachine.IsStunned = false;
+        m_stateMachine.IsStunned = true;
         m_animator.SetTrigger("Stunned");
     }
 
     public override void OnExit()
     {
+        m_stateMachine.IsStunned = false;
+
         Debug.Log("Exit state: OnGroundState\n");       
     }
 
@@ -28,6 +30,8 @@ public class OnGroundState : CharacterState
 
     public override void OnUpdate()
     {
+        m_stateMachine.IsStunned = true;
+
         m_onGroundDelay -= Time.deltaTime;
     }
 
