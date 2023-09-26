@@ -94,6 +94,11 @@ public class CharacterControllerSM : MonoBehaviour
         EvaluateIfLosingAltitude();
         m_currentState.OnUpdate();
         TryStateTransition();
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     private void FixedUpdate()

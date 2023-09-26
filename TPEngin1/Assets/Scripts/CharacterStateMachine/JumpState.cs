@@ -21,7 +21,7 @@ public class JumpState : CharacterState
         m_stateMachine.UpdateFreeStateAnimatorValues(new Vector2(0, 0));
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         m_animator.SetTrigger("Jump");        
-        m_losingAltitudeTimer = 0.1f;        
+        m_losingAltitudeTimer = 0.115f;        
         m_stateMachine.IsJumpingForTooLong = false;
     }
 

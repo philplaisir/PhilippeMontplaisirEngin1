@@ -43,7 +43,6 @@ public class AttackingState : CharacterState
         //{
         //    m_stateMachine.Attacking = false;        
         //}
-
     }
 
     public override bool CanEnter(CharacterState currentState)
