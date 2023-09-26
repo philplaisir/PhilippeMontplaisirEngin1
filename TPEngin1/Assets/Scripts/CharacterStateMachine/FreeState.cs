@@ -16,15 +16,11 @@ public class FreeState : CharacterState
     public override void OnEnter()
     {
         Debug.Log("Enter state: FreeState\n");
-
-        //m_stateMachine.IsStunned = false;
     }
 
     public override void OnUpdate()
     {
         CalculateAngleUnderCharacter();
-
-
     }
 
     public override void OnFixedUpdate()
@@ -32,7 +28,6 @@ public class FreeState : CharacterState
         // CHARACTER MOVEMENT RELATIVE TO CAMERA
         CharacterControllerFU();
         KeepCharacterOnGroundWhenAngledFU();
-
     }
 
     public override void OnExit()
@@ -41,14 +36,17 @@ public class FreeState : CharacterState
     }
 
     public override bool CanEnter(CharacterState currentState)
-    {
-        
-        if (currentState is JumpState || currentState is LeavingGroundState || currentState is GettingUpState || currentState is HitState) 
+    {        
+        if (currentState is JumpState || currentState is LeavingGroundState || currentState is GettingUpState) 
         {
             
             return m_stateMachine.IsInContactWithFloor();
         
         }
+        if (currentState is HitState)
+        {
+            return m_stateMachine.IsInContactWithFloor();
+        }        
         if (currentState is AttackingState)
         {
             if (m_stateMachine.Attacking == false)
@@ -59,8 +57,7 @@ public class FreeState : CharacterState
             return false;
         }
 
-        return false;
-                
+        return false;                
     }
 
     public override bool CanExit()
@@ -75,11 +72,11 @@ public class FreeState : CharacterState
     private void CalculateAngleUnderCharacter()
     {
         RaycastHit hit;
+
         if (Physics.Raycast(m_stateMachine.transform.position, -m_stateMachine.transform.up, out hit, 1.0f))
         {
             float slopeAngleUnderCharacter = Vector3.Angle(hit.normal, Vector3.up);
-            m_stateMachine.FloorAngleUnderCharacter = slopeAngleUnderCharacter;
-            //Debug.Log("Slope Angle: " + m_slopeAngleUnderCharacter);
+            m_stateMachine.FloorAngleUnderCharacter = slopeAngleUnderCharacter;            
         }
     }
 
@@ -131,15 +128,10 @@ public class FreeState : CharacterState
         if (movementVector.magnitude > 0)
         {
             CalculateDiagonalMaxVelocity(movementVector, projectedVectorForward, projectedVectorRight);
-            RegulateVelocity();
-            //VelocityRegulatorBasedOnLimitsTwo(projectedVectorForward, projectedVectorRight);
+            RegulateVelocity();            
         }
 
-        CalculationsForAnimation(projectedVectorForward, projectedVectorRight);
-
-        // For display in editor
-        m_stateMachine.MovementDirectionVector = movementVector;
-
+        CalculationsForAnimation(projectedVectorForward, projectedVectorRight);        
     }    
 
     private void CalculationsForAnimation(Vector3 projectedVec3Forward, Vector3 projectedVec3Right)
@@ -157,7 +149,7 @@ public class FreeState : CharacterState
             !Input.GetKey(KeyCode.A) &&
             !Input.GetKey(KeyCode.S) &&
             !Input.GetKey(KeyCode.D)) ||
-            IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera())
+            CheckIfTooManyInputs())
         {
             if (m_stateMachine.RB.velocity.magnitude < 0.4f)
             {
@@ -165,12 +157,7 @@ public class FreeState : CharacterState
                 return;
             }
             Vector3 vector3 = m_stateMachine.RB.velocity.normalized;
-            m_stateMachine.RB.AddForce(-vector3 * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
-
-            //Vector3 decelerationVector = new Vector3(m_stateMachine.RB.velocity.x, 0, m_stateMachine.RB.velocity.z);
-            //decelerationVector.Normalize();
-            //m_stateMachine.RB.AddForce(-decelerationVector * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
-
+            m_stateMachine.RB.AddForce(-vector3 * m_stateMachine.DecelerationValue, ForceMode.Acceleration);            
         }            
     }
 
@@ -219,7 +206,7 @@ public class FreeState : CharacterState
         m_stateMachine.MaxForwardDiagonalsVelocity = forwardRatio * m_stateMachine.MaxForwardVelocity + sideRatio * m_stateMachine.MaxStrafeVelocity;
     }    
 
-    private bool IsTwoOrMoreReverseInputsInputedSimultaneouslyOneRelativeToCamera()
+    private bool CheckIfTooManyInputs()
     {
         bool returnValue = false;
 
@@ -241,28 +228,6 @@ public class FreeState : CharacterState
 
         return returnValue;
     }
-
-    private void VelocityRegulatorBasedOnLimitsTwo(Vector3 projectedVectorForward, Vector3 projectedVectorRight)
-    {
-        float forwardDot = Vector3.Dot(m_stateMachine.RB.velocity.normalized, projectedVectorForward);
-        float rightDot = Vector3.Dot(m_stateMachine.RB.velocity.normalized, projectedVectorRight);
-        // Peut-être avec un abs serait mieux
-
-        if (forwardDot > 0.9f)
-        {
-            m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
-            m_stateMachine.RB.velocity *= m_stateMachine.MaxForwardVelocity;
-            return;
-        }
-        else if (rightDot > 0.85f || rightDot < -0.85f)
-        {
-            m_stateMachine.RB.velocity = m_stateMachine.RB.velocity.normalized;
-            m_stateMachine.RB.velocity *= m_stateMachine.MaxStrafeVelocity;
-        }
-    }
-
-
-
 }
 
 

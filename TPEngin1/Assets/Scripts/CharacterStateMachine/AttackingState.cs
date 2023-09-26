@@ -14,14 +14,11 @@ public class AttackingState : CharacterState
         
         m_animator.SetTrigger("Attacking");
         m_stateMachine.Attacking = true;
-        m_delay = 0.3f;
-        
+        m_delay = 0.3f;        
     }
 
     public override void OnExit()
     {
-        
-
         Debug.Log("Exit state: AttackingState");
     }
 

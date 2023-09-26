@@ -1,32 +1,27 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterControllerSM : MonoBehaviour
 {
-   
-
     private CharacterState m_currentState;
     private List<CharacterState> m_possibleStates;
 
     [SerializeField] private CharacterFloorTrigger m_floorTrigger;
     [SerializeField] private ElevatorController m_elevatorController;
 
-    [field: SerializeField]
-    public bool IsHit { get; set; }
-    public bool IsJumpingForTooLong { get; set; }
-    public bool IsLosingAltitude { get; private set; }
-    private float m_previousElevation = 0.0f;  
-        
     public Camera Camera { get; private set; }
     public Transform Transform { get; private set; }
 
+    public bool IsHit { get; set; }
+    public bool IsJumpingForTooLong { get; set; }
+    public bool IsLosingAltitude { get; private set; }
+    private float m_previousElevation = 0.0f;         
+    
     [field: SerializeField] public Rigidbody RB { get; private set; }
     [field: SerializeField] public GameObject GameObject { get; private set; }
     [field: SerializeField] private Animator Animator { get; set; }
 
-    [field: SerializeField] public bool IsTouchingFloor { get; private set; }
-    [field: SerializeField] public Vector3 MovementDirectionVector { get; set; }
+    [field: SerializeField] public bool IsTouchingFloor { get; private set; }    
     [field: SerializeField] public float CharacterVelocity { get; private set; }
     [field: SerializeField] public float DistanceBetweenCharacterAndFloor { get; private set; }
     [field: SerializeField] public float FloorAngleUnderCharacter { get; set; }
@@ -49,18 +44,7 @@ public class CharacterControllerSM : MonoBehaviour
     // TESTING
     [field: SerializeField] public GameObject TestingBullet { get; private set; }
     public bool IsStunned { get; set; }
-
-
-    //[field: SerializeField]
-    //public float MaxJumpAccelerationValue { get; private set; }
-    //[field: SerializeField]    
-    //public float ForwardAccelerationValue { get; private set; } 
-    //[field: SerializeField]
-    //public float ForwardDiagonalsAccelerationValue { get; private set; }   
-    //[field: SerializeField]
-    //public float BackwardAccelerationValue { get; private set; } 
-    //[field: SerializeField]
-    //public float StrafeAccelerationValue { get; private set; }  
+    
 
 
     private void Awake()
@@ -79,8 +63,7 @@ public class CharacterControllerSM : MonoBehaviour
     }
 
     void Start()
-    {
-        // Sans le serializeField on peut garder la référence privée, et on va chercher directement la caméra
+    {        
         Camera = Camera.main;       
         Transform = GetComponent<Transform>();
 
@@ -163,12 +146,12 @@ public class CharacterControllerSM : MonoBehaviour
     private void CalculateDistanceBetweenCharacterAndFloor()
     {
         RaycastHit hit;        
+
         if (Physics.Raycast(m_floorTrigger.transform.position, -Vector3.up, out hit))
         {
             Debug.DrawRay(m_floorTrigger.transform.position, -Vector3.up * hit.distance, Color.yellow);
             float distanceToGround = hit.distance;
-            DistanceBetweenCharacterAndFloor = distanceToGround;                        
-            //Debug.Log("Distance to ground: " + distanceToGround);
+            DistanceBetweenCharacterAndFloor = distanceToGround; 
         }
     }
 

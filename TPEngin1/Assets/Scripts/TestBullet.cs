@@ -45,8 +45,6 @@ public class TestBullet : MonoBehaviour
 
         if (other.gameObject == m_player)
         {
-            Debug.Log("RENTRER DANS TRUC");
-
             m_characterControllerSM = m_player.GetComponentInChildren<CharacterControllerSM>();
             
             if (m_characterControllerSM != null)

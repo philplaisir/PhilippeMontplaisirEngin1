@@ -1,11 +1,11 @@
-
-
 using UnityEngine;
 
 public class GettingUpState : CharacterState
 {
     private Animator m_animator;
     private float m_delayTimer;
+
+
 
     public override void OnEnter()
     {
@@ -14,8 +14,6 @@ public class GettingUpState : CharacterState
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         m_animator.SetTrigger("BackUp");
         m_delayTimer = 0.3f;
-
-        //m_stateMachine.IsStunned = false;
     }
 
     public override void OnExit()
@@ -40,7 +38,6 @@ public class GettingUpState : CharacterState
         }
 
         return false;
-
     }
 
     public override bool CanExit()

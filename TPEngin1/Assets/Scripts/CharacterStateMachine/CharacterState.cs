@@ -25,9 +25,7 @@ public abstract class CharacterState : IState
 
     public virtual bool CanEnter(CharacterState currentState)
     {
-
-        throw new System.NotImplementedException();
-        
+        throw new System.NotImplementedException();        
     }
 
     public virtual bool CanExit()
@@ -35,3 +33,5 @@ public abstract class CharacterState : IState
         throw new System.NotImplementedException();
     }
 }
+
+

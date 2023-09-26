@@ -12,18 +12,11 @@ public class FallingState : CharacterState
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         
         m_animator.SetTrigger("Falling");
-
-        //m_stateMachine.IsStunned = false;
-
-
     }
 
     public override void OnExit()
     {
-
-        Debug.Log("Exit state: FallingState\n");
-        
-        
+        Debug.Log("Exit state: FallingState\n");        
     }
 
     public override void OnFixedUpdate()

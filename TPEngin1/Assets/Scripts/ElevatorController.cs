@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class ElevatorController : MonoBehaviour
@@ -12,6 +11,8 @@ public class ElevatorController : MonoBehaviour
 
     private bool m_movingUp = false;
     private bool m_movingDown = false;
+
+
 
     private void Update()
     {
@@ -54,6 +55,5 @@ public class ElevatorController : MonoBehaviour
         m_movingUp = false;
         m_movingDown = true;
     }
-
     
 }

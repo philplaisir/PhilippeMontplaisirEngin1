@@ -5,6 +5,8 @@ public class LeavingGroundState : CharacterState
     private Animator m_animator;
     private float m_timerBeforeFalling;
 
+
+
     public override void OnEnter()
     {
         Debug.Log("Enter state: LeavingGroundState\n");
@@ -14,17 +16,11 @@ public class LeavingGroundState : CharacterState
         m_animator.SetBool("TouchGround", false);
 
         m_timerBeforeFalling = 0.6f; 
-
-        //m_stateMachine.IsStunned = false;
     }
 
     public override void OnExit()
     {
-
         Debug.Log("Exit state: LeavingGroundState\n");
-        //m_animator.SetBool("TouchGround", true);
-        //m_animator.SetTrigger("OnGround");
-
     }
 
     public override void OnFixedUpdate()
@@ -35,8 +31,6 @@ public class LeavingGroundState : CharacterState
 
     public override void OnUpdate()
     {
-        //m_animator.SetBool("TouchGround", false);
-
         m_timerBeforeFalling -= Time.deltaTime;
     }
 
@@ -52,23 +46,18 @@ public class LeavingGroundState : CharacterState
 
     public override bool CanExit()
     {
-
         if (m_stateMachine.IsStunned)
-        {
-            Debug.Log("ON EST RENTRÉ ISSTUNNED");
+        {            
             return true;
         }
         if (m_timerBeforeFalling < 0)
-        {
-            //Debug.Log("ON EST RENTRÉ DANS TIMER BEFORE FALLING");
+        {           
             return true;
         }
         if (m_stateMachine.IsInContactWithFloor())
-        {
-            //Debug.Log("ON EST RENTRÉ DANS US IN CONTACT WITH FLOOR");
+        {            
             return true;
-        }
-        
+        }        
 
         return false;        
     }

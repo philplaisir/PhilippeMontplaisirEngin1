@@ -19,7 +19,6 @@ public class HitState : CharacterState
     {
         Debug.Log("Exit state: HitState\n");
         m_stateMachine.IsHit = false;
-
     }
 
     public override void OnFixedUpdate()
@@ -47,6 +46,10 @@ public class HitState : CharacterState
 
     public override bool CanExit()
     {
+        if (m_stateMachine.IsStunned)
+        {
+            return true;
+        }
         return m_hitStunTimer < 0;        
     }
 }
