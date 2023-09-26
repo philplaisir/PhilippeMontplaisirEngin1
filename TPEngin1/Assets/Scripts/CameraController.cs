@@ -46,7 +46,7 @@ public class CameraController : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateCameraPositionFUpdate();
-        MoveCameraInFrontOfObstructionsFUpdate();
+        MoveInFrontOfObstructionsFUpdate();
     }
 
     private void LateUpdate()
@@ -145,7 +145,7 @@ public class CameraController : MonoBehaviour
         
     }
     
-    private void MoveCameraInFrontOfObstructionsFUpdate()
+    private void MoveInFrontOfObstructionsFUpdate()
     {
         // Raycast se fait dans le fixed Update car c'est de la physique
 

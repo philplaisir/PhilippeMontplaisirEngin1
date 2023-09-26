@@ -5,7 +5,7 @@ public class JumpState : CharacterState
     private Animator m_animator;
     private const float STATE_EXIT_TIMER = 0.2f;
     private float m_currentStateTimer = 0.0f;       
-    private float m_losingAltitudeTimer = 0.3f;    
+    private float m_losingAltitudeTimer = 0.0f;    
 
     [SerializeField]
     private float m_gravityValue = 30.0f;
@@ -21,7 +21,7 @@ public class JumpState : CharacterState
         m_stateMachine.UpdateFreeStateAnimatorValues(new Vector2(0, 0));
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         m_animator.SetTrigger("Jump");        
-        m_losingAltitudeTimer = 0.3f;        
+        m_losingAltitudeTimer = 0.1f;        
         m_stateMachine.IsJumpingForTooLong = false;
     }
 
