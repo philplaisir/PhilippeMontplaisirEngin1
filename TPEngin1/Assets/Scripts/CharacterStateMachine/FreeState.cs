@@ -42,7 +42,7 @@ public class FreeState : CharacterState
     public override bool CanEnter(CharacterState currentState)
     {
         
-        if (currentState is JumpState || currentState is LeavingGroundState || currentState is OnGroundState) 
+        if (currentState is JumpState || currentState is LeavingGroundState || currentState is GettingUpState) 
         {
             
             return m_stateMachine.IsInContactWithFloor();

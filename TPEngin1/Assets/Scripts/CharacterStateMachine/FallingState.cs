@@ -10,8 +10,7 @@ public class FallingState : CharacterState
     {
         Debug.Log("Enter state: FallingState\n");
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
-        //m_animator.SetBool("TouchGround", false);
-        //m_animator.SetBool("EndFall", false);
+        
         m_animator.SetTrigger("Falling");
 
 
@@ -23,8 +22,7 @@ public class FallingState : CharacterState
     {
 
         Debug.Log("Exit state: FallingState\n");
-        //m_animator.SetBool("TouchGround", false);
-        //m_animator.SetBool("EndFall", true);
+        
         
     }
 

@@ -12,7 +12,7 @@ public class OnGroundState : CharacterState
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         //m_animator.SetBool("OnGround", true);
         //m_animator.SetTrigger("OnGroundAfterFalling");
-        m_onGroundDelay = 2.0f;
+        m_onGroundDelay = 1.0f;
     }
 
     public override void OnExit()
