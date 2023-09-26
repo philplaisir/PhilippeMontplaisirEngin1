@@ -13,7 +13,7 @@ public class LeavingGroundState : CharacterState
         
         m_animator.SetBool("TouchGround", false);
 
-        m_timerBeforeFalling = 2.0f; //c'était 0.6
+        m_timerBeforeFalling = 0.6f; 
 
         //m_stateMachine.IsStunned = false;
     }

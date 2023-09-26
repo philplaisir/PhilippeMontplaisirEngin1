@@ -73,7 +73,7 @@ public class CharacterControllerSM : MonoBehaviour
         m_possibleStates.Add(new GettingUpState());
         m_possibleStates.Add(new StunInAirState());
 
-
+        IsStunned = false;
     }
 
     void Start()

@@ -46,7 +46,11 @@ public class OnGroundState : CharacterState
         {
             return m_stateMachine.IsInContactWithFloor();
         }
-        if (currentState is FreeState || currentState is AttackingState)
+        if (currentState is AttackingState)
+        {
+            return m_stateMachine.IsStunned;
+        }
+        if (currentState is FreeState )
         {
             return m_stateMachine.IsStunned;
         }
