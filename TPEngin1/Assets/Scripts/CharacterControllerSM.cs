@@ -68,6 +68,7 @@ public class CharacterControllerSM : MonoBehaviour
         m_possibleStates.Add(new FallingState());
         m_possibleStates.Add(new LeavingGroundState());
         m_possibleStates.Add(new AttackingState());
+        m_possibleStates.Add(new OnGroundState());
 
     }
 
