@@ -46,11 +46,14 @@ public class HitState : CharacterState
 
     public override bool CanExit()
     {
-        if (m_stateMachine.IsStunned)
-        {
-            return true;
-        }
-        return m_hitStunTimer < 0;        
+        //if (m_stateMachine.IsStunned)
+        //{
+        //    return true;
+        //}
+        return m_hitStunTimer < 0;      
+        
+
+
     }
 }
 

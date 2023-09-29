@@ -22,12 +22,12 @@ public class JumpState : CharacterState
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         m_animator.SetTrigger("Jump");        
         m_losingAltitudeTimer = 0.115f;        
-        m_stateMachine.IsJumpingForTooLong = false;
+        m_stateMachine.InJumpStateForTooLong = false;
     }
 
     public override void OnExit()
     {
-        m_stateMachine.IsJumpingForTooLong = false;
+        m_stateMachine.InJumpStateForTooLong = false;
         Debug.Log("Exit state: JumpState\n");
     }
 
@@ -50,7 +50,7 @@ public class JumpState : CharacterState
 
         if (m_losingAltitudeTimer < 0)
         {
-            m_stateMachine.IsJumpingForTooLong = true;
+            m_stateMachine.InJumpStateForTooLong = true;
         }   
     }
 

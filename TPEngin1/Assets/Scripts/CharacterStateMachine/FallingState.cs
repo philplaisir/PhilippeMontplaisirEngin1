@@ -33,11 +33,11 @@ public class FallingState : CharacterState
     {
         if (currentState is JumpState)
         {
-            return !m_stateMachine.IsInContactWithFloor() && m_stateMachine.IsJumpingForTooLong; 
+            return m_stateMachine.InJumpStateForTooLong; 
         }
         if (currentState is LeavingGroundState)
         {
-            return !m_stateMachine.IsInContactWithFloor() && !m_stateMachine.IsStunned;
+            return m_stateMachine.LeftGroundForTooLong; 
         }        
 
         return false;        
@@ -45,12 +45,14 @@ public class FallingState : CharacterState
     
     public override bool CanExit()
     {
-        if (m_stateMachine.IsStunned)
-        {
-            return true;
-        }
+        //if (m_stateMachine.IsStunned)
+        //{
+        //    return true;
+        //}
+
+        return true;
         
-        return m_stateMachine.IsInContactWithFloor();        
+        //return m_stateMachine.IsInContactWithFloor();        
     }
 
     

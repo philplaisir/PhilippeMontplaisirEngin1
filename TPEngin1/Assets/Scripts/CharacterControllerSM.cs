@@ -13,7 +13,8 @@ public class CharacterControllerSM : MonoBehaviour
     public Transform Transform { get; private set; }
 
     public bool IsHit { get; set; }
-    public bool IsJumpingForTooLong { get; set; }
+    public bool InJumpStateForTooLong { get; set; }
+    public bool LeftGroundForTooLong { get; set; }
     public bool IsLosingAltitude { get; private set; }
     private float m_previousElevation = 0.0f;         
     
@@ -77,7 +78,8 @@ public class CharacterControllerSM : MonoBehaviour
 
         m_previousElevation = DistanceBetweenCharacterAndFloor;
 
-        IsStunned = false;
+        LeftGroundForTooLong = false;
+        //IsStunned = false;
         IsHit = false;
     }
     
@@ -199,10 +201,10 @@ public class CharacterControllerSM : MonoBehaviour
                 m_elevatorController.StartMovingDown();
             }
         }
-        if (Input.GetKeyDown(KeyCode.F) && !IsStunned)
-        {
-            IsStunned = true;
-        }
+        //if (Input.GetKeyDown(KeyCode.F) && !IsStunned)
+        //{
+        //    IsStunned = true;
+        //}
     }
 }
 

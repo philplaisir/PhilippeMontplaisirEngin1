@@ -32,7 +32,7 @@ public class GettingUpState : CharacterState
 
     public override bool CanEnter(CharacterState currentState)
     {
-        if (currentState is OnGroundState)
+        if (currentState is OnGroundState || currentState is StunInAirState)
         {
             return true;
         }

@@ -64,10 +64,10 @@ public class AttackingState : CharacterState
         {
             return true;
         }
-        if (m_stateMachine.IsStunned)
-        {
-            return true;
-        }
+        //if (m_stateMachine.IsStunned)
+        //{
+        //    return true;
+        //}
         return false;
 
     }

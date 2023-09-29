@@ -5,6 +5,7 @@ using UnityEngine;
 public class StunInAirState : CharacterState
 {
     private Animator m_animator;
+    private float m_stunOnGroundTimer;
 
     public override void OnEnter()
     {
@@ -13,6 +14,8 @@ public class StunInAirState : CharacterState
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         
         m_animator.SetTrigger("Stunned");
+
+        m_stunOnGroundTimer = 1.0f;
     }
 
     public override void OnExit()
@@ -27,7 +30,12 @@ public class StunInAirState : CharacterState
 
     public override void OnUpdate()
     {
-       
+       if (m_stateMachine.IsInContactWithFloor())
+       {
+           m_stunOnGroundTimer -= Time.deltaTime;
+       }
+
+
 
     }
 
@@ -35,14 +43,14 @@ public class StunInAirState : CharacterState
     {
         if (currentState is JumpState || currentState is LeavingGroundState || currentState is FallingState)
         {
-            return m_stateMachine.IsStunned;
+            return Input.GetKey(KeyCode.F) && !m_stateMachine.IsInContactWithFloor();
         }
         return false;
     }
 
     public override bool CanExit()
     {
-        return m_stateMachine.IsInContactWithFloor();        
+        return m_stunOnGroundTimer < 0;        
     }
 }
 

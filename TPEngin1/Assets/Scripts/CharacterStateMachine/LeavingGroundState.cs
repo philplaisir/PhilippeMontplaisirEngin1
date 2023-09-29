@@ -15,7 +15,10 @@ public class LeavingGroundState : CharacterState
         
         m_animator.SetBool("TouchGround", false);
 
-        m_timerBeforeFalling = 0.6f; 
+        m_stateMachine.LeftGroundForTooLong = false;
+
+        m_timerBeforeFalling = 2.0f;  //0.6f
+        //m_timerBeforeFalling = 0.5f;
     }
 
     public override void OnExit()
@@ -32,6 +35,10 @@ public class LeavingGroundState : CharacterState
     public override void OnUpdate()
     {
         m_timerBeforeFalling -= Time.deltaTime;
+        if (m_timerBeforeFalling < 0)
+        {
+            m_stateMachine.LeftGroundForTooLong = true;
+        }
     }
 
     public override bool CanEnter(CharacterState currentState)
@@ -46,10 +53,10 @@ public class LeavingGroundState : CharacterState
 
     public override bool CanExit()
     {
-        if (m_stateMachine.IsStunned)
-        {            
-            return true;
-        }
+        //if (m_stateMachine.IsStunned)
+        //{            
+        //    return true;
+        //}
         if (m_timerBeforeFalling < 0)
         {           
             return true;
@@ -57,7 +64,15 @@ public class LeavingGroundState : CharacterState
         if (m_stateMachine.IsInContactWithFloor())
         {            
             return true;
-        }        
+        }
+        if (Input.GetKey(KeyCode.F) && !m_stateMachine.IsInContactWithFloor())
+        {
+            // Get stunned in air testing
+            return true;
+        }
+        
+
+        //return true;
 
         return false;        
     }
