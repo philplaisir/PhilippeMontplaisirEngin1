@@ -150,7 +150,7 @@ public class CameraController : MonoBehaviour
         // Raycast se fait dans le fixed Update car c'est de la physique
 
         // Bit shift the index of the layer  (8) to get a bit mask
-        int layerMask = 1 << 8;
+        int layerMask = 1 << 8; //la seule layer avec lequel mon raycast interagit est le layer 8
 
         RaycastHit hit;
 
