@@ -29,7 +29,7 @@ public class FallingState : CharacterState
         m_animator.SetBool("TouchGround", false);
     }
 
-    public override bool CanEnter(CharacterState currentState)
+    public override bool CanEnter(CharacterState currentState, EnemyState currentEnemyState)
     {
         if (currentState is JumpState)
         {

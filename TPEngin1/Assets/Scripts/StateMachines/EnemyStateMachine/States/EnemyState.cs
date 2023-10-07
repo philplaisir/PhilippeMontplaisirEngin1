@@ -1,8 +1,8 @@
-public abstract class CharacterState : IState
+public abstract class EnemyState : IState
 {
-    protected CharacterControllerSM m_stateMachine;
+    protected EnemyControllerSM m_stateMachine;
 
-    public void OnStart(CharacterControllerSM stateMachine)
+    public void OnStart(EnemyControllerSM stateMachine)
     {
         m_stateMachine = stateMachine;
     }
@@ -12,7 +12,7 @@ public abstract class CharacterState : IState
     }
 
     public virtual void OnExit()
-    {
+    {        
     }
 
     public virtual void OnFixedUpdate()
@@ -21,11 +21,11 @@ public abstract class CharacterState : IState
 
     public virtual void OnUpdate()
     {
-    }
+    }    
 
     public virtual bool CanEnter(CharacterState currentState, EnemyState currentEnemyState)
     {
-        throw new System.NotImplementedException();        
+        throw new System.NotImplementedException();
     }
 
     public virtual bool CanExit()
@@ -33,5 +33,3 @@ public abstract class CharacterState : IState
         throw new System.NotImplementedException();
     }
 }
-
-

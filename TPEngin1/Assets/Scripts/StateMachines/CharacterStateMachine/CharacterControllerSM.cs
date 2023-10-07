@@ -4,6 +4,7 @@ using UnityEngine;
 public class CharacterControllerSM : MonoBehaviour
 {
     private CharacterState m_currentState;
+    private EnemyState m_enemyState;
     private List<CharacterState> m_possibleStates;
 
     [SerializeField] private CharacterFloorTrigger m_floorTrigger;
@@ -125,7 +126,7 @@ public class CharacterControllerSM : MonoBehaviour
             {
                 continue;
             }
-            if (state.CanEnter(m_currentState))
+            if (state.CanEnter(m_currentState, m_enemyState))
             {
                 //Quitter le state actuel
                 m_currentState.OnExit();

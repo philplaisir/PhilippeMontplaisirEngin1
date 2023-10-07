@@ -2,14 +2,18 @@ using UnityEngine;
 
 public class HitBox : MonoBehaviour
 {
- 
-    void Start()
+    private EnemyControllerSM m_enemyControllerSM;
+
+    private void OnTriggerEnter(Collider other)
     {
-        
-    }
-  
-    void Update()
-    {
-        
+        Debug.Log("HIT");
+
+        m_enemyControllerSM = other.GetComponentInChildren<EnemyControllerSM>();
+
+        if (m_enemyControllerSM != null)
+        {
+            m_enemyControllerSM.IsHit = true;
+        }
+            
     }
 }

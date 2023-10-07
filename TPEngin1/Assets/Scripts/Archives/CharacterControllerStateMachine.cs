@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class CharacterControllerStateMachine : MonoBehaviour
 {
+    private EnemyState m_currentEnemyState;
 
     // TODO à retirer du projet
     public Camera Camera { get; private set; }
@@ -68,7 +69,7 @@ public class CharacterControllerStateMachine : MonoBehaviour
                 continue;
             }
 
-            if (state.CanEnter(state))
+            if (state.CanEnter(state, m_currentEnemyState))
             {
                 //Quitter le state actuel
                 m_currentState.OnExit();

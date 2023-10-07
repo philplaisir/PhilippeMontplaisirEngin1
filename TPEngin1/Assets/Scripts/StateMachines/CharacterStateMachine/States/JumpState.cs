@@ -6,10 +6,7 @@ public class JumpState : CharacterState
     private const float STATE_EXIT_TIMER = 0.2f;
     private float m_currentStateTimer = 0.0f;       
     private float m_losingAltitudeTimer = 0.0f;    
-
-    [SerializeField]
-    private float m_gravityValue = 30.0f;
-    
+     
         
 
     public override void OnEnter()
@@ -54,7 +51,7 @@ public class JumpState : CharacterState
         }   
     }
 
-    public override bool CanEnter(CharacterState currentState)
+    public override bool CanEnter(CharacterState currentState, EnemyState currentEnemyState)
     {
         if (currentState is FreeState)
         {

@@ -35,7 +35,7 @@ public class FreeState : CharacterState
         Debug.Log("Exit state: FreeState\n");
     }
 
-    public override bool CanEnter(CharacterState currentState)
+    public override bool CanEnter(CharacterState currentState, EnemyState currentEnemyState)
     {        
         if (currentState is JumpState || currentState is LeavingGroundState || currentState is GettingUpState) 
         {
