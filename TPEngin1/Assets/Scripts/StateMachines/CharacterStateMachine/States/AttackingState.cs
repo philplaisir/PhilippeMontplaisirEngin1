@@ -10,15 +10,17 @@ public class AttackingState : CharacterState
     public override void OnEnter()
     {
         Debug.Log("Enter state: AttackingState");
-        m_animator = m_stateMachine.GetComponentInParent<Animator>();        
-        
+        m_animator = m_stateMachine.GetComponentInParent<Animator>();
+
+        m_stateMachine.AttackHitBox.SetActive(true);
         m_animator.SetTrigger("Attacking");
         m_stateMachine.Attacking = true;
-        m_delay = 0.3f;        
+        m_delay = 0.4f;        
     }
 
     public override void OnExit()
     {
+        m_stateMachine.AttackHitBox.SetActive(false);
         Debug.Log("Exit state: AttackingState");
     }
 

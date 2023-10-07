@@ -20,6 +20,8 @@ public class CharacterControllerSM : MonoBehaviour
     
     [field: SerializeField] public Rigidbody RB { get; private set; }
     [field: SerializeField] public GameObject GameObject { get; private set; }
+    [field: SerializeField] public GameObject AttackHitBox { get; private set; }
+
     [field: SerializeField] private Animator Animator { get; set; }
 
     [field: SerializeField] public bool IsTouchingFloor { get; private set; }    
