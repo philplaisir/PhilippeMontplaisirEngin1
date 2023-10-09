@@ -24,9 +24,9 @@ public class EnemyHitState : EnemyState
     {
     }
 
-    public override bool CanEnter(CharacterState currentState, EnemyState currentEnemyState)
+    public override bool CanEnter(IState currentState)
     {
-        if (currentEnemyState is EnemyFreeState)
+        if (currentState is EnemyFreeState)
         {            
             return m_stateMachine.IsHit;
         }

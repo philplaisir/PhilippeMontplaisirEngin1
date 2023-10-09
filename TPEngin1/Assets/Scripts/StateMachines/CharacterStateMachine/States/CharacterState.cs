@@ -23,7 +23,7 @@ public abstract class CharacterState : IState
     {
     }
 
-    public virtual bool CanEnter(CharacterState currentState, EnemyState currentEnemyState)
+    public virtual bool CanEnter(IState currentState)
     {
         throw new System.NotImplementedException();        
     }

@@ -5,6 +5,6 @@ public interface IState
     public void OnUpdate();
     public void OnFixedUpdate();
     public void OnExit();
-    public bool CanEnter(CharacterState currentState, EnemyState currentEnemyState);
+    public bool CanEnter(IState currentState);
     public bool CanExit();
 }

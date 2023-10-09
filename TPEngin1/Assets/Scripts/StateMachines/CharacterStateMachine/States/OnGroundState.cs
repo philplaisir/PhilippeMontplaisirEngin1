@@ -35,7 +35,7 @@ public class OnGroundState : CharacterState
         m_onGroundDelay -= Time.deltaTime;
     }
 
-    public override bool CanEnter(CharacterState currentState, EnemyState currentEnemyState)
+    public override bool CanEnter(IState currentState)
     {
         //if(currentState is StunInAirState)
         //{

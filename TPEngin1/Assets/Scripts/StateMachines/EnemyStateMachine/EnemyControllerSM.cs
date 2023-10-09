@@ -57,7 +57,7 @@ public class EnemyControllerSM : StateMachine
             {
                 continue;
             }
-            if (state.CanEnter(m_playerCharacterState, m_currentState))
+            if (state.CanEnter(m_currentState))
             {
                 //Quitter le state actuel
                 m_currentState.OnExit();

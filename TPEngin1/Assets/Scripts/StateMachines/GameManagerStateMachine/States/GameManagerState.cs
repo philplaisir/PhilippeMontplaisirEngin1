@@ -27,7 +27,7 @@ public abstract class GameManagerState : IState
     {
     }
 
-    public virtual bool CanEnter(CharacterState currentState, EnemyState currentEnemyState)
+    public virtual bool CanEnter(IState currentState)
     {
         throw new System.NotImplementedException();
     }

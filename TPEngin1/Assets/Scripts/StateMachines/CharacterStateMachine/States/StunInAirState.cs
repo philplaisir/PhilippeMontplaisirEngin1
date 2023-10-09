@@ -39,7 +39,7 @@ public class StunInAirState : CharacterState
 
     }
 
-    public override bool CanEnter(CharacterState currentState, EnemyState currentEnemyState)
+    public override bool CanEnter(IState currentState)
     {
         if (currentState is JumpState || currentState is LeavingGroundState || currentState is FallingState)
         {

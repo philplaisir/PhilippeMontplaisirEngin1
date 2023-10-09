@@ -21,7 +21,7 @@ public class EnemyFreeState : EnemyState
     {
     }
 
-    public override bool CanEnter(CharacterState currentState, EnemyState currentEnemyState)
+    public override bool CanEnter(IState currentState)
     {
         return true;
     }

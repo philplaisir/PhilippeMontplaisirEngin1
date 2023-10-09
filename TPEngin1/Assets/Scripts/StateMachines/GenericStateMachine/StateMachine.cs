@@ -2,7 +2,6 @@ using UnityEngine;
 
 public abstract class StateMachine : MonoBehaviour
 {
-
     public virtual void Awake()
     {
     }

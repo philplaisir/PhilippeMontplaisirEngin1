@@ -35,7 +35,7 @@ public class HitState : CharacterState
         m_hitStunTimer -= Time.deltaTime;
     }
 
-    public override bool CanEnter(CharacterState currentState, EnemyState currentEnemyState)
+    public override bool CanEnter(IState currentState)
     {
         if (currentState is FreeState || currentState is AttackingState)
         {

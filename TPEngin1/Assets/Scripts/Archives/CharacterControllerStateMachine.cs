@@ -69,7 +69,7 @@ public class CharacterControllerStateMachine : MonoBehaviour
                 continue;
             }
 
-            if (state.CanEnter(state, m_currentEnemyState))
+            if (state.CanEnter(m_currentState))
             {
                 //Quitter le state actuel
                 m_currentState.OnExit();
