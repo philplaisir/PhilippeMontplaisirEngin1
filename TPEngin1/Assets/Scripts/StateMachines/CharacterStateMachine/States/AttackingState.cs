@@ -24,18 +24,12 @@ public class AttackingState : CharacterState
         Debug.Log("Exit state: AttackingState");
     }
 
-    public override void OnFixedUpdate()
-    {
-        Vector3 vector3 = m_stateMachine.RB.velocity.normalized;
-        m_stateMachine.RB.AddForce(-vector3 * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
-    }
-
     public override void OnUpdate()
     {
         //Debug.Log(m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-        
+
         m_delay -= Time.deltaTime;
-        
+
         if (m_delay <= 0)
         {
             m_stateMachine.Attacking = false;
@@ -46,6 +40,12 @@ public class AttackingState : CharacterState
         //    m_stateMachine.Attacking = false;        
         //}
     }
+
+    public override void OnFixedUpdate()
+    {
+        Vector3 vector3 = m_stateMachine.RB.velocity.normalized;
+        m_stateMachine.RB.AddForce(-vector3 * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
+    }    
 
     public override bool CanEnter(IState currentState)
     {

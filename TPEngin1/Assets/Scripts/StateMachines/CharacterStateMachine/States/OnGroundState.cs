@@ -21,18 +21,17 @@ public class OnGroundState : CharacterState
         //m_stateMachine.IsStunned = false;
 
         Debug.Log("Exit state: OnGroundState\n");       
-    }
-
-    public override void OnFixedUpdate()
-    {
-
-    }
+    }    
 
     public override void OnUpdate()
     {
         //m_stateMachine.IsStunned = true;
 
         m_onGroundDelay -= Time.deltaTime;
+    }
+
+    public override void OnFixedUpdate()
+    {
     }
 
     public override bool CanEnter(IState currentState)

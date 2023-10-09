@@ -26,13 +26,7 @@ public class JumpState : CharacterState
     {
         m_stateMachine.InJumpStateForTooLong = false;
         Debug.Log("Exit state: JumpState\n");
-    }
-
-    public override void OnFixedUpdate()
-    {
-        m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
-        CharacterControllerJumpFU();
-    }
+    }    
 
     public override void OnUpdate()
     {
@@ -49,6 +43,12 @@ public class JumpState : CharacterState
         {
             m_stateMachine.InJumpStateForTooLong = true;
         }   
+    }
+
+    public override void OnFixedUpdate()
+    {
+        m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
+        CharacterControllerJumpFU();
     }
 
     public override bool CanEnter(IState currentState)

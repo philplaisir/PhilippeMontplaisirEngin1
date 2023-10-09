@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public abstract class GameManagerState : IState
 {
     protected GameManagerSM m_stateMachine;
@@ -19,14 +15,14 @@ public abstract class GameManagerState : IState
     {
     }
 
-    public virtual void OnFixedUpdate()
-    {
-    }
-
     public virtual void OnUpdate()
     {
     }
 
+    public virtual void OnFixedUpdate()
+    {
+    }
+   
     public virtual bool CanEnter(IState currentState)
     {
         throw new System.NotImplementedException();

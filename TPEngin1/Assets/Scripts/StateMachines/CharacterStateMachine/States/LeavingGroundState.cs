@@ -26,12 +26,6 @@ public class LeavingGroundState : CharacterState
         Debug.Log("Exit state: LeavingGroundState\n");
     }
 
-    public override void OnFixedUpdate()
-    {
-        CharacterControllerInAirFU();
-        m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
-    }
-
     public override void OnUpdate()
     {
         m_timerBeforeFalling -= Time.deltaTime;
@@ -40,6 +34,12 @@ public class LeavingGroundState : CharacterState
             m_stateMachine.LeftGroundForTooLong = true;
         }
     }
+
+    public override void OnFixedUpdate()
+    {
+        CharacterControllerInAirFU();
+        m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
+    }    
 
     public override bool CanEnter(IState currentState)
     {

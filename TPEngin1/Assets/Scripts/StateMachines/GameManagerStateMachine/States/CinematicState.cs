@@ -1,18 +1,41 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CinematicState : MonoBehaviour
+public class CinematicState : GameManagerState
 {
-    // Start is called before the first frame update
-    void Start()
+    private float m_cinematicTimerForTest;
+
+    public override void OnEnter()
     {
+        Debug.Log("Enter GameManager state : CinematicState");
+
+        m_stateMachine.CinematicCamera.gameObject.SetActive(true);
+        m_stateMachine.MainCamera.gameObject.SetActive(false);
+        //m_stateMachine.CinematicCamera = Camera.main;
         
+        m_cinematicTimerForTest = 3.0f;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnExit()
     {
-        
+        Debug.Log("Exit GameManager state : CinematicState");
+    }
+
+    public override void OnUpdate()
+    {
+        m_cinematicTimerForTest -= Time.deltaTime;
+    }
+
+    public override void OnFixedUpdate()
+    {
+    }    
+
+    public override bool CanEnter(IState currentState)
+    {
+        return Input.GetKey(KeyCode.C);
+    }
+
+    public override bool CanExit()
+    {
+        return m_cinematicTimerForTest <= 0;
     }
 }

@@ -17,16 +17,16 @@ public class FallingState : CharacterState
     public override void OnExit()
     {
         Debug.Log("Exit state: FallingState\n");        
-    }
-
-    public override void OnFixedUpdate()
-    {        
-        m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
-    }
+    }    
 
     public override void OnUpdate()
     {        
         m_animator.SetBool("TouchGround", false);
+    }
+
+    public override void OnFixedUpdate()
+    {
+        m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
     }
 
     public override bool CanEnter(IState currentState)

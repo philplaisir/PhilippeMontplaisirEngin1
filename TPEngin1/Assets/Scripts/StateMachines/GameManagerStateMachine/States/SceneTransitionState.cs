@@ -1,18 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneTransitionState : MonoBehaviour
+public class SceneTransitionState : GameManagerState
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void OnEnter()
     {
-        
+        Debug.Log("Enter GameManager state : SceneTransitionState");
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnExit()
     {
-        
+        Debug.Log("Exit GameManager state : SceneTransitionState");
+    }
+
+    public override void OnUpdate()
+    {
+    }
+
+    public override void OnFixedUpdate()
+    {
+    }    
+
+    public override bool CanEnter(IState currentState)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override bool CanExit()
+    {
+        throw new System.NotImplementedException();
     }
 }

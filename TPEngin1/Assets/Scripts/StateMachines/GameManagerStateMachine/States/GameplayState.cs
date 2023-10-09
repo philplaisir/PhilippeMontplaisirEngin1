@@ -1,18 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class GameplayState : MonoBehaviour
+public class GameplayState : GameManagerState
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void OnEnter()
     {
-        
+        Debug.Log("Enter GameManager state : GameplayState");
+
+        m_stateMachine.CinematicCamera.gameObject.SetActive(false);
+        m_stateMachine.MainCamera.gameObject.SetActive(true);        
+        //m_stateMachine.MainCamera = Camera.main;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnExit()
     {
-        
+        Debug.Log("Exit GameManager state : GameplayState");
+    }
+
+    public override void OnFixedUpdate()
+    {
+    }
+
+    public override void OnUpdate()
+    {
+    }
+
+    public override bool CanEnter(IState currentState)
+    {
+        return true;
+    }
+
+    public override bool CanExit()
+    {
+        return true;
     }
 }

@@ -21,6 +21,11 @@ public class HitState : CharacterState
         m_stateMachine.IsHit = false;
     }
 
+    public override void OnUpdate()
+    {
+        m_hitStunTimer -= Time.deltaTime;
+    }
+
     public override void OnFixedUpdate()
     {
         if (m_stateMachine.RB.velocity.magnitude > 0)
@@ -28,12 +33,7 @@ public class HitState : CharacterState
             Vector3 decelerationVector = m_stateMachine.RB.velocity.normalized;
             m_stateMachine.RB.AddForce(-decelerationVector * m_stateMachine.DecelerationValue, ForceMode.Acceleration);
         }        
-    }
-
-    public override void OnUpdate()
-    {
-        m_hitStunTimer -= Time.deltaTime;
-    }
+    }    
 
     public override bool CanEnter(IState currentState)
     {

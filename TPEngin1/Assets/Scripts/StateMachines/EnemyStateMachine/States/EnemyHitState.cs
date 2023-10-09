@@ -16,13 +16,13 @@ public class EnemyHitState : EnemyState
         Debug.Log("Exit enemy state : HitState");
     }
 
-    public override void OnFixedUpdate()
-    {
-    }
-
     public override void OnUpdate()
     {
     }
+
+    public override void OnFixedUpdate()
+    {
+    }    
 
     public override bool CanEnter(IState currentState)
     {

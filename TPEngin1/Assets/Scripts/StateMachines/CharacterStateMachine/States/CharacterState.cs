@@ -15,13 +15,13 @@ public abstract class CharacterState : IState
     {
     }
 
-    public virtual void OnFixedUpdate()
-    {
-    }
-
     public virtual void OnUpdate()
     {
     }
+
+    public virtual void OnFixedUpdate()
+    {
+    }    
 
     public virtual bool CanEnter(IState currentState)
     {

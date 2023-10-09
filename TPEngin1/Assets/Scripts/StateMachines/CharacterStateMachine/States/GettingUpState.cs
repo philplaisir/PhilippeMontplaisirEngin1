@@ -21,14 +21,14 @@ public class GettingUpState : CharacterState
         Debug.Log("Exit state: GettingUpState\n");
     }
 
-    public override void OnFixedUpdate()
-    {
-        m_delayTimer -= Time.deltaTime;
-    }
-
     public override void OnUpdate()
     {
     }
+
+    public override void OnFixedUpdate()
+    {
+        m_delayTimer -= Time.deltaTime;
+    }    
 
     public override bool CanEnter(IState currentState)
     {

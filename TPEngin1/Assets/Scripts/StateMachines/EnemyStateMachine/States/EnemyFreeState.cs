@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class EnemyFreeState : EnemyState
 {    
-
     public override void OnEnter()
     {
         Debug.Log("Enter enemy state : FreeState");
@@ -13,13 +12,13 @@ public class EnemyFreeState : EnemyState
         Debug.Log("Exit enemy state : FreeState");
     }
 
-    public override void OnFixedUpdate()
-    {
-    }
-
     public override void OnUpdate()
     {
     }
+
+    public override void OnFixedUpdate()
+    {        
+    }    
 
     public override bool CanEnter(IState currentState)
     {

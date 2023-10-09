@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemyControllerSM : StateMachine
 {
-    private CharacterState m_playerCharacterState;   
+    //private CharacterState m_playerCharacterState;   
 
     private EnemyState m_currentState;
     private List<EnemyState> m_possibleStates;

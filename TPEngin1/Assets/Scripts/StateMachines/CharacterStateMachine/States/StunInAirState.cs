@@ -1,7 +1,5 @@
 using UnityEngine;
 
-
-
 public class StunInAirState : CharacterState
 {
     private Animator m_animator;
@@ -21,12 +19,7 @@ public class StunInAirState : CharacterState
     public override void OnExit()
     {
         Debug.Log("Exit state: StunInAirState\n");
-    }
-
-    public override void OnFixedUpdate()
-    {
-        m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
-    }
+    }    
 
     public override void OnUpdate()
     {
@@ -37,6 +30,11 @@ public class StunInAirState : CharacterState
 
 
 
+    }
+
+    public override void OnFixedUpdate()
+    {
+        m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
     }
 
     public override bool CanEnter(IState currentState)

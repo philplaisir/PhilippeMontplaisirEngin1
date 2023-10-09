@@ -1,12 +1,5 @@
 using UnityEngine;
 
-// TODO
-// Checker pour quand 3 touches en même temps
-// Checker pour faire fonctionner la limite solidement, actuellement la velocité est limité mais dépasse toujours un peu la limite que je lui donne
-// Facultatif Essayer d'implémenter d'autres types de déplacements (relatif au personnag, tank control)
-// Facultatif Essayer d'ajouter contrôle avec manette
-// Facultatif mettre un run avec le shift
-
 public class FreeState : CharacterState
 {
     private float m_turnSmoothVelocity;
@@ -16,6 +9,11 @@ public class FreeState : CharacterState
     public override void OnEnter()
     {
         Debug.Log("Enter state: FreeState\n");
+    }
+
+    public override void OnExit()
+    {
+        Debug.Log("Exit state: FreeState\n");
     }
 
     public override void OnUpdate()
@@ -28,12 +26,7 @@ public class FreeState : CharacterState
         // CHARACTER MOVEMENT RELATIVE TO CAMERA
         CharacterControllerFU();
         KeepCharacterOnGroundWhenAngledFU();
-    }
-
-    public override void OnExit()
-    {
-        Debug.Log("Exit state: FreeState\n");
-    }
+    }    
 
     public override bool CanEnter(IState currentState)
     {        
@@ -231,3 +224,15 @@ public class FreeState : CharacterState
 }
 
 
+
+
+
+
+
+
+// TODO
+// Checker pour quand 3 touches en même temps
+// Checker pour faire fonctionner la limite solidement, actuellement la velocité est limité mais dépasse toujours un peu la limite que je lui donne
+// Facultatif Essayer d'implémenter d'autres types de déplacements (relatif au personnag, tank control)
+// Facultatif Essayer d'ajouter contrôle avec manette
+// Facultatif mettre un run avec le shift
