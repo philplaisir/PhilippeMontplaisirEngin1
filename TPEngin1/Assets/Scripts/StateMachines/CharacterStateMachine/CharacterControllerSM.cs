@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterControllerSM : MonoBehaviour
+public class CharacterControllerSM : StateMachine
 {
     private CharacterState m_currentState;
     private EnemyState m_enemyState;
@@ -51,7 +51,7 @@ public class CharacterControllerSM : MonoBehaviour
     
 
 
-    private void Awake()
+    public override void Awake()
     {
         m_possibleStates = new List<CharacterState>();
         m_possibleStates.Add(new FreeState());
@@ -66,7 +66,7 @@ public class CharacterControllerSM : MonoBehaviour
                 
     }
 
-    void Start()
+    public override void Start()
     {        
         Camera = Camera.main;       
         Transform = GetComponent<Transform>();
@@ -85,8 +85,8 @@ public class CharacterControllerSM : MonoBehaviour
         //IsStunned = false;
         IsHit = false;
     }
-    
-    private void Update()
+
+    public override void Update()
     {
         IsTouchingFloor = IsInContactWithFloor();
         if (IsInContactWithFloor())
@@ -106,13 +106,13 @@ public class CharacterControllerSM : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    public override void FixedUpdate()
     {        
         CharacterVelocity = RB.velocity.magnitude;
         m_currentState.OnFixedUpdate();        
     }
 
-    private void TryStateTransition()
+    public override void TryStateTransition()
     {
         if (!m_currentState.CanExit())
         {

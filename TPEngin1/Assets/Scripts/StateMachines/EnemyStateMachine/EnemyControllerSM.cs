@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyControllerSM : MonoBehaviour
+public class EnemyControllerSM : StateMachine
 {
     private CharacterState m_playerCharacterState;   
 
@@ -14,14 +14,14 @@ public class EnemyControllerSM : MonoBehaviour
     [field: SerializeField]
     public bool IsHit { get; set; }
 
-    private void Awake()
+    public override void Awake()
     {
         m_possibleStates = new List<EnemyState>();
         m_possibleStates.Add(new EnemyFreeState());
         m_possibleStates.Add(new EnemyHitState());
     }
 
-    private void Start()
+    public override void Start()
     {
         foreach (EnemyState state in m_possibleStates)
         {
@@ -32,18 +32,18 @@ public class EnemyControllerSM : MonoBehaviour
         m_currentState.OnEnter();
     }
 
-    private void Update()
+    public override void Update()
     {
         m_currentState.OnUpdate();
         TryStateTransition();
     }
 
-    private void FixedUpdate()
+    public override void FixedUpdate()
     {
         m_currentState.OnFixedUpdate();
     }
 
-    private void TryStateTransition()
+    public override void TryStateTransition()
     {
         if (!m_currentState.CanExit())
         {
