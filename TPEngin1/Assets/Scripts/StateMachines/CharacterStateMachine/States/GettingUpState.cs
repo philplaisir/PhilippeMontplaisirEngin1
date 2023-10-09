@@ -23,11 +23,11 @@ public class GettingUpState : CharacterState
 
     public override void OnUpdate()
     {
+        m_delayTimer -= Time.deltaTime;
     }
 
     public override void OnFixedUpdate()
-    {
-        m_delayTimer -= Time.deltaTime;
+    {        
     }    
 
     public override bool CanEnter(IState currentState)

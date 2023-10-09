@@ -12,6 +12,8 @@ public class GameManagerSM : StateMachine
     [field: SerializeField] public Camera MainCamera { get; set; }
     [field: SerializeField] public Camera CinematicCamera { get; set; }
 
+    public bool IsCinematicMode { get; private set; } = false;
+
 
     public override void Awake()
     {
@@ -35,6 +37,8 @@ public class GameManagerSM : StateMachine
 
         m_currentState = m_possibleStates[0];
         m_currentState.OnEnter();
+
+        IsCinematicMode = false;
     }
 
     public override void Update()
@@ -68,6 +72,15 @@ public class GameManagerSM : StateMachine
                 m_currentState.OnExit();
                 m_currentState = state;
                 //Rentrer dans le state state
+                if (state is CinematicState)
+                {
+                    IsCinematicMode = true;
+                }
+                else
+                {
+                    IsCinematicMode = false;
+
+                }
                 m_currentState.OnEnter();
                 return;
             }

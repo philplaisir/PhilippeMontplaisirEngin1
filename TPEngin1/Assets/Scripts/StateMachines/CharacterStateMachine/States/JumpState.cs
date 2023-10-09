@@ -47,7 +47,7 @@ public class JumpState : CharacterState
 
     public override void OnFixedUpdate()
     {
-        m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
+        //m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
         CharacterControllerJumpFU();
     }
 

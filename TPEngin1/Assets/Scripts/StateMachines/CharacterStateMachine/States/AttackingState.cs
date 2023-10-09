@@ -3,9 +3,7 @@ using UnityEngine;
 public class AttackingState : CharacterState
 {
     private Animator m_animator;
-    private float m_delay;    
-
-
+    private float m_delay; 
 
     public override void OnEnter()
     {

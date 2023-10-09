@@ -97,6 +97,12 @@ public class CharacterControllerSM : StateMachine
         DetectTestingInputs();
         CalculateDistanceBetweenCharacterAndFloor();
         EvaluateIfLosingAltitude();
+
+        if (GameManagerSM._Instance.IsCinematicMode == true)
+        {
+            return;
+        }
+
         m_currentState.OnUpdate();
         TryStateTransition();
 
@@ -107,7 +113,17 @@ public class CharacterControllerSM : StateMachine
     }
 
     public override void FixedUpdate()
-    {        
+    {
+        if(!(m_currentState is FreeState))
+        {
+            RB.AddForce(Vector3.down * FallGravity, ForceMode.Acceleration);
+        }        
+        
+        if (GameManagerSM._Instance.IsCinematicMode == true)
+        {
+            return;
+        }
+
         CharacterVelocity = RB.velocity.magnitude;
         m_currentState.OnFixedUpdate();        
     }
