@@ -13,7 +13,6 @@ public class HitBox : MonoBehaviour
         if (m_enemyControllerSM != null)
         {
             m_enemyControllerSM.IsHit = true;
-        }
-            
+        }            
     }
 }
