@@ -28,29 +28,17 @@ public class OnGroundState : CharacterState
     }
 
     public override bool CanEnter(IState currentState)
-    {
-        //if(currentState is StunInAirState)
-        //{
-        //    return m_stateMachine.IsInContactWithFloor();
-        //
-        //}
+    {        
         if (currentState is FallingState )
         {
             return m_stateMachine.IsInContactWithFloor();
         }
-        //if(currentState is HitState )
-        //{            
-        //    return m_stateMachine.IsStunned;
-        //}
-        //if (currentState is AttackingState)
-        //{
-        //    return m_stateMachine.IsStunned;
-        //}
-        //if (currentState is FreeState )
-        //{
-        //    return m_stateMachine.IsStunned;
-        //}        
-
+        if (currentState is FreeState)
+        {
+            // For testing purpose
+            return Input.GetKey(KeyCode.F);
+        }
+        
         return false;
     }
 
