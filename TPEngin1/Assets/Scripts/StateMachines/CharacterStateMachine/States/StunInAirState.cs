@@ -27,14 +27,10 @@ public class StunInAirState : CharacterState
        {
            m_stunOnGroundTimer -= Time.deltaTime;
        }
-
-
-
     }
 
     public override void OnFixedUpdate()
-    {
-        //m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
+    {        
     }
 
     public override bool CanEnter(IState currentState)

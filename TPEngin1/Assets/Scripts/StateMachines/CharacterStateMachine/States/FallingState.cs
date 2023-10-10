@@ -3,8 +3,6 @@ using UnityEngine;
 public class FallingState : CharacterState
 {
     private Animator m_animator;    
-    
-    
 
     public override void OnEnter()
     {
@@ -16,6 +14,7 @@ public class FallingState : CharacterState
 
     public override void OnExit()
     {
+        m_animator.ResetTrigger("Falling");
         Debug.Log("Exit state: FallingState\n");        
     }    
 
@@ -25,19 +24,33 @@ public class FallingState : CharacterState
     }
 
     public override void OnFixedUpdate()
-    {
-        //m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
+    {        
     }
 
     public override bool CanEnter(IState currentState)
     {
         if (currentState is JumpState)
         {
-            return m_stateMachine.InJumpStateForTooLong; 
+            if (m_stateMachine.CharacterVelocity.y < 0
+                && Mathf.Abs(m_stateMachine.transform.position.y - m_stateMachine.JumpStartingPosition.y) >= m_stateMachine.MaxJumpFallingDistance)
+            {
+                return true;
+            }
+
+            return false;
+
+            //return m_stateMachine.InJumpStateForTooLong; 
         }
         if (currentState is LeavingGroundState)
         {
-            return m_stateMachine.LeftGroundForTooLong; 
+            if (Mathf.Abs(m_stateMachine.transform.position.y - m_stateMachine.LeavingGroundStartingPosition.y) >= m_stateMachine.MaxLeavingGroundFallingDistance)
+            {
+                return true;
+            }
+
+            return false;
+
+            //return m_stateMachine.LeftGroundForTooLong; 
         }        
 
         return false;        

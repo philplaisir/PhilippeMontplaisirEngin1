@@ -5,8 +5,6 @@ public class GettingUpState : CharacterState
     private Animator m_animator;
     private float m_delayTimer;
 
-
-
     public override void OnEnter()
     {
         Debug.Log("Enter state: GettingUpState\n");

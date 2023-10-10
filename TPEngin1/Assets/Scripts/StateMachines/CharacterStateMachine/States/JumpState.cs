@@ -4,50 +4,33 @@ public class JumpState : CharacterState
 {
     private Animator m_animator;
     private const float STATE_EXIT_TIMER = 0.2f;
-    private float m_currentStateTimer = 0.0f;       
-    private float m_losingAltitudeTimer = 0.0f;    
-     
-        
+    private float m_currentStateTimer = 0.0f;    
 
     public override void OnEnter()
     {
         Debug.Log("Enter state: JumpState\n");
-                
+        
+        m_stateMachine.JumpStartingPosition = m_stateMachine.transform.position;
         m_stateMachine.RB.AddForce(Vector3.up * m_stateMachine.JumpIntensity, ForceMode.Acceleration);
         m_currentStateTimer = STATE_EXIT_TIMER;
         m_stateMachine.UpdateFreeStateAnimatorValues(new Vector2(0, 0));
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
-        m_animator.SetTrigger("Jump");        
-        m_losingAltitudeTimer = 0.115f;        
-        m_stateMachine.InJumpStateForTooLong = false;
+        m_animator.SetTrigger("Jump");         
     }
 
     public override void OnExit()
-    {
-        m_stateMachine.InJumpStateForTooLong = false;
+    {        
         Debug.Log("Exit state: JumpState\n");
     }    
 
     public override void OnUpdate()
     {
         m_animator.SetBool("TouchGround", false);
-        m_currentStateTimer -= Time.deltaTime;
-        
-        if (m_stateMachine.IsLosingAltitude)
-        {
-            m_losingAltitudeTimer -= Time.deltaTime;
-
-        }       
-
-        if (m_losingAltitudeTimer < 0)
-        {
-            m_stateMachine.InJumpStateForTooLong = true;
-        }   
+        m_currentStateTimer -= Time.deltaTime;        
     }
 
     public override void OnFixedUpdate()
-    {
-        //m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
+    {        
         CharacterControllerJumpFU();
     }
 
@@ -64,6 +47,8 @@ public class JumpState : CharacterState
     {
         return m_currentStateTimer <= 0;
     }
+
+    //888888888888888888888888888888888888888888888888888888888
 
     private void CharacterControllerJumpFU()
     {        
@@ -90,8 +75,7 @@ public class JumpState : CharacterState
 
         movementVector.Normalize();
 
-        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.FallingAccelerationXZ, ForceMode.Acceleration);
-                
+        m_stateMachine.RB.AddForce(movementVector * m_stateMachine.FallingAccelerationXZ, ForceMode.Acceleration);                
     }
     
 }

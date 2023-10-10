@@ -24,8 +24,6 @@ public class AttackingState : CharacterState
 
     public override void OnUpdate()
     {
-        //Debug.Log(m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-
         m_delay -= Time.deltaTime;
 
         if (m_delay <= 0)
@@ -33,6 +31,7 @@ public class AttackingState : CharacterState
             m_stateMachine.Attacking = false;
         }
 
+        //Debug.Log(m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
         //if (m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
         //{
         //    m_stateMachine.Attacking = false;        

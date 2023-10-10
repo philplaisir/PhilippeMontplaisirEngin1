@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class CharacterControllerSM : StateMachine
 {
-    private CharacterState m_currentState;
-    //private EnemyState m_enemyState;
+    private CharacterState m_currentState;    
     private List<CharacterState> m_possibleStates;
 
     [SerializeField] private CharacterFloorTrigger m_floorTrigger;
@@ -13,9 +12,7 @@ public class CharacterControllerSM : StateMachine
     public Camera Camera { get; private set; }
     public Transform Transform { get; private set; }
 
-    public bool IsHit { get; set; }
-    public bool InJumpStateForTooLong { get; set; }
-    public bool LeftGroundForTooLong { get; set; }
+    public bool IsHit { get; set; }       
     public bool IsLosingAltitude { get; private set; }
     private float m_previousElevation = 0.0f;         
     
@@ -26,7 +23,8 @@ public class CharacterControllerSM : StateMachine
     [field: SerializeField] private Animator Animator { get; set; }
 
     [field: SerializeField] public bool IsTouchingFloor { get; private set; }    
-    [field: SerializeField] public float CharacterVelocity { get; private set; }
+    [field: SerializeField] public float CharacterVelocityMagnitude { get; private set; }
+    public Vector3 CharacterVelocity { get; private set; }
     [field: SerializeField] public float DistanceBetweenCharacterAndFloor { get; private set; }
     [field: SerializeField] public float FloorAngleUnderCharacter { get; set; }
     [field: SerializeField] public float GroundAcceleration { get; private set; }
@@ -36,11 +34,18 @@ public class CharacterControllerSM : StateMachine
     [field: SerializeField] public float MaxBackwardVelocity { get; private set; }
     [field: SerializeField] public float MaxStrafeVelocity { get; private set; }
     [field: SerializeField] public float DecelerationValue { get; private set; }
+    [field: SerializeField] public float FallGravity { get; private set; }
     [field: SerializeField] public float TurnSmoothTime { get; private set; }
+
 
     // JUMPING
     [field: SerializeField] public float JumpIntensity { get; private set; }
-    [field: SerializeField] public float FallGravity { get; private set; }
+    [field: SerializeField] public float MaxJumpFallingDistance { get; private set; } = 0.0f;
+    public Vector3 JumpStartingPosition { get; set; } = Vector3.zero;
+
+    // LEAVING GROUND
+    [field: SerializeField] public float MaxLeavingGroundFallingDistance { get; private set; } = 0.0f;
+    public Vector3 LeavingGroundStartingPosition { get; set; } = Vector3.zero;
 
     // ATTACKING
     public bool Attacking { get; set; }   
@@ -80,9 +85,7 @@ public class CharacterControllerSM : StateMachine
         m_currentState.OnEnter();
 
         m_previousElevation = DistanceBetweenCharacterAndFloor;
-
-        LeftGroundForTooLong = false;
-        //IsStunned = false;
+        
         IsHit = false;
     }
 
@@ -124,7 +127,8 @@ public class CharacterControllerSM : StateMachine
             return;
         }
 
-        CharacterVelocity = RB.velocity.magnitude;
+        CharacterVelocity = RB.velocity;
+        CharacterVelocityMagnitude = RB.velocity.magnitude;
         m_currentState.OnFixedUpdate();        
     }
 
@@ -219,11 +223,7 @@ public class CharacterControllerSM : StateMachine
             {                
                 m_elevatorController.StartMovingDown();
             }
-        }
-        //if (Input.GetKeyDown(KeyCode.F) && !IsStunned)
-        //{
-        //    IsStunned = true;
-        //}
+        }        
     }
 }
 

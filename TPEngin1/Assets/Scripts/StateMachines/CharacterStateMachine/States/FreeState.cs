@@ -2,9 +2,7 @@ using UnityEngine;
 
 public class FreeState : CharacterState
 {
-    private float m_turnSmoothVelocity;
-    
-        
+    private float m_turnSmoothVelocity;       
 
     public override void OnEnter()
     {
@@ -31,10 +29,8 @@ public class FreeState : CharacterState
     public override bool CanEnter(IState currentState)
     {        
         if (currentState is JumpState || currentState is LeavingGroundState || currentState is GettingUpState) 
-        {
-            
-            return m_stateMachine.IsInContactWithFloor();
-        
+        {            
+            return m_stateMachine.IsInContactWithFloor();        
         }
         if (currentState is HitState)
         {
@@ -57,8 +53,6 @@ public class FreeState : CharacterState
     {
         return true;
     }
-
-
 
     //88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 

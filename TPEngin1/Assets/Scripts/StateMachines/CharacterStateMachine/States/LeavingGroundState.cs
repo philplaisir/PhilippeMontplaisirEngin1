@@ -3,22 +3,16 @@ using UnityEngine;
 public class LeavingGroundState : CharacterState
 {
     private Animator m_animator;
-    private float m_timerBeforeFalling;
-
-
+    private float m_maxFallDistance;
 
     public override void OnEnter()
     {
         Debug.Log("Enter state: LeavingGroundState\n");
 
+        m_stateMachine.LeavingGroundStartingPosition = m_stateMachine.transform.position;
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         
         m_animator.SetBool("TouchGround", false);
-
-        m_stateMachine.LeftGroundForTooLong = false;
-
-        m_timerBeforeFalling = 2.0f;  //0.6f
-        //m_timerBeforeFalling = 0.5f;
     }
 
     public override void OnExit()
@@ -27,18 +21,12 @@ public class LeavingGroundState : CharacterState
     }
 
     public override void OnUpdate()
-    {
-        m_timerBeforeFalling -= Time.deltaTime;
-        if (m_timerBeforeFalling < 0)
-        {
-            m_stateMachine.LeftGroundForTooLong = true;
-        }
+    {        
     }
 
     public override void OnFixedUpdate()
     {
-        CharacterControllerInAirFU();
-        //m_stateMachine.RB.AddForce(Vector3.down * m_stateMachine.FallGravity, ForceMode.Acceleration);
+        CharacterControllerInAirFU();        
     }    
 
     public override bool CanEnter(IState currentState)
@@ -52,13 +40,9 @@ public class LeavingGroundState : CharacterState
     }
 
     public override bool CanExit()
-    {
-        //if (m_stateMachine.IsStunned)
-        //{            
-        //    return true;
-        //}
-        if (m_timerBeforeFalling < 0)
-        {           
+    {        
+        if (Mathf.Abs(m_stateMachine.transform.position.y - m_stateMachine.LeavingGroundStartingPosition.y) >= m_maxFallDistance)
+        {
             return true;
         }
         if (m_stateMachine.IsInContactWithFloor())
@@ -71,11 +55,10 @@ public class LeavingGroundState : CharacterState
             return true;
         }
         
-
-        //return true;
-
         return false;        
     }
+
+    //88888888888888888888888888888888888888888888888888888
 
     private void CharacterControllerInAirFU()
     {        
@@ -103,6 +86,5 @@ public class LeavingGroundState : CharacterState
         movementVector.Normalize();
 
         m_stateMachine.RB.AddForce(movementVector * m_stateMachine.FallingAccelerationXZ, ForceMode.Acceleration);
-
     }
 }

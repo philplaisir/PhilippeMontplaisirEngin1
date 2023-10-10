@@ -5,8 +5,6 @@ public class HitState : CharacterState
     private Animator m_animator;
     private float m_hitStunTimer;
 
-
-
     public override void OnEnter()
     {
         Debug.Log("Enter state: HitState\n");
@@ -45,15 +43,8 @@ public class HitState : CharacterState
     }
 
     public override bool CanExit()
-    {
-        //if (m_stateMachine.IsStunned)
-        //{
-        //    return true;
-        //}
-        return m_hitStunTimer < 0;      
-        
-
-
+    {        
+        return m_hitStunTimer < 0;   
     }
 }
 

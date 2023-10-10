@@ -8367,6 +8367,16 @@ PrefabInstance:
       propertyPath: <AttackHitBox>k__BackingField
       value: 
       objectReference: {fileID: 1492514719}
+    - target: {fileID: 2875821573465684858, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
+        type: 3}
+      propertyPath: <MaxJumpFallingDistance>k__BackingField
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2875821573465684858, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
+        type: 3}
+      propertyPath: <MaxLeavingGroundFallingDistance>k__BackingField
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4452599224100493265, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
         type: 3}
       propertyPath: m_Enabled
