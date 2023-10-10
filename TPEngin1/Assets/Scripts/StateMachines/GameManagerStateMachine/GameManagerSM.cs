@@ -57,6 +57,7 @@ public class GameManagerSM : StateMachine
         if (!m_currentState.CanExit())
         {
             return;
+
         }
 
         //Je PEUX quitter le state actuel
