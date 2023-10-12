@@ -1933,6 +1933,36 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459758220}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &501645181 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6072024624877179389, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
+    type: 3}
+  m_PrefabInstance: {fileID: 7458279889408498066}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &501645183 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 5928763990595479130, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
+    type: 3}
+  m_PrefabInstance: {fileID: 7458279889408498066}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &501645184 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 677923695728571819, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
+    type: 3}
+  m_PrefabInstance: {fileID: 7458279889408498066}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &501645186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501645181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f6620ed9057bbb46b60cff2b1fa4819, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &549623156
 GameObject:
   m_ObjectHideFlags: 0
@@ -4903,6 +4933,48 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310324347}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1311169274 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5984394689667471179, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
+    type: 3}
+  m_PrefabInstance: {fileID: 7458279889408498066}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1311169276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311169274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7331aecb2d7e29647906a12b3ec1f3b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Animator>k__BackingField: {fileID: 501645184}
+  m_floorTrigger: {fileID: 2093704369}
+  <RB>k__BackingField: {fileID: 501645183}
+  <MainCharacter>k__BackingField: {fileID: 501645181}
+  <RightArmAttackHitBox>k__BackingField: {fileID: 1492514719}
+  <IsTouchingFloor>k__BackingField: 0
+  <CharacterVelocityMagnitude>k__BackingField: 0
+  <DistanceBetweenCharacterAndFloor>k__BackingField: 0
+  <FloorAngleUnderCharacter>k__BackingField: 0
+  <TestingBullet>k__BackingField: {fileID: 6995891691891069014, guid: 1b29a26dfb8226f49a444ddbcbd33d18,
+    type: 3}
+  m_elevatorController: {fileID: 378896628}
+  <GroundAcceleration>k__BackingField: 40
+  <MaxForwardVelocity>k__BackingField: 15
+  <MaxForwardDiagonalsVelocity>k__BackingField: 15
+  <MaxBackwardVelocity>k__BackingField: 5
+  <MaxStrafeVelocity>k__BackingField: 10
+  <DecelerationValue>k__BackingField: 40
+  <TurnSmoothTime>k__BackingField: 0.2
+  <JumpIntensity>k__BackingField: 775
+  <MaxJumpFallingDistance>k__BackingField: 5
+  <MaxLeavingGroundFallingDistance>k__BackingField: 5
+  <FallGravity>k__BackingField: 30
+  <FallingAccelerationXZ>k__BackingField: 10
 --- !u!1 &1315370720
 GameObject:
   m_ObjectHideFlags: 0
@@ -8016,6 +8088,18 @@ Transform:
   - {fileID: 1954308976}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2093704369 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2855606539332761754, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
+    type: 3}
+  m_PrefabInstance: {fileID: 7458279889408498066}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 128da58bc57710041acebe0a5659ec23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2114560748
 GameObject:
   m_ObjectHideFlags: 0
@@ -8439,13 +8523,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7791519300698913280, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
         type: 3}
+      propertyPath: m_Name
+      value: RightArmPunchAttackHitBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 7791519300698913280, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2875821573465684858, guid: d94e0d5f021e3d745a6b1adcbdee59c2, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6072024624877179389, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
+        type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 501645186}
+    - targetCorrespondingSourceObject: {fileID: 5984394689667471179, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1311169276}
     - targetCorrespondingSourceObject: {fileID: 7791519300698913280, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
         type: 3}
       insertIndex: -1
