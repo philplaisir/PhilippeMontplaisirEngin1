@@ -9,6 +9,7 @@ public abstract class BaseStateMachine<T> : MonoBehaviour where T : IState
     protected virtual void Awake()
     {
         CreatePossibleStates();
+
     }
 
     // Start is called before the first frame update
