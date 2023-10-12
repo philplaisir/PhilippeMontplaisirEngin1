@@ -6,53 +6,54 @@ public class CharacterControllerSM : StateMachine
     private CharacterState m_currentState;    
     private List<CharacterState> m_possibleStates;
 
+    [field: SerializeField] private Animator Animator { get; set; }
+
     [SerializeField] private CharacterFloorTrigger m_floorTrigger;
-    [SerializeField] private ElevatorController m_elevatorController;
+    
 
     public Camera Camera { get; private set; }
     public Transform Transform { get; private set; }
 
-    public bool IsHit { get; set; }       
-    public bool IsLosingAltitude { get; private set; }
-    private float m_previousElevation = 0.0f;         
+    public bool IsHit { get; set; }                  
     
     [field: SerializeField] public Rigidbody RB { get; private set; }
-    [field: SerializeField] public GameObject GameObject { get; private set; }
-    [field: SerializeField] public GameObject AttackHitBox { get; private set; }
+    [field: SerializeField] public GameObject MainCharacter { get; private set; }
+    [field: SerializeField] public GameObject RightArmAttackHitBox { get; private set; }    
 
-    [field: SerializeField] private Animator Animator { get; set; }
-
+    [field: Header("VARIOUS DATA AND TESTING REFS")] // à changer améliorer
     [field: SerializeField] public bool IsTouchingFloor { get; private set; }    
     [field: SerializeField] public float CharacterVelocityMagnitude { get; private set; }
-    public Vector3 CharacterVelocity { get; private set; }
     [field: SerializeField] public float DistanceBetweenCharacterAndFloor { get; private set; }
     [field: SerializeField] public float FloorAngleUnderCharacter { get; set; }
+    [field: SerializeField] public GameObject TestingBullet { get; private set; }
+    [SerializeField] private ElevatorController m_elevatorController; //TODO brisé
+    public Vector3 CharacterVelocity { get; private set; }
+    [field: Header("GROUND MOVEMENT VALUES")]
     [field: SerializeField] public float GroundAcceleration { get; private set; }
-    [field: SerializeField] public float FallingAccelerationXZ { get; private set; }       
     [field: SerializeField] public float MaxForwardVelocity { get; private set; }
     [field: SerializeField] public float MaxForwardDiagonalsVelocity { get; set; }
     [field: SerializeField] public float MaxBackwardVelocity { get; private set; }
     [field: SerializeField] public float MaxStrafeVelocity { get; private set; }
     [field: SerializeField] public float DecelerationValue { get; private set; }
-    [field: SerializeField] public float FallGravity { get; private set; }
     [field: SerializeField] public float TurnSmoothTime { get; private set; }
-
-
-    // JUMPING
+    
+    [field: Header("JUMPING")]
     [field: SerializeField] public float JumpIntensity { get; private set; }
-    [field: SerializeField] public float MaxJumpFallingDistance { get; private set; } = 0.0f;
     public Vector3 JumpStartingPosition { get; set; } = Vector3.zero;
 
-    // LEAVING GROUND
-    [field: SerializeField] public float MaxLeavingGroundFallingDistance { get; private set; } = 0.0f;
+    //------------- LEAVING GROUND 
     public Vector3 LeavingGroundStartingPosition { get; set; } = Vector3.zero;
 
-    // ATTACKING
+    [field: Header("FALLING PARAMETERS")]
+    [field: SerializeField] public float MaxJumpFallingDistance { get; private set; } = 0.0f;
+    [field: SerializeField] public float MaxLeavingGroundFallingDistance { get; private set; } = 0.0f;
+    [field: SerializeField] public float FallGravity { get; private set; }
+    [field: SerializeField] public float FallingAccelerationXZ { get; private set; }
+
+    //------------- ATTACKING
     public bool Attacking { get; set; }   
 
-    // TESTING
-    [field: SerializeField] public GameObject TestingBullet { get; private set; }
-    public bool IsStunned { get; set; }
+    
     
 
 
@@ -84,7 +85,7 @@ public class CharacterControllerSM : StateMachine
         m_currentState = m_possibleStates[0];
         m_currentState.OnEnter();
 
-        m_previousElevation = DistanceBetweenCharacterAndFloor;
+        
         
         IsHit = false;
     }
@@ -98,8 +99,7 @@ public class CharacterControllerSM : StateMachine
         }        
         
         DetectTestingInputs();
-        CalculateDistanceBetweenCharacterAndFloor();
-        EvaluateIfLosingAltitude();
+        CalculateDistanceBetweenCharacterAndFloor();        
 
         if (GameManagerSM._Instance.IsCinematicMode == true)
         {
@@ -185,21 +185,7 @@ public class CharacterControllerSM : StateMachine
         }
     }
 
-    private void EvaluateIfLosingAltitude()
-    {
-        float elevationDiff = DistanceBetweenCharacterAndFloor - m_previousElevation;
-
-        m_previousElevation = DistanceBetweenCharacterAndFloor;
-
-        if (elevationDiff >= 0) 
-        {
-            IsLosingAltitude = false;
-        }
-        if (elevationDiff < 0)
-        {
-            IsLosingAltitude = true;
-        }
-    }
+    
 
     private void DetectTestingInputs()
     {
@@ -208,7 +194,7 @@ public class CharacterControllerSM : StateMachine
         {
             Vector3 spawnPosition = new Vector3(143, 1, 170);
             GameObject sphere = Instantiate(TestingBullet, spawnPosition, Quaternion.identity);
-            sphere.GetComponent<TestBullet>().m_player = this.GameObject;           
+            sphere.GetComponent<TestBullet>().m_player = this.MainCharacter;           
         }
         if (Input.GetKey(KeyCode.X))
         {
@@ -229,3 +215,23 @@ public class CharacterControllerSM : StateMachine
 
 
 
+//[field: Header("Bonjour")]
+//[field: SerializeField, Header("Hi")]
+
+
+
+//private void EvaluateIfLosingAltitude()
+//{
+//    float elevationDiff = DistanceBetweenCharacterAndFloor - m_previousElevation;
+//
+//    m_previousElevation = DistanceBetweenCharacterAndFloor;
+//
+//    if (elevationDiff >= 0)
+//    {
+//        IsLosingAltitude = false;
+//    }
+//    if (elevationDiff < 0)
+//    {
+//        IsLosingAltitude = true;
+//    }
+//}
