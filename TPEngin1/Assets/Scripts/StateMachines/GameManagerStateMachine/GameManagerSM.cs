@@ -1,90 +1,67 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManagerSM : StateMachine
+public class GameManagerSM : BaseStateMachine<IState>
 {
     public static GameManagerSM _Instance;
     // Pour le caller d'ailleurs GameManagerSM._Instance...
 
-    private GameManagerState m_currentState;
-    private List<GameManagerState> m_possibleStates;
+    //private GameManagerState m_currentState;
+    //private List<GameManagerState> m_possibleStates;
 
     [field: SerializeField] public Camera MainCamera { get; set; }
     [field: SerializeField] public Camera CinematicCamera { get; set; }
 
     public bool IsCinematicMode { get; private set; } = false;
 
-
-    public override void Awake()
+    protected override void CreatePossibleStates()
     {
+        m_possibleStates = new List<IState>();
+        m_possibleStates.Add(new GameplayState());
+        m_possibleStates.Add(new CinematicState());
+    }
+
+    protected override void Awake()
+    {
+        //Pas sûr pour le base.awake ici
+        base.Awake();
+
         if (_Instance == null)
         { 
             _Instance = this;
         }            
 
-        m_possibleStates = new List<GameManagerState>();
-        m_possibleStates.Add(new GameplayState());
-        m_possibleStates.Add(new CinematicState());
+        
         //m_possibleStates.Add(new SceneTransitionState());
     }
 
-    public override void Start()
+    protected override void Start()
     {
+        //je ne suis pas sûr pour le base start et for each et tout
+        base.Start();
         foreach (GameManagerState state in m_possibleStates)
         {
             state.OnStart(this);
         }
 
-        m_currentState = m_possibleStates[0];
-        m_currentState.OnEnter();
+        //m_currentState = m_possibleStates[0];
+        //m_currentState.OnEnter();
 
         IsCinematicMode = false;
     }
 
-    public override void Update()
+    protected override void Update()
     {
-        m_currentState.OnUpdate();
-        TryStateTransition();
+        base.Update();
+        //m_currentState.OnUpdate();
+        //TryStateTransition();
     }
 
-    public override void FixedUpdate()
+    protected override void FixedUpdate()
     {
-        m_currentState.OnFixedUpdate();
+        base.FixedUpdate();
+        //m_currentState.OnFixedUpdate();
     }
 
-    public override void TryStateTransition()
-    {
-        if (!m_currentState.CanExit())
-        {
-            return;
-
-        }
-
-        //Je PEUX quitter le state actuel
-        foreach (var state in m_possibleStates)
-        {
-            if (m_currentState == state)
-            {
-                continue;
-            }
-            if (state.CanEnter(m_currentState))
-            {
-                //Quitter le state actuel
-                m_currentState.OnExit();
-                m_currentState = state;
-                //Rentrer dans le state state
-                if (state is CinematicState)
-                {
-                    IsCinematicMode = true;
-                }
-                else
-                {
-                    IsCinematicMode = false;
-
-                }
-                m_currentState.OnEnter();
-                return;
-            }
-        }
-    }
+    
 }

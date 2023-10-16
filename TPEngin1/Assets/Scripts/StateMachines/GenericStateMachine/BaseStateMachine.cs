@@ -17,7 +17,7 @@ public abstract class BaseStateMachine<T> : MonoBehaviour where T : IState
     {
         foreach (IState state in m_possibleStates)
         {
-            //state.OnStart();
+            state.OnStart();
         }
         m_currentState = m_possibleStates[0];
         m_currentState.OnEnter();

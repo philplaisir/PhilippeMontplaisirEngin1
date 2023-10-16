@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterControllerSM : StateMachine
+public class CharacterControllerSM : BaseStateMachine<IState>
 {
-    private CharacterState m_currentState;    
-    private List<CharacterState> m_possibleStates;
+    //private CharacterState m_currentState;    
+    //private List<CharacterState> m_possibleStates;
 
     [field: SerializeField] private Animator Animator { get; set; }
 
@@ -57,9 +57,9 @@ public class CharacterControllerSM : StateMachine
     
 
 
-    public override void Awake()
+    protected override void CreatePossibleStates()
     {
-        m_possibleStates = new List<CharacterState>();
+        m_possibleStates = new List<IState>();
         m_possibleStates.Add(new FreeState());
         m_possibleStates.Add(new JumpState());
         m_possibleStates.Add(new FallingState());
@@ -72,26 +72,28 @@ public class CharacterControllerSM : StateMachine
                 
     }
 
-    public override void Start()
-    {        
-        Camera = Camera.main;       
-        Transform = GetComponent<Transform>();
-
+    protected override void Start()
+    {   
+        //je ne suis pas sûr pour le base start et for each et tout
+        base.Start();
         foreach(CharacterState state in m_possibleStates)
         {
             state.OnStart(this);
         }
         
-        m_currentState = m_possibleStates[0];
-        m_currentState.OnEnter();
+        //m_currentState = m_possibleStates[0];
+        //m_currentState.OnEnter();
 
-        
-        
+        Camera = Camera.main;
+        Transform = GetComponent<Transform>();
+
         IsHit = false;
     }
 
-    public override void Update()
+    protected override void Update()
     {
+        base.Update();
+
         IsTouchingFloor = IsInContactWithFloor();
         if (IsInContactWithFloor())
         {            
@@ -106,8 +108,8 @@ public class CharacterControllerSM : StateMachine
             return;
         }
 
-        m_currentState.OnUpdate();
-        TryStateTransition();
+        //m_currentState.OnUpdate();
+        //TryStateTransition();
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -115,8 +117,10 @@ public class CharacterControllerSM : StateMachine
         }
     }
 
-    public override void FixedUpdate()
+    protected override void FixedUpdate()
     {
+        base.FixedUpdate();
+
         if(!(m_currentState is FreeState))
         {
             RB.AddForce(Vector3.down * FallGravity, ForceMode.Acceleration);
@@ -129,35 +133,9 @@ public class CharacterControllerSM : StateMachine
 
         CharacterVelocity = RB.velocity;
         CharacterVelocityMagnitude = RB.velocity.magnitude;
-        m_currentState.OnFixedUpdate();        
+        //m_currentState.OnFixedUpdate();        
     }
-
-    public override void TryStateTransition()
-    {
-        if (!m_currentState.CanExit())
-        {
-            return;
-        }
-
-        //Je PEUX quitter le state actuel
-        foreach (var state in m_possibleStates)
-        {
-            if (m_currentState == state)
-            {
-                continue;
-            }
-            if (state.CanEnter(m_currentState))
-            {
-                //Quitter le state actuel
-                m_currentState.OnExit();
-                m_currentState = state;
-                //Rentrer dans le state state
-                m_currentState.OnEnter();
-                return;
-            }
-        }
-    }
-
+    
     public bool IsInContactWithFloor()
     {
         return m_floorTrigger.IsOnFloor;

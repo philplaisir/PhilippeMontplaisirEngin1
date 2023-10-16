@@ -2,7 +2,12 @@ public abstract class EnemyState : IState
 {
     protected EnemyControllerSM m_stateMachine;
 
-    public void OnStart(EnemyControllerSM stateMachine)
+    public void OnStart()
+    {
+        //throw new System.NotImplementedException();
+    }
+
+    public virtual void OnStart(EnemyControllerSM stateMachine)
     {
         m_stateMachine = stateMachine;
     }
