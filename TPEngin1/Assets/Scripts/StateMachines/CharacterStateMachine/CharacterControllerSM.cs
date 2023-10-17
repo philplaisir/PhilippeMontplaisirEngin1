@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterControllerSM : BaseStateMachine<IState>
+public class CharacterControllerSM : BaseStateMachine<CharacterState>
 {
     //private CharacterState m_currentState;    
     //private List<CharacterState> m_possibleStates;
@@ -59,7 +59,7 @@ public class CharacterControllerSM : BaseStateMachine<IState>
 
     protected override void CreatePossibleStates()
     {
-        m_possibleStates = new List<IState>();
+        m_possibleStates = new List<CharacterState>();
         m_possibleStates.Add(new FreeState());
         m_possibleStates.Add(new JumpState());
         m_possibleStates.Add(new FallingState());
@@ -73,16 +73,21 @@ public class CharacterControllerSM : BaseStateMachine<IState>
     }
 
     protected override void Start()
-    {   
+    {
         //je ne suis pas sûr pour le base start et for each et tout
+        UnityEngine.Debug.Log("Entrer dans Start CharacterControllerSM");
+
         base.Start();
+        //Debug.Log("Test");
         foreach(CharacterState state in m_possibleStates)
         {
+            UnityEngine.Debug.Log("Entrer dans ForEach du start de CharacterControllerSM");
+
             state.OnStart(this);
         }
         
-        //m_currentState = m_possibleStates[0];
-        //m_currentState.OnEnter();
+        m_currentState = m_possibleStates[0];
+        m_currentState.OnEnter();
 
         Camera = Camera.main;
         Transform = GetComponent<Transform>();

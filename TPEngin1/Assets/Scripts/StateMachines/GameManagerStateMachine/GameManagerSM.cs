@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManagerSM : BaseStateMachine<IState>
+public class GameManagerSM : BaseStateMachine<GameManagerState>
 {
     public static GameManagerSM _Instance;
     // Pour le caller d'ailleurs GameManagerSM._Instance...
@@ -16,36 +16,36 @@ public class GameManagerSM : BaseStateMachine<IState>
 
     protected override void CreatePossibleStates()
     {
-        m_possibleStates = new List<IState>();
+        m_possibleStates = new List<GameManagerState>();
         m_possibleStates.Add(new GameplayState());
         m_possibleStates.Add(new CinematicState());
+        //m_possibleStates.Add(new SceneTransitionState());
     }
 
     protected override void Awake()
-    {
-        //Pas sûr pour le base.awake ici
+    {        
         base.Awake();
 
         if (_Instance == null)
         { 
             _Instance = this;
-        }            
-
-        
-        //m_possibleStates.Add(new SceneTransitionState());
+        }          
     }
 
     protected override void Start()
     {
-        //je ne suis pas sûr pour le base start et for each et tout
-        base.Start();
         foreach (GameManagerState state in m_possibleStates)
         {
+            //UnityEngine.Debug.Log("Entrer dans ForEach du start de GameManagerSM");
+
+            // On ne rentre simplement pas dans ce for each
+            //Debug.Log("Test");
+
             state.OnStart(this);
         }
 
-        //m_currentState = m_possibleStates[0];
-        //m_currentState.OnEnter();
+        m_currentState = m_possibleStates[0];
+        m_currentState.OnEnter();
 
         IsCinematicMode = false;
     }

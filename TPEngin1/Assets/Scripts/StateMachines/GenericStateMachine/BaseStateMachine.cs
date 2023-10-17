@@ -12,11 +12,10 @@ public abstract class BaseStateMachine<T> : MonoBehaviour where T : IState
 
     }
 
-    // Start is called before the first frame update
     protected virtual void Start()
-    {
+    {        
         foreach (IState state in m_possibleStates)
-        {
+        {            
             state.OnStart();
         }
         m_currentState = m_possibleStates[0];
