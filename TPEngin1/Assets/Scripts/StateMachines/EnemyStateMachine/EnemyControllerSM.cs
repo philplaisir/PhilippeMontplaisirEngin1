@@ -3,11 +3,6 @@ using UnityEngine;
 
 public class EnemyControllerSM : BaseStateMachine<EnemyState>
 {
-    //private CharacterState m_playerCharacterState;   
-
-    //private EnemyState m_currentState;
-    //private List<EnemyState> m_possibleStates;
-
     [field:SerializeField]
     public Animator Animator { get; private set; }
 
@@ -27,18 +22,9 @@ public class EnemyControllerSM : BaseStateMachine<EnemyState>
     }
 
     protected override void Start()
-    {
-        //UnityEngine.Debug.Log("Entrer dans Start EnemyControllerSM");
-
-        //je ne suis pas sûr pour le base start et for each et tout
-        base.Start();
-        //Debug.Log("Test");
+    {               
         foreach (EnemyState state in m_possibleStates)
         {
-            //UnityEngine.Debug.Log("Entrer dans ForEach du start de EnemyControllerSM");
-
-            //Debug.Log("Test");
-
             state.OnStart(this);
         }
 
@@ -49,17 +35,10 @@ public class EnemyControllerSM : BaseStateMachine<EnemyState>
     protected override void Update()
     {
         base.Update();
-
-        //m_currentState.OnUpdate();
-        //TryStateTransition();
     }
 
     protected override void FixedUpdate()
     {
-        base.Update();
-        //m_currentState.OnFixedUpdate();
+        base.FixedUpdate();        
     }
-
-     
-
 }

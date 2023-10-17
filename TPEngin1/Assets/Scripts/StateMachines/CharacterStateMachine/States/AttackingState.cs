@@ -13,8 +13,7 @@ public class AttackingState : CharacterState
         //m_stateMachine.AttackHitBox.SetActive(true);
         m_animator.SetTrigger("Attacking");
         m_stateMachine.Attacking = true;
-        m_delay = 0.4f;
-        
+        m_delay = 0.4f;        
     }
 
     public override void OnExit()
@@ -63,13 +62,9 @@ public class AttackingState : CharacterState
         if (m_stateMachine.IsHit)
         {
             return true;
-        }
-        //if (m_stateMachine.IsStunned)
-        //{
-        //    return true;
-        //}
+        }  
+        
         return false;
-
     }
 
 }

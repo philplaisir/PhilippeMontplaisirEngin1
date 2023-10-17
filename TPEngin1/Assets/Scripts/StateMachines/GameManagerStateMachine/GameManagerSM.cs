@@ -6,9 +6,6 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
     public static GameManagerSM _Instance;
     // Pour le caller d'ailleurs GameManagerSM._Instance...
 
-    //private GameManagerState m_currentState;
-    //private List<GameManagerState> m_possibleStates;
-
     [field: SerializeField] public Camera MainCamera { get; set; }
     [field: SerializeField] public Camera CinematicCamera { get; set; }
 
@@ -35,15 +32,9 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
     protected override void Start()
     {
         foreach (GameManagerState state in m_possibleStates)
-        {
-            //UnityEngine.Debug.Log("Entrer dans ForEach du start de GameManagerSM");
-
-            // On ne rentre simplement pas dans ce for each
-            //Debug.Log("Test");
-
+        {           
             state.OnStart(this);
         }
-
         m_currentState = m_possibleStates[0];
         m_currentState.OnEnter();
 
@@ -52,16 +43,11 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
 
     protected override void Update()
     {
-        base.Update();
-        //m_currentState.OnUpdate();
-        //TryStateTransition();
+        base.Update();        
     }
 
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();
-        //m_currentState.OnFixedUpdate();
-    }
-
-    
+        base.FixedUpdate();        
+    }    
 }

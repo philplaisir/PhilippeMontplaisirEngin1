@@ -9,7 +9,6 @@ public abstract class BaseStateMachine<T> : MonoBehaviour where T : IState
     protected virtual void Awake()
     {
         CreatePossibleStates();
-
     }
 
     protected virtual void Start()
@@ -35,7 +34,6 @@ public abstract class BaseStateMachine<T> : MonoBehaviour where T : IState
 
     protected virtual void CreatePossibleStates()
     {
-
     }
 
     protected void TryStateTransition()
@@ -63,8 +61,6 @@ public abstract class BaseStateMachine<T> : MonoBehaviour where T : IState
                 return;
             }
         }
-    }
-
-    
+    }    
 
 }

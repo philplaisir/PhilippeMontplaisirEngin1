@@ -12,9 +12,6 @@ public class CinematicState : GameManagerState
         m_stateMachine.MainCamera.gameObject.SetActive(false);
         //m_stateMachine.CinematicCamera = Camera.main;
 
-        //GameManagerSM._Instance.MainCamera.gameObject.SetActive(false);
-        //GameManagerSM._Instance.CinematicCamera.gameObject.SetActive(true);
-
         m_cinematicTimerForTest = 3.0f;
     }
 

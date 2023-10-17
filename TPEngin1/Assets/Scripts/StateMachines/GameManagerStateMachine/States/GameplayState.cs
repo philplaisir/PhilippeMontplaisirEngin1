@@ -6,14 +6,9 @@ public class GameplayState : GameManagerState
     {
         Debug.Log("Enter GameManager state : GameplayState");
 
-        //En ce moment ici m_stateMachine est à null ce qui cause prpblème, pas de ref
         m_stateMachine.CinematicCamera.gameObject.SetActive(false);
         m_stateMachine.MainCamera.gameObject.SetActive(true);
         //m_stateMachine.MainCamera = Camera.main;
-
-        //GameManagerSM._Instance.MainCamera.gameObject.SetActive(true);
-        //GameManagerSM._Instance.CinematicCamera.gameObject.SetActive(false);
-
     }
 
     public override void OnExit()

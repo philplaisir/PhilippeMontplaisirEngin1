@@ -6,14 +6,12 @@ public abstract class EnemyState : IState
     protected EnemyControllerSM m_stateMachine;
 
     public void OnStart()
-    {
-        UnityEngine.Debug.Log("Entrer dans OnStart EnemyState");
+    {        
         //throw new System.NotImplementedException();
     }
 
     public virtual void OnStart(EnemyControllerSM stateMachine)
     {
-        UnityEngine.Debug.Log("Entrer dans OnStart EnemyState avec paramètre(EnemyControllerSM stateMachine, c'est ici que m_stateMachine s'initialise)");
         m_stateMachine = stateMachine;
     }
 

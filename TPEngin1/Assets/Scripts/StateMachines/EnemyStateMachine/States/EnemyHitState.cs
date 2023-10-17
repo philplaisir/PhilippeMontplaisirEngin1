@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class EnemyHitState : EnemyState
 {
-    
-
     public override void OnEnter()
     {        
         m_stateMachine.Animator.SetTrigger("Hit");

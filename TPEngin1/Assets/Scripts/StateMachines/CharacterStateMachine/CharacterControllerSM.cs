@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class CharacterControllerSM : BaseStateMachine<CharacterState>
 {
-    //private CharacterState m_currentState;    
-    //private List<CharacterState> m_possibleStates;
-
     [field: SerializeField] private Animator Animator { get; set; }
 
     [SerializeField] private CharacterFloorTrigger m_floorTrigger;
@@ -20,7 +17,7 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     [field: SerializeField] public GameObject MainCharacter { get; private set; }
     [field: SerializeField] public GameObject RightArmAttackHitBox { get; private set; }    
 
-    [field: Header("VARIOUS DATA AND TESTING REFS")] // à changer améliorer
+    [field: Header("VARIOUS DATA AND TESTING REFS")]
     [field: SerializeField] public bool IsTouchingFloor { get; private set; }    
     [field: SerializeField] public float CharacterVelocityMagnitude { get; private set; }
     [field: SerializeField] public float DistanceBetweenCharacterAndFloor { get; private set; }
@@ -73,12 +70,8 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     }
 
     protected override void Start()
-    {
-        //je ne suis pas sûr pour le base start et for each et tout
-        UnityEngine.Debug.Log("Entrer dans Start CharacterControllerSM");
-
-        base.Start();
-        //Debug.Log("Test");
+    {      
+        // Quand même checker les statemachine Start car j'ai enlever les base.Start() qu'il y avait dedans mais qui était superflu
         foreach(CharacterState state in m_possibleStates)
         {
             UnityEngine.Debug.Log("Entrer dans ForEach du start de CharacterControllerSM");
