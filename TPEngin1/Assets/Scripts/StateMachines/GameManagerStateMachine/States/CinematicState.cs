@@ -12,7 +12,7 @@ public class CinematicState : GameManagerState
         m_stateMachine.MainCamera.gameObject.SetActive(false);
         //m_stateMachine.CinematicCamera = Camera.main;
 
-        m_cinematicTimerForTest = 3.0f;
+        //m_cinematicTimerForTest = 3.0f;
     }
 
     public override void OnExit()
@@ -22,7 +22,7 @@ public class CinematicState : GameManagerState
 
     public override void OnUpdate()
     {
-        m_cinematicTimerForTest -= Time.deltaTime;
+        //m_cinematicTimerForTest -= Time.deltaTime;
     }
 
     public override void OnFixedUpdate()
@@ -31,11 +31,12 @@ public class CinematicState : GameManagerState
 
     public override bool CanEnter(IState currentState)
     {
-        return Input.GetKey(KeyCode.C);
+        return Input.GetKeyDown(KeyCode.C);
     }
 
     public override bool CanExit()
     {
-        return m_cinematicTimerForTest <= 0;
+        return true;
+        //return m_cinematicTimerForTest <= 0;
     }
 }

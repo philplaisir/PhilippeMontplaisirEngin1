@@ -26,7 +26,7 @@ public class GameplayState : GameManagerState
 
     public override bool CanEnter(IState currentState)
     {
-        return true;
+        return Input.GetKeyDown(KeyCode.C);
     }
 
     public override bool CanExit()
