@@ -11,7 +11,7 @@ public class CharacterAnimationEventsDispatcher : MonoBehaviour
 
     public void ActivateRightArmAttackHitbox()
     {
-        Debug.Log("Right arm attack hitbox activated");
+        //Debug.Log("Right arm attack hitbox activated");
         //Peut-être plus encapsuler ça et tout faire dans state machine
         //Faire attention à la situation ou quand ça c'est call la hitbox est déjà dans 
         //l'autre collider donc le on trigger enter/on enter trigger truc ne va pas se déclencher
@@ -21,7 +21,7 @@ public class CharacterAnimationEventsDispatcher : MonoBehaviour
 
     public void DeactivateRightArmAttackHitbox()
     {
-        Debug.Log("Right arm attack hitbox deactivated");
+        //Debug.Log("Right arm attack hitbox deactivated");
         m_characterControllerSM.RightArmAttackHitBox.SetActive(false);
     }
 

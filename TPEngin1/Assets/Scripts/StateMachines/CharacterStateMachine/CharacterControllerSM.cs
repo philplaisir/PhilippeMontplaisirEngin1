@@ -74,8 +74,6 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
         // Quand même checker les statemachine Start car j'ai enlever les base.Start() qu'il y avait dedans mais qui était superflu
         foreach(CharacterState state in m_possibleStates)
         {
-            UnityEngine.Debug.Log("Entrer dans ForEach du start de CharacterControllerSM");
-
             state.OnStart(this);
         }
         

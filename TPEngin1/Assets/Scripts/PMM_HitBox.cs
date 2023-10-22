@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PMM_HitBox : MonoBehaviour
 {
@@ -10,8 +11,11 @@ public class PMM_HitBox : MonoBehaviour
     [SerializeField]
     protected EAgentType m_currentHitBoxAgentType;
     [SerializeField]
-    protected List<EAgentType> m_agentTypesAffected = new List<EAgentType>();
+    protected List<EAgentType> m_agentTypesAffectedByThis = new List<EAgentType>();
 
+    // Bien checker si c'est une bonne pratique utiliser le invoke et UnityEvent
+    public UnityEvent OnHit;
+    
     protected void OnTriggerEnter(Collider other)
     {
         var otherHitBox = other.GetComponent<PMM_HitBox>();
@@ -20,7 +24,7 @@ public class PMM_HitBox : MonoBehaviour
         if (CanHitOther(otherHitBox))
         {
             other.ClosestPoint(transform.position);
-            otherHitBox.GetHit(this);
+            otherHitBox.GotHit(this);
         }
     }
 
@@ -28,13 +32,16 @@ public class PMM_HitBox : MonoBehaviour
     {
         return (m_canHit &&
                 other.m_canGetHit &&
-                m_agentTypesAffected.Contains(other.m_currentHitBoxAgentType));
+                m_agentTypesAffectedByThis.Contains(other.m_currentHitBoxAgentType));
     }
 
-    protected void GetHit(PMM_HitBox otherHitBox)
+    protected void GotHit(PMM_HitBox otherHitBox)
     {
-        // Changer le nom de cette méthode
+        // Bien checker si c'est une bonne pratique utiliser le invoke et UnityEvent
+        OnHit?.Invoke();
+
         Debug.Log(gameObject.name + " got hit by " + otherHitBox);
+        
     }
 
 
