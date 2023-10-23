@@ -24,6 +24,7 @@ public class PMM_HitBox : MonoBehaviour
         if (CanHitOther(otherHitBox))
         {
             Vector3 hitPosition = other.ClosestPoint(transform.position);
+            // TODO Peut-être retirer car pas tant générique
             VFXManager._Instance.InstantiateVFX(EVFXType.Hit, hitPosition);
             otherHitBox.GotHit(this);
         }
@@ -40,12 +41,8 @@ public class PMM_HitBox : MonoBehaviour
     {
         // Bien checker si c'est une bonne pratique utiliser le invoke et UnityEvent
         OnHit?.Invoke();
-        Debug.Log(gameObject.name + " got hit by " + otherHitBox);
-        
+        Debug.Log(gameObject.name + " got hit by " + otherHitBox);        
     }
-
-
-
 }
 
 

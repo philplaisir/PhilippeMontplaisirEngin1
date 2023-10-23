@@ -25,13 +25,7 @@ public class EnemyControllerSM : BaseStateMachine<EnemyState>
         base.Awake();
 
         // Bien checker si c'est une bonne pratique utiliser le invoke et UnityEvent
-        for (int i = 0; i < m_hitBoxes.Count; i++) 
-        {
-            if (m_hitBoxes[i] != null)
-            {
-                m_hitBoxes[i].OnHit.AddListener(OnHit);
-            }
-        }
+        InitializeHitBoxListeners();
     }
 
     protected override void Start()
@@ -53,6 +47,17 @@ public class EnemyControllerSM : BaseStateMachine<EnemyState>
     protected override void FixedUpdate()
     {
         base.FixedUpdate();        
+    }
+
+    private void InitializeHitBoxListeners()
+    {
+        for (int i = 0; i < m_hitBoxes.Count; i++)
+        {
+            if (m_hitBoxes[i] != null)
+            {
+                m_hitBoxes[i].OnHit.AddListener(OnHit);
+            }
+        }
     }
 
     private void OnHit()
