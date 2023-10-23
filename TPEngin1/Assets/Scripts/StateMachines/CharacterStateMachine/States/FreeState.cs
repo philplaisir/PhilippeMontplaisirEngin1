@@ -138,9 +138,13 @@ public class FreeState : CharacterState
             !Input.GetKey(KeyCode.D)) ||
             CheckIfTooManyInputs())
         {
+            if (m_stateMachine.RB.velocity.magnitude <= 0)
+                return;
             if (m_stateMachine.RB.velocity.magnitude < 0.4f)
             {
-                m_stateMachine.RB.velocity = new Vector3(0, m_stateMachine.RB.velocity.y, 0);
+                VFXManager._Instance.InstantiateVFX(EVFXType.RightFootStepDust, Vector3.zero);
+                VFXManager._Instance.InstantiateVFX(EVFXType.LeftFootStepDust, Vector3.zero);
+                m_stateMachine.RB.velocity = new Vector3(0, m_stateMachine.RB.velocity.y, 0);                
                 return;
             }
             Vector3 vector3 = m_stateMachine.RB.velocity.normalized;

@@ -11,6 +11,12 @@ public class VFXManager : MonoBehaviour
     }
 
     [SerializeField]
+    private GameObject m_hitParticleSystem;
+    [SerializeField] 
+    private GameObject m_explosionParticleSystem;
+    [SerializeField]
+    private GameObject m_explosionEmitterPos;
+    [SerializeField]
     private GameObject m_stepDustParticleSystem;
     [SerializeField]
     private GameObject m_rightFootStepDustEmitterPos;
@@ -29,22 +35,24 @@ public class VFXManager : MonoBehaviour
         }
     }
 
-    public void InstantiateVFX(EVFXType vfxType)
+    public void InstantiateVFX(EVFXType vfxType, Vector3 position)
     {
         switch (vfxType) 
         {
-            case EVFXType.RightFootStepDust:
-                Debug.Log("rightFootStepDust switch entered");
+            case EVFXType.RightFootStepDust:                
                 Instantiate(m_stepDustParticleSystem, m_rightFootStepDustEmitterPos.transform.position, Quaternion.identity, transform);
                 break;
-            case EVFXType.LeftFootStepDust:
-                Debug.Log("leftFootStepDust switch entered");
-
+            case EVFXType.LeftFootStepDust:                
                 Instantiate(m_stepDustParticleSystem, m_leftFootStepDustEmitterPos.transform.position, Quaternion.identity, transform);
                 break;
-            default:
+            case EVFXType.Hit:
+                Instantiate(m_hitParticleSystem, position, Quaternion.identity, transform);
                 break;
-        
+            case EVFXType.Explosion:
+                Instantiate(m_explosionParticleSystem, m_explosionEmitterPos.transform.position, Quaternion.identity, transform);
+                break;
+            default:
+                break;        
         }
     }
 }

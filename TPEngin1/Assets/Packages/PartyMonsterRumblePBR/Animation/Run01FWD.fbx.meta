@@ -420,14 +420,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.17146324
+      - time: 0.06282126
         functionName: MakeRightFootStepDustParticles
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.6693307
+      - time: 0.5187134
         functionName: MakeLeftFootStepDustParticles
         data: 
         objectReferenceParameter: {instanceID: 0}

@@ -26,15 +26,13 @@ public class CharacterAnimationEventsDispatcher : MonoBehaviour
     }
 
     public void MakeRightFootStepDustParticles()
-    {
-        Debug.Log("Animation event MakeRightFootStepDustParticles called");
-        VFXManager._Instance.InstantiateVFX(EVFXType.RightFootStepDust);
+    {        
+        VFXManager._Instance.InstantiateVFX(EVFXType.RightFootStepDust, Vector3.zero);
     }
 
     public void MakeLeftFootStepDustParticles()
-    {
-        Debug.Log("Animation event MakeRightFootStepDustParticles called");
-        VFXManager._Instance.InstantiateVFX(EVFXType.LeftFootStepDust);
+    {        
+        VFXManager._Instance.InstantiateVFX(EVFXType.LeftFootStepDust, Vector3.zero);
     }
 
 }

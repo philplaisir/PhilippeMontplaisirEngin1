@@ -10,6 +10,7 @@ public enum EAgentType
 public enum EVFXType
 {
     Hit,
+    Explosion,
     RightFootStepDust,
     LeftFootStepDust,
     Count

@@ -183,7 +183,11 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
             {                
                 m_elevatorController.StartMovingDown();
             }
-        }        
+        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            VFXManager._Instance.InstantiateVFX(EVFXType.Explosion, Vector3.zero);
+        }
     }
 }
 
