@@ -7,4 +7,12 @@ public enum EAgentType
     Count
 }
 
+public enum EVFXType
+{
+    Hit,
+    RightFootStepDust,
+    LeftFootStepDust,
+    Count
+}
+
 

@@ -25,4 +25,16 @@ public class CharacterAnimationEventsDispatcher : MonoBehaviour
         m_characterControllerSM.RightArmAttackHitBox.SetActive(false);
     }
 
+    public void MakeRightFootStepDustParticles()
+    {
+        Debug.Log("Animation event MakeRightFootStepDustParticles called");
+        VFXManager._Instance.InstantiateVFX(EVFXType.RightFootStepDust);
+    }
+
+    public void MakeLeftFootStepDustParticles()
+    {
+        Debug.Log("Animation event MakeRightFootStepDustParticles called");
+        VFXManager._Instance.InstantiateVFX(EVFXType.LeftFootStepDust);
+    }
+
 }
