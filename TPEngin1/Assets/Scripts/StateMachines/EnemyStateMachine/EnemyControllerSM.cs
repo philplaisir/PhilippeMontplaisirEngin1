@@ -8,7 +8,7 @@ public class EnemyControllerSM : BaseStateMachine<EnemyState>
     public Animator Animator { get; private set; }
 
     [SerializeField]
-    private List<PMM_HitBox> m_hitBoxes = new List<PMM_HitBox>();
+    private List<PMM_HitBox> m_receivingHitBoxes = new List<PMM_HitBox>();
 
     [field: SerializeField]
     public bool IsHit { get; set; }
@@ -25,7 +25,7 @@ public class EnemyControllerSM : BaseStateMachine<EnemyState>
         base.Awake();
 
         // Bien checker si c'est une bonne pratique utiliser le invoke et UnityEvent
-        InitializeHitBoxListeners();
+        InitializeReceivingHitBoxListeners();
     }
 
     protected override void Start()
@@ -49,18 +49,18 @@ public class EnemyControllerSM : BaseStateMachine<EnemyState>
         base.FixedUpdate();        
     }
 
-    private void InitializeHitBoxListeners()
+    private void InitializeReceivingHitBoxListeners()
     {
-        for (int i = 0; i < m_hitBoxes.Count; i++)
+        for (int i = 0; i < m_receivingHitBoxes.Count; i++)
         {
-            if (m_hitBoxes[i] != null)
+            if (m_receivingHitBoxes[i] != null)
             {
-                m_hitBoxes[i].OnHit.AddListener(OnHit);
+                m_receivingHitBoxes[i].WasHit.AddListener(WasHit);
             }
         }
     }
 
-    private void OnHit()
+    private void WasHit()
     {
         IsHit = true;
     }

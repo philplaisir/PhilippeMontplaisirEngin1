@@ -7,12 +7,31 @@ public enum EAgentType
     Count
 }
 
-public enum EVFXType
+public enum EVisualFXType
 {
     Hit,
     Explosion,
-    RightFootStepDust,
-    LeftFootStepDust,
+    RightfootStepDust,
+    LeftfootStepDust,
+    Count
+}
+
+public enum ESoundFXType
+{
+    RightFootstep,
+    LeftFootstep,
+    Jump,
+    JumpLanding,
+    Count
+}
+
+public enum ECharacterActionType
+{
+    PunchRight,
+    RunRightFootstep,
+    RunLeftFootstep,
+    Jump,
+    JumpLanding,
     Count
 }
 

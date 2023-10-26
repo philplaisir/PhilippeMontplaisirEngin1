@@ -35,20 +35,20 @@ public class VFXManager : MonoBehaviour
         }
     }
 
-    public void InstantiateVFX(EVFXType vfxType, Vector3 position)
+    public void InstantiateVFX(EVisualFXType vfxType, Vector3 position)
     {
         switch (vfxType) 
         {
-            case EVFXType.RightFootStepDust:                
+            case EVisualFXType.RightfootStepDust:                
                 Instantiate(m_stepDustParticleSystem, m_rightFootStepDustEmitterPos.transform.position, Quaternion.identity, transform);
                 break;
-            case EVFXType.LeftFootStepDust:                
+            case EVisualFXType.LeftfootStepDust:                
                 Instantiate(m_stepDustParticleSystem, m_leftFootStepDustEmitterPos.transform.position, Quaternion.identity, transform);
                 break;
-            case EVFXType.Hit:
-                Instantiate(m_hitParticleSystem, position, Quaternion.identity, transform);
+            case EVisualFXType.Hit:
+                //Instantiate(m_hitParticleSystem, position, Quaternion.identity, transform);
                 break;
-            case EVFXType.Explosion:
+            case EVisualFXType.Explosion:
                 Instantiate(m_explosionParticleSystem, m_explosionEmitterPos.transform.position, Quaternion.identity, transform);
                 break;
             default:

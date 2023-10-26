@@ -11,11 +11,12 @@ public class PMM_HitBox : MonoBehaviour
     [SerializeField]
     protected EAgentType m_currentHitBoxAgentType;
     [SerializeField]
-    protected List<EAgentType> m_agentTypesAffectedByThis = new List<EAgentType>();
+    protected List<EAgentType> m_agentTypesAffectedByThis = new List<EAgentType>();    
 
     // Bien checker si c'est une bonne pratique utiliser le invoke et UnityEvent
-    public UnityEvent OnHit;
-    
+    public UnityEvent WasHit;
+    public UnityEvent<Vector3, PMM_HitBox, PMM_HitBox> IsHitting = new UnityEvent<Vector3, PMM_HitBox, PMM_HitBox>();
+
     protected void OnTriggerEnter(Collider other)
     {
         var otherHitBox = other.GetComponent<PMM_HitBox>();
@@ -23,9 +24,9 @@ public class PMM_HitBox : MonoBehaviour
 
         if (CanHitOther(otherHitBox))
         {
+            //TODO peut-être à switch pour que ce soit celui qui reçoit qui garde les prefab d'effet
             Vector3 hitPosition = other.ClosestPoint(transform.position);
-            // TODO Peut-être retirer car pas tant générique
-            VFXManager._Instance.InstantiateVFX(EVFXType.Hit, hitPosition);
+            IsHitting?.Invoke(hitPosition, this, otherHitBox);
             otherHitBox.GotHit(this);
         }
     }
@@ -39,8 +40,8 @@ public class PMM_HitBox : MonoBehaviour
 
     protected void GotHit(PMM_HitBox otherHitBox)
     {
-        // Bien checker si c'est une bonne pratique utiliser le invoke et UnityEvent
-        OnHit?.Invoke();
+        // Bien checker si c'est une bonne pratique utiliser le invoke et UnityEvent        
+        WasHit?.Invoke();
         Debug.Log(gameObject.name + " got hit by " + otherHitBox);        
     }
 }

@@ -27,12 +27,12 @@ public class CharacterAnimationEventsDispatcher : MonoBehaviour
 
     public void MakeRightFootStepDustParticles()
     {        
-        VFXManager._Instance.InstantiateVFX(EVFXType.RightFootStepDust, Vector3.zero);
+        VFXManager._Instance.InstantiateVFX(EVisualFXType.RightfootStepDust, Vector3.zero);
     }
 
     public void MakeLeftFootStepDustParticles()
     {        
-        VFXManager._Instance.InstantiateVFX(EVFXType.LeftFootStepDust, Vector3.zero);
+        VFXManager._Instance.InstantiateVFX(EVisualFXType.LeftfootStepDust, Vector3.zero);
     }
 
 }

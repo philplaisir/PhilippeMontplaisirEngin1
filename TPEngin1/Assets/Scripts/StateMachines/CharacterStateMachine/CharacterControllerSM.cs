@@ -48,10 +48,14 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     [field: SerializeField] public float FallingAccelerationXZ { get; private set; }
 
     //------------- ATTACKING
-    public bool Attacking { get; set; }   
+    public bool Attacking { get; set; }
 
-    
-    
+    [SerializeField]
+    private List<PMM_HitBox> m_hittingHitBoxes = new List<PMM_HitBox>();
+    [SerializeField]
+    private CharacterSpecialEffectsManager m_characterSpecialEffectsManager;
+
+
 
 
     protected override void CreatePossibleStates()
@@ -67,6 +71,14 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
         m_possibleStates.Add(new StunInAirState());
         m_possibleStates.Add(new HitState());
                 
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        // Bien checker si c'est une bonne pratique utiliser le invoke et UnityEvent
+        InitializeHittingHitBoxListeners();
     }
 
     protected override void Start()
@@ -159,7 +171,23 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
         }
     }
 
-    
+    private void InitializeHittingHitBoxListeners()
+    {
+        for (int i = 0; i < m_hittingHitBoxes.Count; i++)
+        {
+            if (m_hittingHitBoxes[i] != null)
+            {
+                m_hittingHitBoxes[i].IsHitting.AddListener(IsHitting);
+            }
+        }
+    }
+
+    private void IsHitting(Vector3 position, PMM_HitBox self, PMM_HitBox other)
+    {
+        //TODO check si besoin des hit et serait cool de transférer le action type dès la hitbox ou dépendamment de la hit box reçue
+        m_characterSpecialEffectsManager.PlaySpecialEffect(ECharacterActionType.PunchRight, position);
+    }
+
 
     private void DetectTestingInputs()
     {
@@ -186,7 +214,7 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
         }
         if (Input.GetKeyDown(KeyCode.B))
         {
-            VFXManager._Instance.InstantiateVFX(EVFXType.Explosion, Vector3.zero);
+            VFXManager._Instance.InstantiateVFX(EVisualFXType.Explosion, Vector3.zero);
         }
     }
 }
