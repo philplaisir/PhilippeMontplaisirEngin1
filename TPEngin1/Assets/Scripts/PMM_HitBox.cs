@@ -14,6 +14,7 @@ public class PMM_HitBox : MonoBehaviour
     protected List<EAgentType> m_agentTypesAffectedByThis = new List<EAgentType>();    
 
     // Bien checker si c'est une bonne pratique utiliser le invoke et UnityEvent
+    // TODO checker pour réduire le scope pour que ce ne soit plus public...
     public UnityEvent WasHit;
     public UnityEvent<Vector3, PMM_HitBox, PMM_HitBox> IsHitting = new UnityEvent<Vector3, PMM_HitBox, PMM_HitBox>();
 

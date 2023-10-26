@@ -11,14 +11,11 @@ public class EnemyAnimationEventsDispatcher : MonoBehaviour
 
     public void ActivateRightArmAttackHitbox()
     {
-        
-        //m_characterControllerSM.RightArmAttackHitBox.SetActive(true);
-        //m_stateMachine.OnEnableAttackHitBox
+        m_enemyControllerSM.RightArmAttackHitBox.SetActive(true);        
     }
 
     public void DeactivateRightArmAttackHitbox()
     {
-        //Debug.Log("Right arm attack hitbox deactivated");
-        //m_characterControllerSM.RightArmAttackHitBox.SetActive(false);
+        m_enemyControllerSM.RightArmAttackHitBox.SetActive(false);        
     }
 }

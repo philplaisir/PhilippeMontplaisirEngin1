@@ -2232,7 +2232,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5835969554502587239}
   m_Layer: 0
-  m_Name: FootstepsAudio
+  m_Name: LegsActionsAudioSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8655,6 +8655,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8419955217703341162}
   - component: {fileID: 6726259550635699911}
+  - component: {fileID: 4533376298253036762}
   m_Layer: 0
   m_Name: CharacterController
   m_TagString: Untagged
@@ -8713,6 +8714,77 @@ MonoBehaviour:
   <MaxLeavingGroundFallingDistance>k__BackingField: 5
   <FallGravity>k__BackingField: 30
   <FallingAccelerationXZ>k__BackingField: 10
+  m_hittingHitBoxes:
+  - {fileID: 5582831451855197665}
+  m_receivingHitBoxes:
+  - {fileID: 2440829260393737025}
+  m_characterSpecialFXManager: {fileID: 0}
+--- !u!114 &4533376298253036762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5984394689667471179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6632ab5ae3370364b8422a072f0639f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_newAudioSource: {fileID: 4622756486183852186, guid: 82f9a68e3b1bcb644a229d7644562ce1,
+    type: 3}
+  m_legsActionsEffectsAudioSource: {fileID: 1655579048952844240}
+  m_rightFootStepDustEmitterPos: {fileID: 4805631947786056203}
+  m_leftFootStepDustEmitterPos: {fileID: 6963822734268223444}
+  m_specialFXGroups:
+  - actionType: 0
+    audioClips:
+    - {fileID: 8300000, guid: b5052f1553d79cf4580d4bf0dbd5bb04, type: 3}
+    - {fileID: 8300000, guid: cf80f7a74b4f4c54eafaebf83a1ffbb9, type: 3}
+    - {fileID: 8300000, guid: b1152a91d831d2b4c93fd9cc0588102b, type: 3}
+    - {fileID: 8300000, guid: 412d699bdb786924c962f9a61a29a455, type: 3}
+    visualEffects:
+    - {fileID: 279216490964679030, guid: 0cd30ad4e265cba4897076745ef1c01b, type: 3}
+  - actionType: 1
+    audioClips:
+    - {fileID: 8300000, guid: 9e68ea1ebd76aa44c8cfa5beb9850830, type: 3}
+    - {fileID: 8300000, guid: 1deb201b8bf8f89479323a74e421150b, type: 3}
+    - {fileID: 8300000, guid: 7c518e8469a403b4c981664ecb28a79a, type: 3}
+    - {fileID: 8300000, guid: 1f2844efbf7abf647ba3d75d510f823a, type: 3}
+    - {fileID: 8300000, guid: fa95ebee958fb0e41a42a832aab767eb, type: 3}
+    - {fileID: 8300000, guid: 0cfeb72dea261a54cb7672590d2d1656, type: 3}
+    - {fileID: 8300000, guid: 924e3e09c67130946a6d7b666e8b8b68, type: 3}
+    - {fileID: 8300000, guid: 6da235e2573048249bcbe608f984ff48, type: 3}
+    - {fileID: 8300000, guid: fdc05ea2699023143ba7e93533cc5a0b, type: 3}
+    - {fileID: 8300000, guid: f26cf9ded47cf0140957490a16f85acc, type: 3}
+    visualEffects:
+    - {fileID: 1566570621067292617, guid: 7ea57c9ea2065d54f808ab4941f474b3, type: 3}
+  - actionType: 2
+    audioClips:
+    - {fileID: 8300000, guid: 9e68ea1ebd76aa44c8cfa5beb9850830, type: 3}
+    - {fileID: 8300000, guid: 1deb201b8bf8f89479323a74e421150b, type: 3}
+    - {fileID: 8300000, guid: 7c518e8469a403b4c981664ecb28a79a, type: 3}
+    - {fileID: 8300000, guid: 1f2844efbf7abf647ba3d75d510f823a, type: 3}
+    - {fileID: 8300000, guid: fa95ebee958fb0e41a42a832aab767eb, type: 3}
+    - {fileID: 8300000, guid: 0cfeb72dea261a54cb7672590d2d1656, type: 3}
+    - {fileID: 8300000, guid: 924e3e09c67130946a6d7b666e8b8b68, type: 3}
+    - {fileID: 8300000, guid: 6da235e2573048249bcbe608f984ff48, type: 3}
+    - {fileID: 8300000, guid: fdc05ea2699023143ba7e93533cc5a0b, type: 3}
+    - {fileID: 8300000, guid: f26cf9ded47cf0140957490a16f85acc, type: 3}
+    visualEffects:
+    - {fileID: 1566570621067292617, guid: 7ea57c9ea2065d54f808ab4941f474b3, type: 3}
+  - actionType: 3
+    audioClips:
+    - {fileID: 8300000, guid: 665f92bb69e46a94a8caf3717dbb0d5e, type: 3}
+    - {fileID: 8300000, guid: 8802544ed0324a14095edc70ab3bbab1, type: 3}
+    visualEffects:
+    - {fileID: 1566570621067292617, guid: 7ea57c9ea2065d54f808ab4941f474b3, type: 3}
+  - actionType: 4
+    audioClips:
+    - {fileID: 8300000, guid: 7131d701ae015a54aa3d856feccd513f, type: 3}
+    - {fileID: 8300000, guid: 942019cf9ecd5854ebeb343b12b7f779, type: 3}
+    visualEffects:
+    - {fileID: 1566570621067292617, guid: 7ea57c9ea2065d54f808ab4941f474b3, type: 3}
 --- !u!1 &6014378925302024143
 GameObject:
   m_ObjectHideFlags: 0
@@ -8866,6 +8938,7 @@ GameObject:
   - component: {fileID: 47399109370723723}
   - component: {fileID: 5928763990595479130}
   - component: {fileID: 4452599224100493265}
+  - component: {fileID: 2440829260393737025}
   m_Layer: 0
   m_Name: Character-C02
   m_TagString: Untagged
@@ -8985,6 +9058,28 @@ CapsuleCollider:
   m_Height: 1.6
   m_Direction: 1
   m_Center: {x: 0, y: 0.85, z: 0}
+--- !u!114 &2440829260393737025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6072024624877179389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c215daedfbbddf4187d926d264ff229, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_canHit: 0
+  m_canGetHit: 1
+  m_currentHitBoxAgentType: 0
+  m_agentTypesAffectedByThis: 
+  WasHit:
+    m_PersistentCalls:
+      m_Calls: []
+  IsHitting:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6173804302617719273
 GameObject:
   m_ObjectHideFlags: 0
@@ -11422,7 +11517,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7791519300698913280}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -11492,9 +11587,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_canHit: 1
   m_canGetHit: 0
-  m_currentHitBoxAgentType: 4
+  m_currentHitBoxAgentType: 0
   m_agentTypesAffectedByThis: 0200000003000000
-  OnHit:
+  WasHit:
+    m_PersistentCalls:
+      m_Calls: []
+  IsHitting:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &7802792662996125702

@@ -141,9 +141,7 @@ public class FreeState : CharacterState
             if (m_stateMachine.RB.velocity.magnitude <= 0)
                 return;
             if (m_stateMachine.RB.velocity.magnitude < 0.4f)
-            {
-                VFXManager._Instance.InstantiateVFX(EVisualFXType.RightfootStepDust, Vector3.zero);
-                VFXManager._Instance.InstantiateVFX(EVisualFXType.LeftfootStepDust, Vector3.zero);
+            {               
                 m_stateMachine.RB.velocity = new Vector3(0, m_stateMachine.RB.velocity.y, 0);                
                 return;
             }
