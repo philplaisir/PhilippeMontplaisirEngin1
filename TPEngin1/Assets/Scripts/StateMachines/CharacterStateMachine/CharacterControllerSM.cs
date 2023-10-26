@@ -53,7 +53,7 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     [SerializeField]
     private List<PMM_HitBox> m_hittingHitBoxes = new List<PMM_HitBox>();
     [SerializeField]
-    private CharacterSpecialEffectsManager m_characterSpecialEffectsManager;
+    private CharacterSpecialFXManager m_characterSpecialEffectsManager;
 
 
 

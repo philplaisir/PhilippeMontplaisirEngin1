@@ -25,14 +25,26 @@ public class CharacterAnimationEventsDispatcher : MonoBehaviour
         m_characterControllerSM.RightArmAttackHitBox.SetActive(false);
     }
 
-    public void MakeRightFootStepDustParticles()
-    {        
-        VFXManager._Instance.InstantiateVFX(EVisualFXType.RightfootStepDust, Vector3.zero);
+    public void MakeRightFootStepFX()
+    {
+        CharacterSpecialFXManager._Instance.PlaySpecialEffect(ECharacterActionType.RunRightFootstep, Vector3.zero);
+        //VFXManager._Instance.InstantiateVFX(EVisualFXType.RightfootStepDust, Vector3.zero);
     }
 
-    public void MakeLeftFootStepDustParticles()
-    {        
-        VFXManager._Instance.InstantiateVFX(EVisualFXType.LeftfootStepDust, Vector3.zero);
+    public void MakeLeftFootStepFX()
+    {
+        CharacterSpecialFXManager._Instance.PlaySpecialEffect(ECharacterActionType.RunLeftFootstep, Vector3.zero);
+        //VFXManager._Instance.InstantiateVFX(EVisualFXType.LeftfootStepDust, Vector3.zero);
+    }
+
+    public void MakeJumpFootFX()
+    {
+        CharacterSpecialFXManager._Instance.PlaySpecialEffect(ECharacterActionType.Jump, Vector3.zero);
+    }
+
+    public void MakeJumpLandFootFX() 
+    {
+        CharacterSpecialFXManager._Instance.PlaySpecialEffect(ECharacterActionType.JumpLanding, Vector3.zero);
     }
 
 }

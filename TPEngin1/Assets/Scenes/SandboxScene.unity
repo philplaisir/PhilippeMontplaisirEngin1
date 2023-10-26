@@ -1295,15 +1295,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ad6cc469c9a004fba659226814bb77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_hitParticleSystem: {fileID: 279216490964679030, guid: 0cd30ad4e265cba4897076745ef1c01b,
-    type: 3}
   m_explosionParticleSystem: {fileID: 4482334856273476064, guid: efd2c48ff32dc73448d85fe6d793dbba,
     type: 3}
   m_explosionEmitterPos: {fileID: 1927375145}
-  m_stepDustParticleSystem: {fileID: 1566570621067292617, guid: 7ea57c9ea2065d54f808ab4941f474b3,
-    type: 3}
-  m_rightFootStepDustEmitterPos: {fileID: 362429365}
-  m_leftFootStepDustEmitterPos: {fileID: 1259833738}
 --- !u!1 &378896623
 GameObject:
   m_ObjectHideFlags: 0
@@ -4552,6 +4546,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6632ab5ae3370364b8422a072f0639f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_newAudioSource: {fileID: 4622756486183852186, guid: 82f9a68e3b1bcb644a229d7644562ce1,
+    type: 3}
+  m_legsActionsEffectsAudioSource: {fileID: 7458279889408498067}
+  m_rightFootStepDustEmitterPos: {fileID: 362429365}
+  m_leftFootStepDustEmitterPos: {fileID: 1259833738}
   m_specialFXGroups:
   - actionType: 0
     audioClips:
@@ -4589,9 +4588,18 @@ MonoBehaviour:
     - {fileID: 8300000, guid: f26cf9ded47cf0140957490a16f85acc, type: 3}
     visualEffects:
     - {fileID: 1566570621067292617, guid: 7ea57c9ea2065d54f808ab4941f474b3, type: 3}
-  m_punchHitAudioSource: {fileID: 4622756486183852186, guid: 82f9a68e3b1bcb644a229d7644562ce1,
-    type: 3}
-  m_legsActionsEffectsAudioSource: {fileID: 7458279889408498067}
+  - actionType: 3
+    audioClips:
+    - {fileID: 8300000, guid: 665f92bb69e46a94a8caf3717dbb0d5e, type: 3}
+    - {fileID: 8300000, guid: 8802544ed0324a14095edc70ab3bbab1, type: 3}
+    visualEffects:
+    - {fileID: 1566570621067292617, guid: 7ea57c9ea2065d54f808ab4941f474b3, type: 3}
+  - actionType: 4
+    audioClips:
+    - {fileID: 8300000, guid: 7131d701ae015a54aa3d856feccd513f, type: 3}
+    - {fileID: 8300000, guid: 942019cf9ecd5854ebeb343b12b7f779, type: 3}
+    visualEffects:
+    - {fileID: 1566570621067292617, guid: 7ea57c9ea2065d54f808ab4941f474b3, type: 3}
 --- !u!1 &1310324347
 GameObject:
   m_ObjectHideFlags: 0

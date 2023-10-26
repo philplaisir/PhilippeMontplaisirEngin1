@@ -421,14 +421,14 @@ ModelImporter:
       curves: []
       events:
       - time: 0.6882795
-        functionName: MakeLeftFootStepDustParticles
+        functionName: MakeLeftFootStepFX
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.15812056
-        functionName: MakeRightFootStepDustParticles
+        functionName: MakeRightFootStepFX
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
