@@ -59,6 +59,10 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     [SerializeField] private ElevatorController m_elevatorController;
 
 
+    [field: Header("OTHER")]
+    [field: SerializeField] public GameObject ObjectToRotateAround { get; set; }
+    [field: SerializeField] public float RotationSpeedX { get; private set; } = 2.0f;
+
 
 
     protected override void CreatePossibleStates()

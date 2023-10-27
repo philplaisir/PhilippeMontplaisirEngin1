@@ -17,6 +17,7 @@ public class FreeState : CharacterState
     public override void OnUpdate()
     {
         CalculateAngleUnderCharacter();
+        UpdateHorizontalMovements();
     }
 
     public override void OnFixedUpdate()
@@ -55,6 +56,40 @@ public class FreeState : CharacterState
     }
 
     //88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
+
+    private void UpdateHorizontalMovements()
+    {        
+        float horizontalInput = Input.GetAxis("Mouse X");
+        float rotationAmountX = horizontalInput * m_stateMachine.RotationSpeedX;        
+        m_stateMachine.MainCharacter.transform.Rotate(0, rotationAmountX, 0);
+        //m_stateMachine.ObjectToRotateAround.transform.Rotate(0, rotationAmountX, 0);
+
+        float verticalInput = Input.GetAxis("Mouse Y");
+        float rotationAmountY = verticalInput * m_stateMachine.RotationSpeedX;        
+        m_stateMachine.ObjectToRotateAround.transform.rotation *= Quaternion.AngleAxis(rotationAmountY, Vector3.right);
+
+        Vector3 currentEulerAngles = m_stateMachine.ObjectToRotateAround.transform.eulerAngles;
+
+        float comparisonAngle = ClampAngle(currentEulerAngles.x);
+
+        float clampedX = Mathf.Clamp(comparisonAngle, -10f, 40f);
+
+        // Create a new Vector3 with the clamped X value
+        Vector3 clampedEulerAngles = new Vector3(clampedX, currentEulerAngles.y, currentEulerAngles.z);
+
+        // Assign the new, clamped Euler angles back to the object
+        m_stateMachine.ObjectToRotateAround.transform.eulerAngles = clampedEulerAngles;
+
+    }
+
+    private float ClampAngle(float angle)
+    {
+        if (angle > 180)
+        {
+            angle -= 360;
+        }
+        return angle;
+    }
 
     private void CalculateAngleUnderCharacter()
     {

@@ -8699,9 +8699,6 @@ MonoBehaviour:
   <CharacterVelocityMagnitude>k__BackingField: 0
   <DistanceBetweenCharacterAndFloor>k__BackingField: 0
   <FloorAngleUnderCharacter>k__BackingField: 0
-  <TestingBullet>k__BackingField: {fileID: 6995891691891069014, guid: 1b29a26dfb8226f49a444ddbcbd33d18,
-    type: 3}
-  m_elevatorController: {fileID: 0}
   <GroundAcceleration>k__BackingField: 40
   <MaxForwardVelocity>k__BackingField: 15
   <MaxForwardDiagonalsVelocity>k__BackingField: 15
@@ -8718,7 +8715,16 @@ MonoBehaviour:
   - {fileID: 5582831451855197665}
   m_receivingHitBoxes:
   - {fileID: 2440829260393737025}
-  m_characterSpecialFXManager: {fileID: 0}
+  m_characterSpecialFXManager: {fileID: 4533376298253036762}
+  m_explosionParticleSystem: {fileID: 4482334856273476064, guid: efd2c48ff32dc73448d85fe6d793dbba,
+    type: 3}
+  m_explosionAudioSource: {fileID: 240746610555644800, guid: 696674ca04bc92e428154d43eaeeadd0,
+    type: 3}
+  m_explosionEmitterPos: {fileID: 0}
+  <TestingBullet>k__BackingField: {fileID: 6995891691891069014, guid: 1b29a26dfb8226f49a444ddbcbd33d18,
+    type: 3}
+  m_elevatorController: {fileID: 0}
+  <ObjectToRotateAround>k__BackingField: {fileID: 6890546197927931509}
 --- !u!114 &4533376298253036762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8973,6 +8979,7 @@ Transform:
   - {fileID: 67214076381087017}
   - {fileID: 8401022401378410091}
   - {fileID: 5835969554502587239}
+  - {fileID: 1276043510504098643}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &677923695728571819
@@ -10035,6 +10042,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00000011920929, y: -0.0049036145, z: 0.9376294}
     m_Extent: {x: 1.396819, y: 0.2723121, z: 0.25949734}
   m_DirtyAABB: 0
+--- !u!1 &6890546197927931509
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1276043510504098643}
+  m_Layer: 0
+  m_Name: ObjectToRotateAround
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1276043510504098643
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6890546197927931509}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6865012690772328536}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6908832793584876262
 GameObject:
   m_ObjectHideFlags: 0
