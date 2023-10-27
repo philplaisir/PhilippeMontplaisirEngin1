@@ -17,15 +17,17 @@ public class FreeState : CharacterState
     public override void OnUpdate()
     {
         CalculateAngleUnderCharacter();
-        UpdateHorizontalMovements();
-        UpdateVerticalCameraMovementsBasedOnSecondaryObjectRotation();
+        //UpdateHorizontalMovements();
+        //UpdateVerticalCameraMovementsBasedOnSecondaryObjectRotation();
     }
 
     public override void OnFixedUpdate()
     {
-        // CHARACTER MOVEMENT RELATIVE TO CAMERA
+        
         CharacterControllerFU();
         KeepCharacterOnGroundWhenAngledFU();
+        UpdateHorizontalMovements();
+        UpdateVerticalCameraMovementsBasedOnSecondaryObjectRotation();
     }    
 
     public override bool CanEnter(IState currentState)
