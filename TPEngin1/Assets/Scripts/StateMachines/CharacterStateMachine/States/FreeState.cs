@@ -18,6 +18,7 @@ public class FreeState : CharacterState
     {
         CalculateAngleUnderCharacter();
         UpdateHorizontalMovements();
+        UpdateVerticalCameraMovementsBasedOnSecondaryObjectRotation();
     }
 
     public override void OnFixedUpdate()
@@ -60,26 +61,25 @@ public class FreeState : CharacterState
     private void UpdateHorizontalMovements()
     {        
         float horizontalInput = Input.GetAxis("Mouse X");
-        float rotationAmountX = horizontalInput * m_stateMachine.RotationSpeedX;        
+        float rotationAmountX = horizontalInput * m_stateMachine.RotationSpeedHorizontal;        
         m_stateMachine.MainCharacter.transform.Rotate(0, rotationAmountX, 0);
-        //m_stateMachine.ObjectToRotateAround.transform.Rotate(0, rotationAmountX, 0);
+    }
 
+    private void UpdateVerticalCameraMovementsBasedOnSecondaryObjectRotation()
+    {
         float verticalInput = Input.GetAxis("Mouse Y");
-        float rotationAmountY = verticalInput * m_stateMachine.RotationSpeedX;        
+        float rotationAmountY = verticalInput * m_stateMachine.RotationSpeedVertical;
         m_stateMachine.ObjectToRotateAround.transform.rotation *= Quaternion.AngleAxis(rotationAmountY, Vector3.right);
 
         Vector3 currentEulerAngles = m_stateMachine.ObjectToRotateAround.transform.eulerAngles;
 
         float comparisonAngle = ClampAngle(currentEulerAngles.x);
 
-        float clampedX = Mathf.Clamp(comparisonAngle, -10f, 40f);
+        float clampedX = Mathf.Clamp(comparisonAngle, m_stateMachine.VerticalCameraLimits.x, m_stateMachine.VerticalCameraLimits.y);
 
-        // Create a new Vector3 with the clamped X value
         Vector3 clampedEulerAngles = new Vector3(clampedX, currentEulerAngles.y, currentEulerAngles.z);
 
-        // Assign the new, clamped Euler angles back to the object
         m_stateMachine.ObjectToRotateAround.transform.eulerAngles = clampedEulerAngles;
-
     }
 
     private float ClampAngle(float angle)

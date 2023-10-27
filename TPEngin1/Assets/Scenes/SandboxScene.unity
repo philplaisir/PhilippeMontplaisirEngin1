@@ -209,10 +209,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damping: {x: 0, y: 0, z: 0}
-  ShoulderOffset: {x: 0, y: 2, z: -3}
+  ShoulderOffset: {x: 0, y: 1, z: -3}
   VerticalArmLength: 0.4
   CameraSide: 1
-  CameraDistance: 2
+  CameraDistance: 1
   CameraCollisionFilter:
     serializedVersion: 2
     m_Bits: 0
@@ -1109,8 +1109,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.22188352, y: -0.010809796, z: 0.0024599903, w: 0.97501016}
-  m_LocalPosition: {x: 174.3467, y: 3.5410001, z: 131.19267}
+  m_LocalRotation: {x: 0.16753295, y: -0.010929467, z: 0.0018574134, w: 0.98580414}
+  m_LocalPosition: {x: 174.32452, y: 2.5410001, z: 132.19243}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12707,6 +12707,16 @@ PrefabInstance:
         type: 3}
       propertyPath: <TurnSmoothTime>k__BackingField
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6726259550635699911, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
+        type: 3}
+      propertyPath: <VerticalCameraLimits>k__BackingField.x
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6726259550635699911, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
+        type: 3}
+      propertyPath: <VerticalCameraLimits>k__BackingField.y
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 6865012690772328536, guid: d94e0d5f021e3d745a6b1adcbdee59c2,
         type: 3}

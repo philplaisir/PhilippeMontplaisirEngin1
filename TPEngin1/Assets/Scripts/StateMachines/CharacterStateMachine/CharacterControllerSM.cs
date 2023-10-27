@@ -59,9 +59,11 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     [SerializeField] private ElevatorController m_elevatorController;
 
 
-    [field: Header("OTHER")]
+    [field: Header("CINEMACHINE CAMERA BASED ON CHARACTER")]
     [field: SerializeField] public GameObject ObjectToRotateAround { get; set; }
-    [field: SerializeField] public float RotationSpeedX { get; private set; } = 2.0f;
+    [field: SerializeField] public float RotationSpeedHorizontal { get; private set; } = 2.0f;
+    [field: SerializeField] public float RotationSpeedVertical { get; private set; } = 2.0f;
+    [field: SerializeField] public Vector2 VerticalCameraLimits { get; private set; } //x = min, y = max
 
 
 
