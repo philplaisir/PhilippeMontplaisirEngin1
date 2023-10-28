@@ -6,7 +6,7 @@ public class GameplayState : GameManagerState
     {
         Debug.Log("Enter GameManager state : GameplayState");
 
-        m_stateMachine.CinematicCamera.gameObject.SetActive(false);
+        //m_stateMachine.CinematicCamera.gameObject.SetActive(false);
         m_stateMachine.MainCamera.gameObject.SetActive(true);
         //m_stateMachine.MainCamera = Camera.main;
     }

@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 
 public class CinematicState : GameManagerState
@@ -8,9 +9,12 @@ public class CinematicState : GameManagerState
     {
         Debug.Log("Enter GameManager state : CinematicState");
 
-        m_stateMachine.CinematicCamera.gameObject.SetActive(true);
+        //m_stateMachine.CinematicCamera.gameObject.SetActive(true);
         m_stateMachine.MainCamera.gameObject.SetActive(false);
         //m_stateMachine.CinematicCamera = Camera.main;
+
+        CinemachineBrain cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
+        cinemachineBrain.ActiveVirtualCamera.Priority = 20;
 
         //m_cinematicTimerForTest = 3.0f;
     }

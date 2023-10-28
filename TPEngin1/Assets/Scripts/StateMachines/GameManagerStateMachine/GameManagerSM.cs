@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
     public static GameManagerSM _Instance;
     // Pour le caller d'ailleurs GameManagerSM._Instance...
 
-    [field: SerializeField] public Camera MainCamera { get; set; }
+    [field: SerializeField] public CinemachineVirtualCamera MainCamera { get; set; }
     [field: SerializeField] public Camera CinematicCamera { get; set; }
 
     public bool IsCinematicMode { get; private set; } = false;
@@ -14,8 +15,9 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
     protected override void CreatePossibleStates()
     {
         m_possibleStates = new List<GameManagerState>();
-        m_possibleStates.Add(new GameplayState());
         m_possibleStates.Add(new CinematicState());
+        m_possibleStates.Add(new GameplayState());
+        //m_possibleStates.Add(new CinematicState());
         //m_possibleStates.Add(new SceneTransitionState());
     }
 
