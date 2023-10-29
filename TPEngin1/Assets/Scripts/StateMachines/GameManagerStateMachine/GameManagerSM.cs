@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManagerSM : BaseStateMachine<GameManagerState>
 {
@@ -30,7 +31,7 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
     protected override void CreatePossibleStates()
     {
         m_possibleStates = new List<GameManagerState>();
-        //m_possibleStates.Add(new CinematicState());
+        m_possibleStates.Add(new CinematicState());
         m_possibleStates.Add(new GameplayState());
         //m_possibleStates.Add(new CinematicState());
         //m_possibleStates.Add(new SceneTransitionState());
@@ -43,7 +44,15 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
         if (_Instance == null)
         { 
             _Instance = this;
-        }          
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {            
+            if (_Instance != this)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
     protected override void Start()
@@ -60,7 +69,12 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
 
     protected override void Update()
     {
-        base.Update();        
+        base.Update();     
+        
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            SceneManager.LoadScene("SandboxScene");;
+        }
     }
 
     protected override void FixedUpdate()

@@ -33,6 +33,6 @@ public class CinematicState : GameManagerState
 
     public override bool CanExit()
     {
-        return m_stateMachine.CanTransitionOutOfCinematic();        
+        return m_stateMachine.CanTransitionOutOfCinematic() || Input.GetKeyDown(KeyCode.C);        
     }
 }
