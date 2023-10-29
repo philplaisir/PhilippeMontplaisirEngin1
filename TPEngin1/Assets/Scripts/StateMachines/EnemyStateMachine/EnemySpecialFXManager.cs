@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ public class EnemySpecialFXManager : MonoBehaviour
     private List<SpecialEffectsGroup> m_specialFXGroups = new List<SpecialEffectsGroup>();
     // Struct dans le CharcterControllerSM
 
+    private CinemachineImpulseSource m_impulseSource;
+
     private void Awake()
     {
         if (_Instance == null)
@@ -28,7 +31,12 @@ public class EnemySpecialFXManager : MonoBehaviour
         }
     }
 
-    public void PlaySpecialEffect(ECharacterActionType characterAction, Vector3 position)
+    private void Start()
+    {
+        m_impulseSource = GetComponent<CinemachineImpulseSource>();
+    }
+
+    public void PlaySpecialEffect(ECharacterActionType characterAction, Vector3 position, float intensity)
     {
         SpecialEffectsGroup specialFXGroup = new SpecialEffectsGroup();
         foreach (SpecialEffectsGroup group in m_specialFXGroups)
@@ -65,6 +73,9 @@ public class EnemySpecialFXManager : MonoBehaviour
                 {
                     Debug.Log("No visual effect found for the special effect");
                 }
+
+                intensity = Random.Range(intensity - 0.5f, intensity + 0.5f);
+                m_impulseSource.GenerateImpulse(intensity);
                 break;            
             case ECharacterActionType.Count:
                 break;

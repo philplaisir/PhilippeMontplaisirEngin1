@@ -20,11 +20,11 @@ public class FreeState : CharacterState
     }
 
     public override void OnFixedUpdate()
-    {        
+    {
         CharacterControllerFU();
         KeepCharacterOnGroundWhenAngledFU();
-        UpdateHorizontalMovements();
-        UpdateVerticalCameraMovementsBasedOnSecondaryObjectRotation();
+        UpdateHorizontalMovementsFU();
+        UpdateVerticalCameraMovementsBasedOnSecondaryObjectRotationFU();
     }    
 
     public override bool CanEnter(IState currentState)
@@ -57,14 +57,14 @@ public class FreeState : CharacterState
 
     //88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
 
-    private void UpdateHorizontalMovements()
+    private void UpdateHorizontalMovementsFU()
     {        
         float horizontalInput = Input.GetAxis("Mouse X");
         float rotationAmountX = horizontalInput * m_stateMachine.RotationSpeedHorizontal;        
         m_stateMachine.MainCharacter.transform.Rotate(0, rotationAmountX, 0);
     }
 
-    private void UpdateVerticalCameraMovementsBasedOnSecondaryObjectRotation()
+    private void UpdateVerticalCameraMovementsBasedOnSecondaryObjectRotationFU()
     {
         float verticalInput = Input.GetAxis("Mouse Y");
         float rotationAmountY = verticalInput * m_stateMachine.RotationSpeedVertical;

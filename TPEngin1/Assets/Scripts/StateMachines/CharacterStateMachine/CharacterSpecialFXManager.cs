@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CharacterSpecialFXManager : MonoBehaviour
 {
@@ -19,7 +20,9 @@ public class CharacterSpecialFXManager : MonoBehaviour
     private GameObject m_leftFootStepDustEmitterPos;
 
     [SerializeField]
-    private List<SpecialEffectsGroup> m_specialFXGroups = new List<SpecialEffectsGroup>();    
+    private List<SpecialEffectsGroup> m_specialFXGroups = new List<SpecialEffectsGroup>();
+       
+    private CinemachineImpulseSource m_impulseSource;
 
     private void Awake()
     {
@@ -33,7 +36,12 @@ public class CharacterSpecialFXManager : MonoBehaviour
         }
     }
 
-    public void PlaySpecialEffect(ECharacterActionType characterAction, Vector3 position)
+    private void Start()
+    {        
+        m_impulseSource = GetComponent<CinemachineImpulseSource>();
+    }
+
+    public void PlaySpecialEffect(ECharacterActionType characterAction, Vector3 position, float intensity)
     {
         SpecialEffectsGroup specialFXGroup = new SpecialEffectsGroup();
         foreach (SpecialEffectsGroup group in m_specialFXGroups)
@@ -69,7 +77,10 @@ public class CharacterSpecialFXManager : MonoBehaviour
                 else
                 {
                     Debug.Log("No visual effect found for the special effect");
-                }
+                }               
+
+                intensity = Random.Range(intensity - 0.5f, intensity + 0.5f);
+                m_impulseSource.GenerateImpulse(intensity);
                 break;
             case ECharacterActionType.RunRightFootstep:
                 if (specialFXGroup.audioClips.Count > 0)

@@ -10,13 +10,8 @@ public class CharacterAnimationEventsDispatcher : MonoBehaviour
     }
 
     public void ActivateRightArmAttackHitbox()
-    {
-        //Debug.Log("Right arm attack hitbox activated");
-        //Peut-être plus encapsuler ça et tout faire dans state machine
-        //Faire attention à la situation ou quand ça c'est call la hitbox est déjà dans 
-        //l'autre collider donc le on trigger enter/on enter trigger truc ne va pas se déclencher
-        m_characterControllerSM.RightArmAttackHitBox.SetActive(true);
-        //m_stateMachine.OnEnableAttackHitBox
+    {        
+        m_characterControllerSM.RightArmAttackHitBox.SetActive(true);        
     }
 
     public void DeactivateRightArmAttackHitbox()
@@ -27,24 +22,22 @@ public class CharacterAnimationEventsDispatcher : MonoBehaviour
 
     public void MakeRightFootStepFX()
     {
-        CharacterSpecialFXManager._Instance.PlaySpecialEffect(ECharacterActionType.RunRightFootstep, Vector3.zero);
-        //VFXManager._Instance.InstantiateVFX(EVisualFXType.RightfootStepDust, Vector3.zero);
+        CharacterSpecialFXManager._Instance.PlaySpecialEffect(ECharacterActionType.RunRightFootstep, Vector3.zero, 0.0f);        
     }
 
     public void MakeLeftFootStepFX()
     {
-        CharacterSpecialFXManager._Instance.PlaySpecialEffect(ECharacterActionType.RunLeftFootstep, Vector3.zero);
-        //VFXManager._Instance.InstantiateVFX(EVisualFXType.LeftfootStepDust, Vector3.zero);
+        CharacterSpecialFXManager._Instance.PlaySpecialEffect(ECharacterActionType.RunLeftFootstep, Vector3.zero, 0.0f);        
     }
 
     public void MakeJumpFootFX()
     {
-        CharacterSpecialFXManager._Instance.PlaySpecialEffect(ECharacterActionType.Jump, Vector3.zero);
+        CharacterSpecialFXManager._Instance.PlaySpecialEffect(ECharacterActionType.Jump, Vector3.zero, 0.0f);
     }
 
     public void MakeJumpLandFootFX() 
     {
-        CharacterSpecialFXManager._Instance.PlaySpecialEffect(ECharacterActionType.JumpLanding, Vector3.zero);
+        CharacterSpecialFXManager._Instance.PlaySpecialEffect(ECharacterActionType.JumpLanding, Vector3.zero, 0.0f);
     }
 
 }

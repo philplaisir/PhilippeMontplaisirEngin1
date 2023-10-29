@@ -73,7 +73,7 @@ public class EnemyControllerSM : BaseStateMachine<EnemyState>
     private void IsHitting(Vector3 position, PMM_HitBox self, PMM_HitBox other)
     {
         //TODO check si besoin des hit et serait cool de transférer le action type dès la hitbox ou dépendamment de la hit box reçue
-        m_enemySpecialFXManager.PlaySpecialEffect(ECharacterActionType.PunchRight, position);
+        m_enemySpecialFXManager.PlaySpecialEffect(ECharacterActionType.PunchRight, position, 3.0f);
     }
 
     private void InitializeReceivingHitBoxListeners()

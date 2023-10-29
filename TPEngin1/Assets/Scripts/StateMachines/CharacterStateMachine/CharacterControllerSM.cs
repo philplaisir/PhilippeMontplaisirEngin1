@@ -58,7 +58,6 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     [field: SerializeField] public GameObject TestingBullet { get; private set; }
     [SerializeField] private ElevatorController m_elevatorController;
 
-
     [field: Header("CINEMACHINE CAMERA BASED ON CHARACTER")]
     [field: SerializeField] public GameObject ObjectToRotateAround { get; set; }
     [field: SerializeField] public float RotationSpeedHorizontal { get; private set; } = 2.0f;
@@ -112,6 +111,11 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     {
         base.Update();
 
+        if (GameManagerSM._Instance.IsCinematicMode == true)
+        {
+            return;
+        }
+
         IsTouchingFloor = IsInContactWithFloor();
         if (IsInContactWithFloor())
         {            
@@ -120,14 +124,7 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
         
         DetectTestingInputs();
         CalculateDistanceBetweenCharacterAndFloor();        
-
-        if (GameManagerSM._Instance.IsCinematicMode == true)
-        {
-            return;
-        }
-
-        //m_currentState.OnUpdate();
-        //TryStateTransition();
+                
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -195,7 +192,7 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     private void IsHitting(Vector3 position, PMM_HitBox self, PMM_HitBox other)
     {
         //TODO check si besoin des hit et serait cool de transférer le action type dès la hitbox ou dépendamment de la hit box reçue
-        m_characterSpecialFXManager.PlaySpecialEffect(ECharacterActionType.PunchRight, position);
+        m_characterSpecialFXManager.PlaySpecialEffect(ECharacterActionType.PunchRight, position, 0.5f);
     }
 
     private void InitializeReceivingHitBoxListeners()
