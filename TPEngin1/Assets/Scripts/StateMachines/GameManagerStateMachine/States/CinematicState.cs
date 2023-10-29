@@ -9,24 +9,20 @@ public class CinematicState : GameManagerState
     {
         Debug.Log("Enter GameManager state : CinematicState");
 
-        //m_stateMachine.CinematicCamera.gameObject.SetActive(true);
-        m_stateMachine.MainCamera.gameObject.SetActive(false);
-        //m_stateMachine.CinematicCamera = Camera.main;
-
-        //CinemachineBrain cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
-        //cinemachineBrain.ActiveVirtualCamera.Priority = 20;
-
-        //m_cinematicTimerForTest = 3.0f;
+        m_stateMachine.MainGameplayCamera.gameObject.SetActive(false);
+        m_stateMachine.IntroCinematic.gameObject.SetActive(true);
+        m_stateMachine.IsCinematicMode = true;
     }
 
     public override void OnExit()
     {
+        m_stateMachine.IsCinematicMode = false;
+        m_stateMachine.IntroCinematic.gameObject.SetActive(false);
         Debug.Log("Exit GameManager state : CinematicState");
     }
 
     public override void OnUpdate()
-    {
-        //m_cinematicTimerForTest -= Time.deltaTime;
+    {        
     }
 
     public override void OnFixedUpdate()

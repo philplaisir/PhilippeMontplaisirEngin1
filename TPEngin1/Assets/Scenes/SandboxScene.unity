@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 15711287}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.051279373, y: -0.055055123, z: 0.032092836, w: -0.9966491}
+  m_LocalRotation: {x: -0.051283725, y: -0.05505435, z: 0.03209207, w: -0.99664897}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1637,7 +1637,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97bed66ad0b0229468b74df1d6e97ed7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MainCamera>k__BackingField: {fileID: 723893991}
+  <MainGameplayCamera>k__BackingField: {fileID: 723893991}
+  <IntroCinematic>k__BackingField: {fileID: 1623546457}
   m_explosionParticleSystem: {fileID: 4482334856273476064, guid: efd2c48ff32dc73448d85fe6d793dbba,
     type: 3}
   m_explosionAudioSource: {fileID: 240746610555644800, guid: 696674ca04bc92e428154d43eaeeadd0,
@@ -3062,7 +3063,7 @@ MonoBehaviour:
     roll: 0
   - position: {x: 0.9200897, y: -3.487823, z: 13.174301}
     roll: 0
-  - position: {x: 0.17810059, y: -3.8103697, z: 11.006897}
+  - position: {x: 0.17810059, y: -3.8103697, z: 9.615234}
     roll: 0
 --- !u!4 &690718861
 Transform:
@@ -7711,7 +7712,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1748174714}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.011794476, y: -0.9705539, z: 0.23563989, w: -0.048579104}
+  m_LocalRotation: {x: -0.011794015, y: -0.97055495, z: 0.2356357, w: -0.048578124}
   m_LocalPosition: {x: 5.130005, y: 10.207839, z: 3.9799957}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

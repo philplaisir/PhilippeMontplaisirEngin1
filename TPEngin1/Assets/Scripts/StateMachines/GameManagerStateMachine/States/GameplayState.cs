@@ -6,13 +6,13 @@ public class GameplayState : GameManagerState
     {
         Debug.Log("Enter GameManager state : GameplayState");
 
-        //m_stateMachine.CinematicCamera.gameObject.SetActive(false);
-        m_stateMachine.MainCamera.gameObject.SetActive(true);
-        //m_stateMachine.MainCamera = Camera.main;
+        m_stateMachine.MainGameplayCamera.gameObject.SetActive(true);
+        m_stateMachine.IntroCinematic.gameObject.SetActive(false);
     }
 
     public override void OnExit()
     {
+        m_stateMachine.MainGameplayCamera.gameObject.SetActive(false);
         Debug.Log("Exit GameManager state : GameplayState");
     }
 

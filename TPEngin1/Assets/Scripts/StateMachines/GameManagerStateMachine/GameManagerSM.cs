@@ -4,25 +4,24 @@ using UnityEngine;
 
 public class GameManagerSM : BaseStateMachine<GameManagerState>
 {
-    public static GameManagerSM _Instance;
-    // Pour le caller d'ailleurs GameManagerSM._Instance...
+    public static GameManagerSM _Instance;    
 
     public IState DesiredState { get; private set; } = null;
 
-    [field: SerializeField] public CinemachineVirtualCamera MainCamera { get; set; }
+    [field: SerializeField] public CinemachineVirtualCamera MainGameplayCamera { get; private set; }
 
-    [field: Header("CINEMATIC EXPLOSION")]
+    [field: Header("CINEMATIC")]
+    [field: SerializeField] public GameObject IntroCinematic { get; private set; }
     [SerializeField] private GameObject m_explosionParticleSystem;
     [SerializeField] private AudioSource m_explosionAudioSource;
-
     [SerializeField] private List<GameObject> m_explosionEmitters = new List<GameObject>();
     
-    public bool IsCinematicMode { get; private set; } = false;
+    public bool IsCinematicMode { get; set; } = false;
 
     protected override void CreatePossibleStates()
     {
         m_possibleStates = new List<GameManagerState>();
-        m_possibleStates.Add(new CinematicState());
+        //m_possibleStates.Add(new CinematicState());
         m_possibleStates.Add(new GameplayState());
         //m_possibleStates.Add(new CinematicState());
         //m_possibleStates.Add(new SceneTransitionState());
