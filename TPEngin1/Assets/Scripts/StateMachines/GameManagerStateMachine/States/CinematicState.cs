@@ -13,8 +13,8 @@ public class CinematicState : GameManagerState
         m_stateMachine.MainCamera.gameObject.SetActive(false);
         //m_stateMachine.CinematicCamera = Camera.main;
 
-        CinemachineBrain cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
-        cinemachineBrain.ActiveVirtualCamera.Priority = 20;
+        //CinemachineBrain cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
+        //cinemachineBrain.ActiveVirtualCamera.Priority = 20;
 
         //m_cinematicTimerForTest = 3.0f;
     }
@@ -40,7 +40,7 @@ public class CinematicState : GameManagerState
 
     public override bool CanExit()
     {
-        return true;
+        return m_stateMachine.CanTransitionOutOfCinematic();
         //return m_cinematicTimerForTest <= 0;
     }
 }
