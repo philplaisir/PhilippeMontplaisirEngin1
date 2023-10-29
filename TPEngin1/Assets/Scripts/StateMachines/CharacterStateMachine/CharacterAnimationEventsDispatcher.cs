@@ -15,8 +15,7 @@ public class CharacterAnimationEventsDispatcher : MonoBehaviour
     }
 
     public void DeactivateRightArmAttackHitbox()
-    {
-        //Debug.Log("Right arm attack hitbox deactivated");
+    {        
         m_characterControllerSM.RightArmAttackHitBox.SetActive(false);
     }
 

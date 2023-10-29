@@ -12,9 +12,8 @@ public class PMM_HitBox : MonoBehaviour
     protected EAgentType m_currentHitBoxAgentType;
     [SerializeField]
     protected List<EAgentType> m_agentTypesAffectedByThis = new List<EAgentType>();    
-
-    // Bien checker si c'est une bonne pratique utiliser le invoke et UnityEvent
-    // TODO checker pour réduire le scope pour que ce ne soit plus public...
+        
+    // TODO checker le scope
     public UnityEvent WasHit;
     public UnityEvent<Vector3, PMM_HitBox, PMM_HitBox> IsHitting = new UnityEvent<Vector3, PMM_HitBox, PMM_HitBox>();
 
@@ -40,8 +39,7 @@ public class PMM_HitBox : MonoBehaviour
     }
 
     protected void GotHit(PMM_HitBox otherHitBox)
-    {
-        // Bien checker si c'est une bonne pratique utiliser le invoke et UnityEvent        
+    {           
         WasHit?.Invoke();
         Debug.Log(gameObject.name + " got hit by " + otherHitBox);        
     }

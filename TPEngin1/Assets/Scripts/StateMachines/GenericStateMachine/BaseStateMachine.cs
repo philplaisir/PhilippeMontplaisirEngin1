@@ -62,5 +62,4 @@ public abstract class BaseStateMachine<T> : MonoBehaviour where T : IState
             }
         }
     }    
-
 }

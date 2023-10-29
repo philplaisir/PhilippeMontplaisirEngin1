@@ -77,22 +77,19 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
         m_possibleStates.Add(new OnGroundState());
         m_possibleStates.Add(new GettingUpState());
         m_possibleStates.Add(new StunInAirState());
-        m_possibleStates.Add(new HitState());
-                
+        m_possibleStates.Add(new HitState());                
     }
 
     protected override void Awake()
     {
         base.Awake();
-
-        // Bien checker si c'est une bonne pratique utiliser le invoke et UnityEvent
+        
         InitializeHittingHitBoxListeners();
         InitializeReceivingHitBoxListeners();
     }
 
     protected override void Start()
-    {      
-        // Quand même checker les statemachine Start car j'ai enlever les base.Start() qu'il y avait dedans mais qui était superflu
+    {              
         foreach(CharacterState state in m_possibleStates)
         {
             state.OnStart(this);
@@ -147,8 +144,7 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
         }
 
         CharacterVelocity = RB.velocity;
-        CharacterVelocityMagnitude = RB.velocity.magnitude;
-        //m_currentState.OnFixedUpdate();        
+        CharacterVelocityMagnitude = RB.velocity.magnitude;               
     }
     
     public bool IsInContactWithFloor()
@@ -191,7 +187,7 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
 
     private void IsHitting(Vector3 position, PMM_HitBox self, PMM_HitBox other)
     {
-        //TODO check si besoin des hit et serait cool de transférer le action type dès la hitbox ou dépendamment de la hit box reçue
+        //TODO check si besoin des hit et serait cool de transférer le action type dès la hitbox ou dépendamment de la hit box reçue        
         m_characterSpecialFXManager.PlaySpecialEffect(ECharacterActionType.PunchRight, position, 0.5f);
     }
 

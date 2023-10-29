@@ -81,6 +81,8 @@ public class CharacterSpecialFXManager : MonoBehaviour
 
                 intensity = Random.Range(intensity - 0.5f, intensity + 0.5f);
                 m_impulseSource.GenerateImpulse(intensity);
+
+                GameManagerSM._Instance.IsSlowMoed = true;
                 break;
             case ECharacterActionType.RunRightFootstep:
                 if (specialFXGroup.audioClips.Count > 0)

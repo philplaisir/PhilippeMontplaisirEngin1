@@ -11,8 +11,7 @@ public class TestBullet : MonoBehaviour
     [SerializeField] 
     private float m_moveSpeed = 5.0f;
     [SerializeField] 
-    private float m_lifetime = 5.0f;
-    
+    private float m_lifetime = 5.0f;    
 
 
     private void Awake()

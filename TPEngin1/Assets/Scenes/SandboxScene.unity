@@ -1662,6 +1662,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MainGameplayCamera>k__BackingField: {fileID: 723893991}
+  m_timeScaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   <IntroCinematic>k__BackingField: {fileID: 1623546457}
   m_explosionParticleSystem: {fileID: 4482334856273476064, guid: efd2c48ff32dc73448d85fe6d793dbba,
     type: 3}

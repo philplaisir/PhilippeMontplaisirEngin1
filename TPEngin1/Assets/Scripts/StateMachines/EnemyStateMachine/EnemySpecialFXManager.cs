@@ -15,9 +15,10 @@ public class EnemySpecialFXManager : MonoBehaviour
 
     [SerializeField]
     private List<SpecialEffectsGroup> m_specialFXGroups = new List<SpecialEffectsGroup>();
-    // Struct dans le CharcterControllerSM
-
+   
     private CinemachineImpulseSource m_impulseSource;
+
+
 
     private void Awake()
     {

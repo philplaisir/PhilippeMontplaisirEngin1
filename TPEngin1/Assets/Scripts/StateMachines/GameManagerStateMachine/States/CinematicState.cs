@@ -1,10 +1,7 @@
-using Cinemachine;
 using UnityEngine;
 
 public class CinematicState : GameManagerState
 {
-    private float m_cinematicTimerForTest;
-
     public override void OnEnter()
     {
         Debug.Log("Enter GameManager state : CinematicState");
@@ -36,7 +33,6 @@ public class CinematicState : GameManagerState
 
     public override bool CanExit()
     {
-        return m_stateMachine.CanTransitionOutOfCinematic();
-        //return m_cinematicTimerForTest <= 0;
+        return m_stateMachine.CanTransitionOutOfCinematic();        
     }
 }

@@ -4,19 +4,28 @@ using UnityEngine;
 
 public class GameManagerSM : BaseStateMachine<GameManagerState>
 {
-    public static GameManagerSM _Instance;    
+    private const float SLOW_MO_DURATION = 0.5f;
 
+    public static GameManagerSM _Instance;
     public IState DesiredState { get; private set; } = null;
 
-    [field: SerializeField] public CinemachineVirtualCamera MainGameplayCamera { get; private set; }
+    [field: SerializeField] 
+    public CinemachineVirtualCamera MainGameplayCamera { get; private set; }
+
+    [field: Header("SLOW MO")]
+    public bool IsSlowMoed { get; set; } = false;
+    [SerializeField] 
+    private AnimationCurve m_timeScaleCurve;
+    private float m_currentTimeScaleDuration = 0.0f;
 
     [field: Header("CINEMATIC")]
     [field: SerializeField] public GameObject IntroCinematic { get; private set; }
     [SerializeField] private GameObject m_explosionParticleSystem;
     [SerializeField] private AudioSource m_explosionAudioSource;
-    [SerializeField] private List<GameObject> m_explosionEmitters = new List<GameObject>();
-    
+    [SerializeField] private List<GameObject> m_explosionEmitters = new List<GameObject>();    
     public bool IsCinematicMode { get; set; } = false;
+
+
 
     protected override void CreatePossibleStates()
     {
@@ -56,7 +65,19 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
 
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();        
+        base.FixedUpdate();      
+        
+        if (IsSlowMoed) 
+        {
+            m_currentTimeScaleDuration += Time.fixedUnscaledDeltaTime;
+            Time.timeScale = m_timeScaleCurve.Evaluate(m_currentTimeScaleDuration / SLOW_MO_DURATION);
+            Time.timeScale = Mathf.Clamp(Time.timeScale, 0.0f, 1.0f);
+            if (m_currentTimeScaleDuration >= SLOW_MO_DURATION)
+            {
+                m_currentTimeScaleDuration = 0.0f;
+                IsSlowMoed = false;
+            }
+        }
     }
     
     public void OnCinematicEnd()
