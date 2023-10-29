@@ -149,7 +149,6 @@ public class CharacterSpecialFXManager : MonoBehaviour
                 {
                     int randomVisualIndex = Random.Range(0, specialFXGroup.visualEffects.Count);
                     GameObject vfxToPlay = specialFXGroup.visualEffects[randomVisualIndex];
-                    Instantiate(vfxToPlay, m_rightFootStepDustEmitterPos.transform.position, Quaternion.identity, transform);
                     Instantiate(vfxToPlay, m_leftFootStepDustEmitterPos.transform.position, Quaternion.identity, transform);
                 }
                 else
