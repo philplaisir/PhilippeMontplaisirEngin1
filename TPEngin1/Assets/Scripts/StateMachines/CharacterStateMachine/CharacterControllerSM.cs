@@ -69,6 +69,7 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     protected override void CreatePossibleStates()
     {
         m_possibleStates = new List<CharacterState>();
+        m_possibleStates.Add(new StandbyState());
         m_possibleStates.Add(new FreeState());
         m_possibleStates.Add(new JumpState());
         m_possibleStates.Add(new FallingState());
@@ -77,7 +78,7 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
         m_possibleStates.Add(new OnGroundState());
         m_possibleStates.Add(new GettingUpState());
         m_possibleStates.Add(new StunInAirState());
-        m_possibleStates.Add(new HitState());                
+        m_possibleStates.Add(new HitState());       
     }
 
     protected override void Awake()
@@ -108,10 +109,10 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     {
         base.Update();
 
-        if (GameManagerSM._Instance.IsCinematicMode == true)
-        {
-            return;
-        }
+        //if (GameManagerSM._Instance.IsCinematicMode == true)
+        //{
+        //    return;
+        //}
 
         IsTouchingFloor = IsInContactWithFloor();
         if (IsInContactWithFloor())
@@ -120,8 +121,7 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
         }        
         
         DetectTestingInputs();
-        CalculateDistanceBetweenCharacterAndFloor();        
-                
+        CalculateDistanceBetweenCharacterAndFloor();                  
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {

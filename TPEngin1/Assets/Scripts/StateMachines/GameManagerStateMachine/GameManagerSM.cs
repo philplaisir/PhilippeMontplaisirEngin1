@@ -8,7 +8,7 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
     private const float SLOW_MO_DURATION = 0.5f;
 
     public static GameManagerSM _Instance;
-    public IState DesiredState { get; private set; } = null;
+    public IState DesiredState { get; set; } = null;
 
     [field: SerializeField] 
     public CinemachineVirtualCamera MainGameplayCamera { get; private set; }
@@ -53,6 +53,8 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
                 Destroy(gameObject);
             }
         }
+
+        IsCinematicMode = true;
     }
 
     protected override void Start()
@@ -64,7 +66,7 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
         m_currentState = m_possibleStates[0];
         m_currentState.OnEnter();
 
-        IsCinematicMode = false;
+        //IsCinematicMode = false;
     }
 
     protected override void Update()

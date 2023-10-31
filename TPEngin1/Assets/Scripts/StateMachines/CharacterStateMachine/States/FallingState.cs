@@ -6,7 +6,7 @@ public class FallingState : CharacterState
 
     public override void OnEnter()
     {
-        Debug.Log("Enter state: FallingState\n");
+        Debug.Log("Character entering state: FallingState\n");
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         
         m_animator.SetTrigger("Falling");
@@ -15,7 +15,7 @@ public class FallingState : CharacterState
     public override void OnExit()
     {
         m_animator.ResetTrigger("Falling");
-        Debug.Log("Exit state: FallingState\n");        
+        Debug.Log("Character exiting state: FallingState\n");        
     }    
 
     public override void OnUpdate()

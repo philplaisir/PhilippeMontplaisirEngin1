@@ -3,15 +3,15 @@ using UnityEngine;
 public class EnemyHitState : EnemyState
 {
     public override void OnEnter()
-    {        
-        m_stateMachine.Animator.SetTrigger("Hit");
-        Debug.Log("Enter enemy state : HitState");
+    {
+        Debug.Log("Enemy entering state : EnemyHitState");
+        m_stateMachine.Animator.SetTrigger("Hit");        
     }
 
     public override void OnExit()
     {
         m_stateMachine.IsHit = false;
-        Debug.Log("Exit enemy state : HitState");
+        Debug.Log("Enemy exiting state : EnemyHitState");
     }
 
     public override void OnUpdate()

@@ -7,7 +7,7 @@ public class EnemyAttackingState : EnemyState
 
     public override void OnEnter()
     {
-        Debug.Log("Enter state: EnemyAttackingState");
+        Debug.Log("Enemy entering state: EnemyAttackingState");
 
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         
@@ -18,7 +18,7 @@ public class EnemyAttackingState : EnemyState
 
     public override void OnExit()
     {        
-        Debug.Log("Exit state: EnemyAttackingState");
+        Debug.Log("Enemy exiting state: EnemyAttackingState");
     }
 
     public override void OnUpdate()

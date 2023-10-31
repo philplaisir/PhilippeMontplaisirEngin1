@@ -7,7 +7,7 @@ public class AttackingState : CharacterState
 
     public override void OnEnter()
     {
-        Debug.Log("Enter state: AttackingState");
+        Debug.Log("Character entering state: AttackingState");
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
 
         m_animator.SetTrigger("Attacking");
@@ -18,7 +18,7 @@ public class AttackingState : CharacterState
     public override void OnExit()
     {
         m_stateMachine.RightArmAttackHitBox.SetActive(false);
-        Debug.Log("Exit state: AttackingState");
+        Debug.Log("Character exiting state: AttackingState");
     }
 
     public override void OnUpdate()

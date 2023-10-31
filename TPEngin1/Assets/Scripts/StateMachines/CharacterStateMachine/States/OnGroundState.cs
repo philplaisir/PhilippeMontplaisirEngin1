@@ -7,7 +7,7 @@ public class OnGroundState : CharacterState
 
     public override void OnEnter()
     {
-        Debug.Log("Enter state: OnGroundState\n");
+        Debug.Log("Character entering state: OnGroundState\n");
         m_animator = m_stateMachine.GetComponentInParent<Animator>();       
         m_onGroundDelay = 1.0f;        
         m_animator.SetTrigger("Stunned");
@@ -15,7 +15,7 @@ public class OnGroundState : CharacterState
 
     public override void OnExit()
     {        
-        Debug.Log("Exit state: OnGroundState\n");       
+        Debug.Log("Character exiting state: OnGroundState\n");       
     }    
 
     public override void OnUpdate()

@@ -7,7 +7,7 @@ public class StunInAirState : CharacterState
 
     public override void OnEnter()
     {
-        Debug.Log("Enter state: StunInAirState\n");
+        Debug.Log("Character entering state: StunInAirState\n");
 
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         
@@ -18,7 +18,7 @@ public class StunInAirState : CharacterState
 
     public override void OnExit()
     {
-        Debug.Log("Exit state: StunInAirState\n");
+        Debug.Log("Character exiting state: StunInAirState\n");
     }    
 
     public override void OnUpdate()

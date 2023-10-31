@@ -4,12 +4,12 @@ public class EnemyFreeState : EnemyState
 {    
     public override void OnEnter()
     {
-        Debug.Log("Enter enemy state : FreeState");
+        Debug.Log("Enemy entering state : EnemyFreeState");
     }
 
     public override void OnExit()
     {
-        Debug.Log("Exit enemy state : FreeState");
+        Debug.Log("Enemy exiting state : EnemyFreeState");
     }
 
     public override void OnUpdate()

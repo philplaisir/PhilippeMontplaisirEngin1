@@ -6,12 +6,12 @@ public class FreeState : CharacterState
 
     public override void OnEnter()
     {
-        Debug.Log("Enter state: FreeState\n");
+        Debug.Log("Character entering state: FreeState\n");
     }
 
     public override void OnExit()
     {
-        Debug.Log("Exit state: FreeState\n");
+        Debug.Log("Character exiting state: FreeState\n");
     }
 
     public override void OnUpdate()
@@ -29,7 +29,7 @@ public class FreeState : CharacterState
 
     public override bool CanEnter(IState currentState)
     {        
-        if (currentState is JumpState || currentState is LeavingGroundState || currentState is GettingUpState) 
+        if (currentState is JumpState || currentState is LeavingGroundState || currentState is GettingUpState || currentState is StandbyState) 
         {            
             return m_stateMachine.IsInContactWithFloor();        
         }
@@ -46,6 +46,10 @@ public class FreeState : CharacterState
 
             return false;
         }
+        //if(currentState is StandbyState && )
+        //{
+        //    return true;            
+        //}
 
         return false;                
     }

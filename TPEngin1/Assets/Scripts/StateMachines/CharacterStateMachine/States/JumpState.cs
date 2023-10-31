@@ -8,7 +8,7 @@ public class JumpState : CharacterState
 
     public override void OnEnter()
     {
-        Debug.Log("Enter state: JumpState\n");
+        Debug.Log("Character entering state: JumpState\n");
 
         m_stateMachine.JumpStartingPosition = m_stateMachine.transform.position;
         m_stateMachine.RB.AddForce(Vector3.up * m_stateMachine.JumpIntensity, ForceMode.Acceleration);
@@ -20,7 +20,7 @@ public class JumpState : CharacterState
 
     public override void OnExit()
     {        
-        Debug.Log("Exit state: JumpState\n");
+        Debug.Log("Character exiting state: JumpState\n");
     }    
 
     public override void OnUpdate()

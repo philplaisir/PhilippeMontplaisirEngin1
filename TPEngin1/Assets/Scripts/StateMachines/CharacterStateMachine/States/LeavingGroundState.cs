@@ -7,7 +7,7 @@ public class LeavingGroundState : CharacterState
 
     public override void OnEnter()
     {
-        Debug.Log("Enter state: LeavingGroundState\n");
+        Debug.Log("Character entering state: LeavingGroundState\n");
 
         m_stateMachine.LeavingGroundStartingPosition = m_stateMachine.transform.position;
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
@@ -17,7 +17,7 @@ public class LeavingGroundState : CharacterState
 
     public override void OnExit()
     {
-        Debug.Log("Exit state: LeavingGroundState\n");
+        Debug.Log("Character exiting state: LeavingGroundState\n");
     }
 
     public override void OnUpdate()

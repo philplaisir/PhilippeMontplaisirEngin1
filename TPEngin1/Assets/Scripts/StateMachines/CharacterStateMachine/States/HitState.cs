@@ -7,7 +7,7 @@ public class HitState : CharacterState
 
     public override void OnEnter()
     {
-        Debug.Log("Enter state: HitState\n");
+        Debug.Log("Character entering state: HitState\n");
         m_animator = m_stateMachine.GetComponentInParent<Animator>();
         m_animator.SetTrigger("Hit");
         m_hitStunTimer = 0.5f;
@@ -15,7 +15,7 @@ public class HitState : CharacterState
 
     public override void OnExit()
     {
-        Debug.Log("Exit state: HitState\n");
+        Debug.Log("Character exiting state: HitState\n");
         m_stateMachine.IsHit = false;
     }
 

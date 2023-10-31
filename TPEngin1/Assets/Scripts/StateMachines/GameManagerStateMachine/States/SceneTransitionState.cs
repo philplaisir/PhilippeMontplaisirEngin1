@@ -4,12 +4,12 @@ public class SceneTransitionState : GameManagerState
 {
     public override void OnEnter()
     {
-        Debug.Log("Enter GameManager state : SceneTransitionState");
+        Debug.Log("GameManager entering state : SceneTransitionState");
     }
 
     public override void OnExit()
     {
-        Debug.Log("Exit GameManager state : SceneTransitionState");
+        Debug.Log("GameManager exiting state : SceneTransitionState");
     }
 
     public override void OnUpdate()

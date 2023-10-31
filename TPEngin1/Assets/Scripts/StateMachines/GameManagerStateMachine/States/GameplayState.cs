@@ -4,7 +4,7 @@ public class GameplayState : GameManagerState
 {
     public override void OnEnter()
     {
-        Debug.Log("Enter GameManager state : GameplayState");
+        Debug.Log("GameManager entering state : GameplayState");
 
         m_stateMachine.MainGameplayCamera.gameObject.SetActive(true);
         m_stateMachine.IntroCinematic.gameObject.SetActive(false);
@@ -13,7 +13,7 @@ public class GameplayState : GameManagerState
     public override void OnExit()
     {
         m_stateMachine.MainGameplayCamera.gameObject.SetActive(false);
-        Debug.Log("Exit GameManager state : GameplayState");
+        Debug.Log("GameManager exiting state : GameplayState");
     }
 
     public override void OnFixedUpdate()

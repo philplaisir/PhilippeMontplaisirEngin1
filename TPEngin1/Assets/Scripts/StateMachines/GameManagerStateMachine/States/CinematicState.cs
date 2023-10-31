@@ -4,8 +4,9 @@ public class CinematicState : GameManagerState
 {
     public override void OnEnter()
     {
-        Debug.Log("Enter GameManager state : CinematicState");
+        Debug.Log("GameManager entering state : CinematicState");
 
+        m_stateMachine.DesiredState = null;
         m_stateMachine.MainGameplayCamera.gameObject.SetActive(false);
         m_stateMachine.IntroCinematic.gameObject.SetActive(true);
         m_stateMachine.IsCinematicMode = true;
@@ -13,9 +14,10 @@ public class CinematicState : GameManagerState
 
     public override void OnExit()
     {
+        m_stateMachine.OnCinematicEnd();
         m_stateMachine.IsCinematicMode = false;
         m_stateMachine.IntroCinematic.gameObject.SetActive(false);
-        Debug.Log("Exit GameManager state : CinematicState");
+        Debug.Log("GameManager exiting state : CinematicState");
     }
 
     public override void OnUpdate()
