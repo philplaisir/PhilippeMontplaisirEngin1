@@ -38,8 +38,6 @@ public class FallingState : CharacterState
             }
 
             return false;
-
-            //return m_stateMachine.InJumpStateForTooLong; 
         }
         if (currentState is LeavingGroundState)
         {
@@ -49,8 +47,6 @@ public class FallingState : CharacterState
             }
 
             return false;
-
-            //return m_stateMachine.LeftGroundForTooLong; 
         }        
 
         return false;        
@@ -58,15 +54,6 @@ public class FallingState : CharacterState
     
     public override bool CanExit()
     {
-        //if (m_stateMachine.IsStunned)
-        //{
-        //    return true;
-        //}
-
-        return true;
-        
-        //return m_stateMachine.IsInContactWithFloor();        
-    }
-
-    
+        return true;              
+    }   
 }

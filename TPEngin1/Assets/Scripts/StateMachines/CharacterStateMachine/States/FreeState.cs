@@ -45,11 +45,7 @@ public class FreeState : CharacterState
             }
 
             return false;
-        }
-        //if(currentState is StandbyState && )
-        //{
-        //    return true;            
-        //}
+        }        
 
         return false;                
     }
@@ -75,13 +71,9 @@ public class FreeState : CharacterState
         m_stateMachine.ObjectToRotateAround.transform.rotation *= Quaternion.AngleAxis(rotationAmountY, Vector3.right);
 
         Vector3 currentEulerAngles = m_stateMachine.ObjectToRotateAround.transform.eulerAngles;
-
         float comparisonAngle = ClampAngle(currentEulerAngles.x);
-
         float clampedX = Mathf.Clamp(comparisonAngle, m_stateMachine.VerticalCameraLimits.x, m_stateMachine.VerticalCameraLimits.y);
-
         Vector3 clampedEulerAngles = new Vector3(clampedX, currentEulerAngles.y, currentEulerAngles.z);
-
         m_stateMachine.ObjectToRotateAround.transform.eulerAngles = clampedEulerAngles;
     }
 

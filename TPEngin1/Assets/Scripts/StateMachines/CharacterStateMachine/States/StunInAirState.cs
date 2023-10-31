@@ -9,10 +9,8 @@ public class StunInAirState : CharacterState
     {
         Debug.Log("Character entering state: StunInAirState\n");
 
-        m_animator = m_stateMachine.GetComponentInParent<Animator>();
-        
+        m_animator = m_stateMachine.GetComponentInParent<Animator>();        
         m_animator.SetTrigger("Stunned");
-
         m_stunOnGroundTimer = 1.0f;
     }
 

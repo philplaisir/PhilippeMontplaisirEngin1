@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 15711287}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.027623823, y: -0.04894407, z: 0.023562193, w: -0.9981414}
+  m_LocalRotation: {x: 0.027623793, y: -0.048944037, z: 0.023562178, w: -0.9981414}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1462,8 +1462,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.16873375, y: -0.614389, z: 0.13695128, w: 0.758485}
-  m_LocalPosition: {x: 33.884583, y: 17.94, z: -41.439484}
+  m_LocalRotation: {x: -0.0056981076, y: -0.99324113, z: -0.113079205, w: -0.025550378}
+  m_LocalPosition: {x: -12.169998, y: 4.326047, z: 13.944336}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1662,6 +1662,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MainGameplayCamera>k__BackingField: {fileID: 723893991}
+  <IntroCinematic>k__BackingField: {fileID: 1623546457}
+  m_explosionParticleSystem: {fileID: 4482334856273476064, guid: efd2c48ff32dc73448d85fe6d793dbba,
+    type: 3}
+  m_explosionAudioSource: {fileID: 240746610555644800, guid: acc4865027f79dc4eacb733c053e0038,
+    type: 3}
+  m_explosionEmitters:
+  - {fileID: 1029560610}
+  - {fileID: 387525817}
+  - {fileID: 251290514}
   m_timeScaleCurve:
     serializedVersion: 2
     m_Curve:
@@ -1686,15 +1695,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  <IntroCinematic>k__BackingField: {fileID: 1623546457}
-  m_explosionParticleSystem: {fileID: 4482334856273476064, guid: efd2c48ff32dc73448d85fe6d793dbba,
-    type: 3}
-  m_explosionAudioSource: {fileID: 240746610555644800, guid: 696674ca04bc92e428154d43eaeeadd0,
-    type: 3}
-  m_explosionEmitters:
-  - {fileID: 1029560610}
-  - {fileID: 387525817}
-  - {fileID: 251290514}
 --- !u!4 &369471083
 Transform:
   m_ObjectHideFlags: 0
@@ -14292,6 +14292,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 989313697598200591, guid: f93bec7059e48b24fa9fcdd28c099999,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5269805822774588464, guid: f93bec7059e48b24fa9fcdd28c099999,
         type: 3}
       propertyPath: m_Name

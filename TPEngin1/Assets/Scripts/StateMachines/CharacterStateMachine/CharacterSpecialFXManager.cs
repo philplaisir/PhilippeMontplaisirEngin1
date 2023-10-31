@@ -56,135 +56,160 @@ public class CharacterSpecialFXManager : MonoBehaviour
         switch (specialFXGroup.actionType)
         {
             case ECharacterActionType.PunchRight:
-                if (specialFXGroup.audioClips.Count > 0)
-                {                    
-                    int randomAudioIndex = Random.Range(0, specialFXGroup.audioClips.Count);
-                    AudioClip clipToPlay = specialFXGroup.audioClips[randomAudioIndex];
-                    AudioSource newAudioSource = Instantiate(m_newAudioSource, position, Quaternion.identity, transform);
-                    newAudioSource.PlayOneShot(clipToPlay);
-                }
-                else
-                {
-                    Debug.Log("No audio clips found for the special effect");
-                }
-
-                if (specialFXGroup.visualEffects.Count > 0)
-                {                    
-                    int randomVisualIndex = Random.Range(0, specialFXGroup.visualEffects.Count);
-                    GameObject vfxToPlay = specialFXGroup.visualEffects[randomVisualIndex];
-                    Instantiate(vfxToPlay, position, Quaternion.identity, transform);
-                }
-                else
-                {
-                    Debug.Log("No visual effect found for the special effect");
-                }               
-
-                intensity = Random.Range(intensity - 0.5f, intensity + 0.5f);
-                m_impulseSource.GenerateImpulse(intensity);
-
-                GameManagerSM._Instance.IsSlowMoed = true;
+                PunchRightHand(specialFXGroup, position, intensity);
                 break;
             case ECharacterActionType.RunRightFootstep:
-                if (specialFXGroup.audioClips.Count > 0)
-                {
-                    int randomAudioIndex = Random.Range(0, specialFXGroup.audioClips.Count);
-                    AudioClip clipToPlay = specialFXGroup.audioClips[randomAudioIndex];
-                    AudioSource newAudioSource = Instantiate(m_newAudioSource, m_legsActionsEffectsAudioSource.transform.position, Quaternion.identity, transform);
-                    newAudioSource.PlayOneShot(clipToPlay);
-                }
-                else
-                {
-                    Debug.Log("No audio clips found for the special effect");
-                }
-                
-                if (specialFXGroup.visualEffects.Count > 0)
-                {
-                    int randomVisualIndex = Random.Range(0, specialFXGroup.visualEffects.Count);
-                    GameObject vfxToPlay = specialFXGroup.visualEffects[randomVisualIndex];
-                    Instantiate(vfxToPlay, m_rightFootStepDustEmitterPos.transform.position, Quaternion.identity);
-                }
-                else
-                {
-                    Debug.Log("No visual effect found for the special effect");
-                }
+                RunRightFootstep(specialFXGroup);
                 break;
             case ECharacterActionType.RunLeftFootstep:
-                if (specialFXGroup.audioClips.Count > 0)
-                {
-                    int randomAudioIndex = Random.Range(0, specialFXGroup.audioClips.Count);
-                    AudioClip clipToPlay = specialFXGroup.audioClips[randomAudioIndex];
-                    AudioSource newAudioSource = Instantiate(m_newAudioSource, m_legsActionsEffectsAudioSource.transform.position, Quaternion.identity, transform);
-                    newAudioSource.PlayOneShot(clipToPlay);
-                }
-                else
-                {
-                    Debug.Log("No audio clips found for the special effect");
-                }
-
-                if (specialFXGroup.visualEffects.Count > 0)
-                {
-                    int randomVisualIndex = Random.Range(0, specialFXGroup.visualEffects.Count);
-                    GameObject vfxToPlay = specialFXGroup.visualEffects[randomVisualIndex];
-                    Instantiate(vfxToPlay, m_leftFootStepDustEmitterPos.transform.position, Quaternion.identity);
-                }
-                else
-                {
-                    Debug.Log("No visual effect found for the special effect");
-                }
+                RunLeftFootstep(specialFXGroup);
                 break;
             case ECharacterActionType.Jump:
-                if (specialFXGroup.audioClips.Count > 0)
-                {
-                    int randomAudioIndex = Random.Range(0, specialFXGroup.audioClips.Count);
-                    AudioClip clipToPlay = specialFXGroup.audioClips[randomAudioIndex];
-                    AudioSource newAudioSource = Instantiate(m_newAudioSource, m_legsActionsEffectsAudioSource.transform.position, Quaternion.identity, transform);
-                    newAudioSource.PlayOneShot(clipToPlay);
-                }
-                else
-                {
-                    Debug.Log("No audio clips found for the special effect");
-                }
-
-                if (specialFXGroup.visualEffects.Count > 0)
-                {
-                    int randomVisualIndex = Random.Range(0, specialFXGroup.visualEffects.Count);
-                    GameObject vfxToPlay = specialFXGroup.visualEffects[randomVisualIndex];
-                    Instantiate(vfxToPlay, m_leftFootStepDustEmitterPos.transform.position, Quaternion.identity, transform);
-                }
-                else
-                {
-                    Debug.Log("No visual effect found for the special effect");
-                }
+                Jump(specialFXGroup);
                 break;
             case ECharacterActionType.JumpLanding:
-                if (specialFXGroup.audioClips.Count > 0)
-                {
-                    int randomAudioIndex = Random.Range(0, specialFXGroup.audioClips.Count);
-                    AudioClip clipToPlay = specialFXGroup.audioClips[randomAudioIndex];
-                    AudioSource newAudioSource = Instantiate(m_newAudioSource, m_legsActionsEffectsAudioSource.transform.position, Quaternion.identity, transform);
-                    newAudioSource.PlayOneShot(clipToPlay);
-                }
-                else
-                {
-                    Debug.Log("No audio clips found for the special effect");
-                }
-
-                if (specialFXGroup.visualEffects.Count > 0)
-                {
-                    int randomVisualIndex = Random.Range(0, specialFXGroup.visualEffects.Count);
-                    GameObject vfxToPlay = specialFXGroup.visualEffects[randomVisualIndex];
-                    Instantiate(vfxToPlay, m_rightFootStepDustEmitterPos.transform.position, Quaternion.identity, transform);
-                    Instantiate(vfxToPlay, m_leftFootStepDustEmitterPos.transform.position, Quaternion.identity, transform);
-                }
-                else
-                {
-                    Debug.Log("No visual effect found for the special effect");
-                }
+                JumpLanding(specialFXGroup);
                 break;
             case ECharacterActionType.Count:
                 break;
             default:
                 break;
+        }
+    }
+
+    private void PunchRightHand(SpecialEffectsGroup specialFXGroup, Vector3 position, float intensity)
+    {
+        if (specialFXGroup.audioClips.Count > 0)
+        {
+            int randomAudioIndex = Random.Range(0, specialFXGroup.audioClips.Count);
+            AudioClip clipToPlay = specialFXGroup.audioClips[randomAudioIndex];
+            AudioSource newAudioSource = Instantiate(m_newAudioSource, position, Quaternion.identity, transform);
+            newAudioSource.PlayOneShot(clipToPlay);
+        }
+        else
+        {
+            Debug.Log("No audio clips found for the special effect");
+        }
+
+        if (specialFXGroup.visualEffects.Count > 0)
+        {
+            int randomVisualIndex = Random.Range(0, specialFXGroup.visualEffects.Count);
+            GameObject vfxToPlay = specialFXGroup.visualEffects[randomVisualIndex];
+            Instantiate(vfxToPlay, position, Quaternion.identity, transform);
+        }
+        else
+        {
+            Debug.Log("No visual effect found for the special effect");
+        }
+
+        intensity = Random.Range(intensity - 0.5f, intensity + 0.5f);
+        m_impulseSource.GenerateImpulse(intensity);
+
+        GameManagerSM._Instance.IsSlowMoed = true;
+    }
+
+    private void RunRightFootstep(SpecialEffectsGroup specialFXGroup)
+    {
+        if (specialFXGroup.audioClips.Count > 0)
+        {
+            int randomAudioIndex = Random.Range(0, specialFXGroup.audioClips.Count);
+            AudioClip clipToPlay = specialFXGroup.audioClips[randomAudioIndex];
+            AudioSource newAudioSource = Instantiate(m_newAudioSource, m_legsActionsEffectsAudioSource.transform.position, Quaternion.identity, transform);
+            newAudioSource.PlayOneShot(clipToPlay);
+        }
+        else
+        {
+            Debug.Log("No audio clips found for the special effect");
+        }
+
+        if (specialFXGroup.visualEffects.Count > 0)
+        {
+            int randomVisualIndex = Random.Range(0, specialFXGroup.visualEffects.Count);
+            GameObject vfxToPlay = specialFXGroup.visualEffects[randomVisualIndex];
+            Instantiate(vfxToPlay, m_rightFootStepDustEmitterPos.transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Debug.Log("No visual effect found for the special effect");
+        }
+    }
+
+    private void RunLeftFootstep(SpecialEffectsGroup specialFXGroup)
+    {
+        if (specialFXGroup.audioClips.Count > 0)
+        {
+            int randomAudioIndex = Random.Range(0, specialFXGroup.audioClips.Count);
+            AudioClip clipToPlay = specialFXGroup.audioClips[randomAudioIndex];
+            AudioSource newAudioSource = Instantiate(m_newAudioSource, m_legsActionsEffectsAudioSource.transform.position, Quaternion.identity, transform);
+            newAudioSource.PlayOneShot(clipToPlay);
+        }
+        else
+        {
+            Debug.Log("No audio clips found for the special effect");
+        }
+
+        if (specialFXGroup.visualEffects.Count > 0)
+        {
+            int randomVisualIndex = Random.Range(0, specialFXGroup.visualEffects.Count);
+            GameObject vfxToPlay = specialFXGroup.visualEffects[randomVisualIndex];
+            Instantiate(vfxToPlay, m_leftFootStepDustEmitterPos.transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Debug.Log("No visual effect found for the special effect");
+        }
+    }
+
+    private void Jump(SpecialEffectsGroup specialFXGroup)
+    {
+        if (specialFXGroup.audioClips.Count > 0)
+        {
+            int randomAudioIndex = Random.Range(0, specialFXGroup.audioClips.Count);
+            AudioClip clipToPlay = specialFXGroup.audioClips[randomAudioIndex];
+            AudioSource newAudioSource = Instantiate(m_newAudioSource, m_legsActionsEffectsAudioSource.transform.position, Quaternion.identity, transform);
+            newAudioSource.PlayOneShot(clipToPlay);
+        }
+        else
+        {
+            Debug.Log("No audio clips found for the special effect");
+        }
+
+        if (specialFXGroup.visualEffects.Count > 0)
+        {
+            int randomVisualIndex = Random.Range(0, specialFXGroup.visualEffects.Count);
+            GameObject vfxToPlay = specialFXGroup.visualEffects[randomVisualIndex];
+            Instantiate(vfxToPlay, m_leftFootStepDustEmitterPos.transform.position, Quaternion.identity, transform);
+        }
+        else
+        {
+            Debug.Log("No visual effect found for the special effect");
+        }
+    }
+
+    private void JumpLanding(SpecialEffectsGroup specialFXGroup)
+    {
+        if (specialFXGroup.audioClips.Count > 0)
+        {
+            int randomAudioIndex = Random.Range(0, specialFXGroup.audioClips.Count);
+            AudioClip clipToPlay = specialFXGroup.audioClips[randomAudioIndex];
+            AudioSource newAudioSource = Instantiate(m_newAudioSource, m_legsActionsEffectsAudioSource.transform.position, Quaternion.identity, transform);
+            newAudioSource.PlayOneShot(clipToPlay);
+        }
+        else
+        {
+            Debug.Log("No audio clips found for the special effect");
+        }
+
+        if (specialFXGroup.visualEffects.Count > 0)
+        {
+            int randomVisualIndex = Random.Range(0, specialFXGroup.visualEffects.Count);
+            GameObject vfxToPlay = specialFXGroup.visualEffects[randomVisualIndex];
+            Instantiate(vfxToPlay, m_rightFootStepDustEmitterPos.transform.position, Quaternion.identity, transform);
+            Instantiate(vfxToPlay, m_leftFootStepDustEmitterPos.transform.position, Quaternion.identity, transform);
+        }
+        else
+        {
+            Debug.Log("No visual effect found for the special effect");
         }
     }
 }

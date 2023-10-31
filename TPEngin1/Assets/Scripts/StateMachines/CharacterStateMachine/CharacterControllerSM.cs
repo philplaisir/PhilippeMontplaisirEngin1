@@ -49,14 +49,7 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     [Header("COMBAT PARAMETERS")]
     [SerializeField] private List<PMM_HitBox> m_hittingHitBoxes = new List<PMM_HitBox>();
     [SerializeField] private List<PMM_HitBox> m_receivingHitBoxes = new List<PMM_HitBox>();
-    [SerializeField] private CharacterSpecialFXManager m_characterSpecialFXManager;
-
-    [field: Header("TESTING PARAMETERS")]
-    [SerializeField] private GameObject m_explosionParticleSystem;
-    [SerializeField] private AudioSource m_explosionAudioSource;
-    [SerializeField] private GameObject m_explosionEmitterPos;
-    [field: SerializeField] public GameObject TestingBullet { get; private set; }
-    [SerializeField] private ElevatorController m_elevatorController;
+    [SerializeField] private CharacterSpecialFXManager m_characterSpecialFXManager;    
 
     [field: Header("CINEMACHINE CAMERA BASED ON CHARACTER")]
     [field: SerializeField] public GameObject ObjectToRotateAround { get; set; }
@@ -64,6 +57,12 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     [field: SerializeField] public float RotationSpeedVertical { get; private set; } = 2.0f;
     [field: SerializeField] public Vector2 VerticalCameraLimits { get; private set; } //x = min, y = max
 
+    [field: Header("TESTING PARAMETERS")]
+    [SerializeField] private GameObject m_explosionParticleSystem;
+    [SerializeField] private AudioSource m_explosionAudioSource;
+    [SerializeField] private GameObject m_explosionEmitterPos;
+    [field: SerializeField] public GameObject TestingBullet { get; private set; }
+    [SerializeField] private ElevatorController m_elevatorController;
 
 
     protected override void CreatePossibleStates()
@@ -109,11 +108,6 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     {
         base.Update();
 
-        //if (GameManagerSM._Instance.IsCinematicMode == true)
-        //{
-        //    return;
-        //}
-
         IsTouchingFloor = IsInContactWithFloor();
         if (IsInContactWithFloor())
         {            
@@ -121,12 +115,7 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
         }        
         
         DetectTestingInputs();
-        CalculateDistanceBetweenCharacterAndFloor();                  
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
+        CalculateDistanceBetweenCharacterAndFloor();        
     }
 
     protected override void FixedUpdate()
@@ -208,8 +197,7 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
     }
 
     private void DetectTestingInputs()
-    {
-        // TODO à ajuster les détails
+    {        
         if (Input.GetKeyDown(KeyCode.V))
         {
             Vector3 spawnPosition = new Vector3(143, 1, 170);
@@ -241,24 +229,3 @@ public class CharacterControllerSM : BaseStateMachine<CharacterState>
 }
 
 
-
-//[field: Header("Bonjour")]
-//[field: SerializeField, Header("Hi")]
-
-
-
-//private void EvaluateIfLosingAltitude()
-//{
-//    float elevationDiff = DistanceBetweenCharacterAndFloor - m_previousElevation;
-//
-//    m_previousElevation = DistanceBetweenCharacterAndFloor;
-//
-//    if (elevationDiff >= 0)
-//    {
-//        IsLosingAltitude = false;
-//    }
-//    if (elevationDiff < 0)
-//    {
-//        IsLosingAltitude = true;
-//    }
-//}

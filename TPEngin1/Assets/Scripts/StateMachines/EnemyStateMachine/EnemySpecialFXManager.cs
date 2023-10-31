@@ -52,36 +52,41 @@ public class EnemySpecialFXManager : MonoBehaviour
         switch (specialFXGroup.actionType)
         {
             case ECharacterActionType.PunchRight:
-                if (specialFXGroup.audioClips.Count > 0)
-                {
-                    int randomAudioIndex = Random.Range(0, specialFXGroup.audioClips.Count);
-                    AudioClip clipToPlay = specialFXGroup.audioClips[randomAudioIndex];
-                    AudioSource newAudioSource = Instantiate(m_newAudioSource, position, Quaternion.identity, transform);
-                    newAudioSource.PlayOneShot(clipToPlay);
-                }
-                else
-                {
-                    Debug.Log("No audio clips found for the special effect");
-                }
-
-                if (specialFXGroup.visualEffects.Count > 0)
-                {
-                    int randomVisualIndex = Random.Range(0, specialFXGroup.visualEffects.Count);
-                    GameObject vfxToPlay = specialFXGroup.visualEffects[randomVisualIndex];
-                    Instantiate(vfxToPlay, position, Quaternion.identity, transform);
-                }
-                else
-                {
-                    Debug.Log("No visual effect found for the special effect");
-                }
-
-                intensity = Random.Range(intensity - 0.5f, intensity + 0.5f);
-                m_impulseSource.GenerateImpulse(intensity);
+                PunchRightHand(specialFXGroup, position, intensity);
                 break;            
             case ECharacterActionType.Count:
                 break;
             default:
                 break;
         }
+    }
+
+    private void PunchRightHand(SpecialEffectsGroup specialFXGroup, Vector3 position, float intensity)
+    {
+        if (specialFXGroup.audioClips.Count > 0)
+        {
+            int randomAudioIndex = Random.Range(0, specialFXGroup.audioClips.Count);
+            AudioClip clipToPlay = specialFXGroup.audioClips[randomAudioIndex];
+            AudioSource newAudioSource = Instantiate(m_newAudioSource, position, Quaternion.identity, transform);
+            newAudioSource.PlayOneShot(clipToPlay);
+        }
+        else
+        {
+            Debug.Log("No audio clips found for the special effect");
+        }
+
+        if (specialFXGroup.visualEffects.Count > 0)
+        {
+            int randomVisualIndex = Random.Range(0, specialFXGroup.visualEffects.Count);
+            GameObject vfxToPlay = specialFXGroup.visualEffects[randomVisualIndex];
+            Instantiate(vfxToPlay, position, Quaternion.identity, transform);
+        }
+        else
+        {
+            Debug.Log("No visual effect found for the special effect");
+        }
+
+        intensity = Random.Range(intensity - 0.5f, intensity + 0.5f);
+        m_impulseSource.GenerateImpulse(intensity);
     }
 }

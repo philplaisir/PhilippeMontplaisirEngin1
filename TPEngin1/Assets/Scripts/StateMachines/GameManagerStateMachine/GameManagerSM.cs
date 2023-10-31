@@ -11,13 +11,7 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
     public IState DesiredState { get; set; } = null;
 
     [field: SerializeField] 
-    public CinemachineVirtualCamera MainGameplayCamera { get; private set; }
-
-    [field: Header("SLOW MO")]
-    public bool IsSlowMoed { get; set; } = false;
-    [SerializeField] 
-    private AnimationCurve m_timeScaleCurve;
-    private float m_currentTimeScaleDuration = 0.0f;
+    public CinemachineVirtualCamera MainGameplayCamera { get; private set; }    
 
     [field: Header("CINEMATIC")]
     [field: SerializeField] public GameObject IntroCinematic { get; private set; }
@@ -25,6 +19,12 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
     [SerializeField] private AudioSource m_explosionAudioSource;
     [SerializeField] private List<GameObject> m_explosionEmitters = new List<GameObject>();    
     public bool IsCinematicMode { get; set; } = false;
+
+    [field: Header("SLOW MO")]
+    public bool IsSlowMoed { get; set; } = false;
+    [SerializeField]
+    private AnimationCurve m_timeScaleCurve;
+    private float m_currentTimeScaleDuration = 0.0f;
 
 
 
@@ -65,8 +65,6 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
         }
         m_currentState = m_possibleStates[0];
         m_currentState.OnEnter();
-
-        //IsCinematicMode = false;
     }
 
     protected override void Update()
@@ -76,6 +74,10 @@ public class GameManagerSM : BaseStateMachine<GameManagerState>
         if (Input.GetKeyDown(KeyCode.N))
         {
             SceneManager.LoadScene("SandboxScene");;
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
         }
     }
 
